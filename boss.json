@@ -1,0 +1,9 @@
+{
+	"name": "BuscaCEP",
+	"description": "BuscaCEP é uma biblioteca de consulta de endereço online.",
+	"version": "v1.0.0",
+	"homepage": "https://github.com/antoniojmsjr/BuscaCEP",
+	"mainsrc": "Source",
+	"projects": [],
+	"dependencies": {}
+}
