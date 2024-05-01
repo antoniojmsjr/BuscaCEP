@@ -1,0 +1,72 @@
+﻿<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+    <PropertyGroup>
+        <ProjectGuid>{EF1B19F5-6875-4E36-95CA-AB8F48A5F3C0}</ProjectGuid>
+    </PropertyGroup>
+    <ItemGroup>
+        <Projects Include="Samples\VCL\BuscaCEPVCL.dproj">
+            <Dependencies/>
+        </Projects>
+        <Projects Include="Samples\FMX\BuscaCEPFMX.dproj">
+            <Dependencies/>
+        </Projects>
+        <Projects Include="Samples\Client-APICEP\ClientAPICEP.dproj">
+            <Dependencies/>
+        </Projects>
+        <Projects Include="Samples\Server-APICEP\ServerAPICEP.dproj">
+            <Dependencies/>
+        </Projects>
+    </ItemGroup>
+    <ProjectExtensions>
+        <Borland.Personality>Default.Personality.12</Borland.Personality>
+        <Borland.ProjectType/>
+        <BorlandProject>
+            <Default.Personality/>
+        </BorlandProject>
+    </ProjectExtensions>
+    <Target Name="BuscaCEPVCL">
+        <MSBuild Projects="Samples\VCL\BuscaCEPVCL.dproj"/>
+    </Target>
+    <Target Name="BuscaCEPVCL:Clean">
+        <MSBuild Projects="Samples\VCL\BuscaCEPVCL.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="BuscaCEPVCL:Make">
+        <MSBuild Projects="Samples\VCL\BuscaCEPVCL.dproj" Targets="Make"/>
+    </Target>
+    <Target Name="BuscaCEPFMX">
+        <MSBuild Projects="Samples\FMX\BuscaCEPFMX.dproj"/>
+    </Target>
+    <Target Name="BuscaCEPFMX:Clean">
+        <MSBuild Projects="Samples\FMX\BuscaCEPFMX.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="BuscaCEPFMX:Make">
+        <MSBuild Projects="Samples\FMX\BuscaCEPFMX.dproj" Targets="Make"/>
+    </Target>
+    <Target Name="ClientAPICEP">
+        <MSBuild Projects="Samples\Client-APICEP\ClientAPICEP.dproj"/>
+    </Target>
+    <Target Name="ClientAPICEP:Clean">
+        <MSBuild Projects="Samples\Client-APICEP\ClientAPICEP.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="ClientAPICEP:Make">
+        <MSBuild Projects="Samples\Client-APICEP\ClientAPICEP.dproj" Targets="Make"/>
+    </Target>
+    <Target Name="ServerAPICEP">
+        <MSBuild Projects="Samples\Server-APICEP\ServerAPICEP.dproj"/>
+    </Target>
+    <Target Name="ServerAPICEP:Clean">
+        <MSBuild Projects="Samples\Server-APICEP\ServerAPICEP.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="ServerAPICEP:Make">
+        <MSBuild Projects="Samples\Server-APICEP\ServerAPICEP.dproj" Targets="Make"/>
+    </Target>
+    <Target Name="Build">
+        <CallTarget Targets="BuscaCEPVCL;BuscaCEPFMX;ClientAPICEP;ServerAPICEP"/>
+    </Target>
+    <Target Name="Clean">
+        <CallTarget Targets="BuscaCEPVCL:Clean;BuscaCEPFMX:Clean;ClientAPICEP:Clean;ServerAPICEP:Clean"/>
+    </Target>
+    <Target Name="Make">
+        <CallTarget Targets="BuscaCEPVCL:Make;BuscaCEPFMX:Make;ClientAPICEP:Make;ServerAPICEP:Make"/>
+    </Target>
+    <Import Project="$(BDS)\Bin\CodeGear.Group.Targets" Condition="Exists('$(BDS)\Bin\CodeGear.Group.Targets')"/>
+</Project>

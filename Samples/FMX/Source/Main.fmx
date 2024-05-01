@@ -1,0 +1,270 @@
+object frmMain: TfrmMain
+  Left = 0
+  Top = 0
+  BorderIcons = [biSystemMenu, biMinimize]
+  Caption = 'Busca CEP - FMX'
+  ClientHeight = 480
+  ClientWidth = 700
+  Fill.Kind = Solid
+  Position = ScreenCenter
+  FormFactor.Width = 320
+  FormFactor.Height = 480
+  FormFactor.Devices = [Desktop]
+  OnCreate = FormCreate
+  DesignerMasterStyle = 0
+  object rctHeader: TRectangle
+    Align = Top
+    Fill.Color = xFF0078D7
+    Size.Width = 700.000000000000000000
+    Size.Height = 50.000000000000000000
+    Size.PlatformDefault = False
+    Stroke.Kind = None
+    object lblHeader: TLabel
+      Align = VertCenter
+      StyledSettings = [Family]
+      Position.Y = 16.000000000000000000
+      Size.Width = 700.000000000000000000
+      Size.Height = 17.000000000000000000
+      Size.PlatformDefault = False
+      TextSettings.Font.Size = 18.000000000000000000
+      TextSettings.Font.StyleExt = {00070000000000000004000000}
+      TextSettings.FontColor = claWhite
+      TextSettings.HorzAlign = Center
+      Text = 'Busca CEP - FMX'
+      TabOrder = 0
+    end
+  end
+  object GroupBox1: TGroupBox
+    Align = Top
+    Position.Y = 50.000000000000000000
+    Size.Width = 700.000000000000000000
+    Size.Height = 50.000000000000000000
+    Size.PlatformDefault = False
+    Text = ' Providers '
+    TabOrder = 0
+    object Label1: TLabel
+      AutoSize = True
+      StyledSettings = [Family, Size, FontColor]
+      Position.X = 23.000000000000000000
+      Position.Y = 20.000000000000000000
+      Size.Width = 57.000000000000000000
+      Size.Height = 16.000000000000000000
+      Size.PlatformDefault = False
+      TextSettings.Font.StyleExt = {00070000000000000004000000}
+      Text = 'Provedor:'
+      TabOrder = 0
+    end
+    object cbxProviders: TComboBox
+      Position.X = 95.000000000000000000
+      Position.Y = 17.000000000000000000
+      Size.Width = 200.000000000000000000
+      Size.Height = 22.000000000000000000
+      Size.PlatformDefault = False
+      TabOrder = 1
+    end
+  end
+  object GroupBox2: TGroupBox
+    Align = Top
+    Position.Y = 100.000000000000000000
+    Size.Width = 700.000000000000000000
+    Size.Height = 185.000000000000000000
+    Size.PlatformDefault = False
+    Text = ' Busca por CEP '
+    TabOrder = 1
+    object Label2: TLabel
+      AutoSize = True
+      StyledSettings = [Family, Size, FontColor]
+      Position.X = 25.000000000000000000
+      Position.Y = 28.000000000000000000
+      Size.Width = 35.000000000000000000
+      Size.Height = 16.000000000000000000
+      Size.PlatformDefault = False
+      TextSettings.Font.StyleExt = {00070000000000000004000000}
+      Text = 'CEP:'
+      TabOrder = 0
+    end
+    object edtBuscaCEP: TEdit
+      Touch.InteractiveGestures = [LongTap, DoubleTap]
+      TabOrder = 1
+      MaxLength = 9
+      Text = '90520-003'
+      Position.X = 65.000000000000000000
+      Position.Y = 25.000000000000000000
+      OnKeyDown = edtBuscaCEPKeyDown
+    end
+    object TButton
+      Anchors = [akTop, akRight]
+      Position.X = 580.000000000000000000
+      Position.Y = 25.000000000000000000
+      Size.Width = 100.000000000000000000
+      Size.Height = 22.000000000000000000
+      Size.PlatformDefault = False
+      TabOrder = 2
+      Text = 'Consultar'
+      OnClick = btnConsultarCEPClick
+    end
+    object Line1: TLine
+      Anchors = [akLeft, akTop, akRight]
+      LineType = Top
+      Position.X = 10.000000000000000000
+      Position.Y = 60.000000000000000000
+      Size.Width = 680.000000000000000000
+      Size.Height = 5.000000000000000000
+      Size.PlatformDefault = False
+    end
+    object grdLogradouros: TGrid
+      Anchors = [akLeft, akTop, akRight]
+      CanFocus = True
+      ClipChildren = True
+      ControlType = Platform
+      Position.X = 20.000000000000000000
+      Position.Y = 72.000000000000000000
+      Size.Width = 660.000000000000000000
+      Size.Height = 100.000000000000000000
+      Size.PlatformDefault = False
+      TabOrder = 4
+      RowCount = 2
+      Options = [ColumnResize, ColumnMove, ColLines, RowLines, RowSelect, Tabs, Header, HeaderClick, AutoDisplacement]
+      Viewport.Width = 656.000000000000000000
+      Viewport.Height = 75.000000000000000000
+    end
+  end
+  object GroupBox3: TGroupBox
+    Align = Client
+    Padding.Left = 5.000000000000000000
+    Padding.Top = 20.000000000000000000
+    Padding.Right = 5.000000000000000000
+    Padding.Bottom = 5.000000000000000000
+    Size.Width = 700.000000000000000000
+    Size.Height = 195.000000000000000000
+    Size.PlatformDefault = False
+    Text = ' Resultado JSON '
+    TabOrder = 2
+    object mmoResultadoJSON: TMemo
+      Touch.InteractiveGestures = [Pan, LongTap, DoubleTap]
+      DataDetectorTypes = []
+      Align = Client
+      Size.Width = 690.000000000000000000
+      Size.Height = 170.000000000000000000
+      Size.PlatformDefault = False
+      TabOrder = 0
+      Viewport.Width = 686.000000000000000000
+      Viewport.Height = 166.000000000000000000
+    end
+  end
+  object memLogradouros: TFDMemTable
+    FetchOptions.AssignedValues = [evMode]
+    FetchOptions.Mode = fmAll
+    ResourceOptions.AssignedValues = [rvSilentMode]
+    ResourceOptions.SilentMode = True
+    UpdateOptions.AssignedValues = [uvCheckRequired, uvAutoCommitUpdates]
+    UpdateOptions.CheckRequired = False
+    UpdateOptions.AutoCommitUpdates = True
+    Left = 344
+    Top = 60
+    object memLogradourosLOGRADOURO: TStringField
+      DisplayLabel = 'Logradouro'
+      FieldName = 'LOGRADOURO'
+      Size = 200
+    end
+    object memLogradourosCOMPLEMENTO: TStringField
+      DisplayLabel = 'Complemento'
+      FieldName = 'COMPLEMENTO'
+      Size = 150
+    end
+    object memLogradourosBAIRRO: TStringField
+      DisplayLabel = 'Bairro'
+      FieldName = 'BAIRRO'
+      Size = 100
+    end
+    object memLogradourosLOCALIDADE: TStringField
+      DisplayLabel = 'Localidade'
+      FieldName = 'LOCALIDADE'
+      Size = 100
+    end
+    object memLogradourosLOCALIDADE_IBGE: TIntegerField
+      DisplayLabel = 'Localidade IBGE'
+      FieldName = 'LOCALIDADE_IBGE'
+    end
+    object memLogradourosESTADO: TStringField
+      DisplayLabel = 'Estado'
+      FieldName = 'ESTADO'
+      Size = 100
+    end
+    object memLogradourosESTADO_IBGE: TIntegerField
+      DisplayLabel = 'Estado IBGE'
+      FieldName = 'ESTADO_IBGE'
+    end
+    object memLogradourosREGIAO: TStringField
+      DisplayLabel = 'Regi'#227'o'
+      FieldName = 'REGIAO'
+      Size = 50
+    end
+    object memLogradourosREGIAO_IBGE: TIntegerField
+      DisplayLabel = 'Regi'#227'o IBGE'
+      FieldName = 'REGIAO_IBGE'
+    end
+    object memLogradourosCEP: TStringField
+      FieldName = 'CEP'
+      Size = 10
+    end
+  end
+  object BindSourceDB1: TBindSourceDB
+    DataSet = memLogradouros
+    ScopeMappings = <>
+    Left = 408
+    Top = 64
+  end
+  object BindingsList1: TBindingsList
+    Methods = <>
+    OutputConverters = <>
+    Left = 484
+    Top = 61
+    object LinkGridToDataSourceBindSourceDB1: TLinkGridToDataSource
+      Category = 'Quick Bindings'
+      DataSource = BindSourceDB1
+      GridControl = grdLogradouros
+      Columns = <
+        item
+          MemberName = 'LOGRADOURO'
+          Width = 200
+        end
+        item
+          MemberName = 'COMPLEMENTO'
+          Width = 150
+        end
+        item
+          MemberName = 'BAIRRO'
+          Width = 100
+        end
+        item
+          MemberName = 'LOCALIDADE'
+          Width = 100
+        end
+        item
+          MemberName = 'LOCALIDADE_IBGE'
+          Width = 100
+        end
+        item
+          MemberName = 'ESTADO'
+          Width = 100
+        end
+        item
+          MemberName = 'ESTADO_IBGE'
+          Width = 71
+        end
+        item
+          MemberName = 'REGIAO'
+          Width = 100
+        end
+        item
+          MemberName = 'REGIAO_IBGE'
+          Width = 72
+        end
+        item
+          MemberName = 'CEP'
+          Width = 60
+        end>
+    end
+  end
+end
