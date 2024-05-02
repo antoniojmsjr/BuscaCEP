@@ -26,7 +26,7 @@ Implementado na linguagem Delphi, utiliza o conceito de [fluent interface](https
 * Código IBGE: Com BuscaCEP o código IBGE é fornecido de forma off-line através do arquivo IBGE.dat disponibilizado junto com a biblioteca.
 * Integração com Principais Players: Integrado com os principais serviços de consulta de CEP do Brasil: [Correios](https://buscacepinter.correios.com.br/app/endereco/index.php), [ViaCEP](https://viacep.com.br/), [BrasilAPI](https://brasilapi.com.br/), entre outros. 
 * Facilidade de Integração: Com uma interface amigável e documentação detalhada, a BuscaCEP é fácil de integrar em qualquer projeto.
-* Demonstração da biblioteca: Repositório com diversos exemplos de uso da biblioteca, por exemplo, VCL, FMX e um servidor de aplicação em [(Horse)](https://github.com/HashLoad/horse) simulando uma API de endereços.
+* Exemplos de uso da biblioteca: Repositório com diversos exemplos de uso da biblioteca, por exemplo, VCL, FMX e um servidor de aplicação em [(Horse)](https://github.com/HashLoad/horse) simulando uma API de endereços.
 </br>
 
 ## ⚙️ Instalação Automatizada
@@ -235,7 +235,7 @@ begin
 * VCL Client
 * VCL Server [(Horse)](https://github.com/HashLoad/horse)
 
-Download: [Demo.zip](https://github.com/antoniojmsjr/BuscaCEP/files/15178133/Demo.zip)
+Download: [Demo.zip](https://github.com/antoniojmsjr/BuscaCEP/files/15194599/Demo.zip)
 
 https://github.com/antoniojmsjr/BuscaCEP/assets/20980984/7e644d25-8260-4733-971f-436161db4ac4
 
