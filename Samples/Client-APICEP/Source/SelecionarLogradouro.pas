@@ -5,28 +5,32 @@ interface
 uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes,
   Vcl.Graphics,  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Data.DB, Vcl.StdCtrls,
-  Vcl.ExtCtrls, Vcl.Grids, Vcl.DBGrids, Datasnap.DBClient, System.JSON, Utils;
+  Vcl.ExtCtrls, FireDAC.Stan.Intf, FireDAC.Stan.Option, FireDAC.Stan.Param,
+  FireDAC.Stan.Error, FireDAC.DatS, FireDAC.Phys.Intf, FireDAC.DApt.Intf,
+  FireDAC.Comp.DataSet, FireDAC.Comp.Client, Vcl.Grids, Vcl.DBGrids, Utils;
 
 type
   TfrmSelecionarLogradouro = class(TForm)
-    dbgBuscaCEP: TDBGrid;
     pnlBottom: TPanel;
     Shape1: TShape;
     Label1: TLabel;
-    cdsBuscaCEPLogradouros: TClientDataSet;
-    cdsBuscaCEPLogradourosLOGRADOURO: TStringField;
-    cdsBuscaCEPLogradourosCOMPLEMENTO: TStringField;
-    cdsBuscaCEPLogradourosBAIRRO: TStringField;
-    cdsBuscaCEPLogradourosLOCALIDADE: TStringField;
-    cdsBuscaCEPLogradourosLOCALIDADE_IBGE: TIntegerField;
-    cdsBuscaCEPLogradourosESTADO: TStringField;
-    cdsBuscaCEPLogradourosESTADO_IBGE: TIntegerField;
-    dsBuscaCEPLogradouros: TDataSource;
-    cdsBuscaCEPLogradourosJSON: TMemoField;
-    cdsBuscaCEPLogradourosCEP: TIntegerField;
+    dsLogradouros: TDataSource;
+    dbgCEPLogradouros: TDBGrid;
+    memLogradouros: TFDMemTable;
+    memLogradourosLOGRADOURO: TStringField;
+    memLogradourosCOMPLEMENTO: TStringField;
+    memLogradourosBAIRRO: TStringField;
+    memLogradourosLOCALIDADE: TStringField;
+    memLogradourosLOCALIDADE_IBGE: TIntegerField;
+    memLogradourosESTADO: TStringField;
+    memLogradourosESTADO_IBGE: TIntegerField;
+    memLogradourosREGIAO: TStringField;
+    memLogradourosREGIAO_IBGE: TIntegerField;
+    memLogradourosCEP: TStringField;
+    memLogradourosJSON: TMemoField;
     procedure FormCreate(Sender: TObject);
     procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
-    procedure dbgBuscaCEPDblClick(Sender: TObject);
+    procedure dbgCEPLogradourosDblClick(Sender: TObject);
   private
     { Private declarations }
     FLogradouroAPIJSON: string;
@@ -40,7 +44,7 @@ type
 implementation
 
 uses
-  System.Generics.Collections;
+  System.Generics.Collections, System.JSON;
 
 {$R *.dfm}
 
@@ -48,22 +52,22 @@ uses
 
 procedure TfrmSelecionarLogradouro.FormCreate(Sender: TObject);
 begin
-  cdsBuscaCEPLogradouros.CreateDataSet;
+  memLogradouros.CreateDataSet;
 end;
 
-procedure TfrmSelecionarLogradouro.dbgBuscaCEPDblClick(Sender: TObject);
+procedure TfrmSelecionarLogradouro.dbgCEPLogradourosDblClick(Sender: TObject);
 begin
-  if cdsBuscaCEPLogradouros.IsEmpty then
+  if memLogradouros.IsEmpty then
     raise Exception.Create('Não existe logradouro para selecionar!');
 
-  FLogradouroAPIJSON := cdsBuscaCEPLogradourosJSON.AsString;
+  FLogradouroAPIJSON := memLogradourosJSON.AsString;
   Close;
 end;
 
 procedure TfrmSelecionarLogradouro.FormCloseQuery(Sender: TObject;
   var CanClose: Boolean);
 begin
-  cdsBuscaCEPLogradouros.Close;
+  memLogradouros.Close;
 end;
 
 class procedure TfrmSelecionarLogradouro.GetLogradouro(const pOwner: TComponent;
@@ -109,17 +113,17 @@ begin
         Continue;
 
       try
-        cdsBuscaCEPLogradouros.Append;
-        cdsBuscaCEPLogradourosLOGRADOURO.AsString := lLogradouroAPI.Logradouro;
-        cdsBuscaCEPLogradourosCOMPLEMENTO.AsString := lLogradouroAPI.Complemento;
-        cdsBuscaCEPLogradourosBAIRRO.AsString := lLogradouroAPI.Bairro;
-        cdsBuscaCEPLogradourosLOCALIDADE.AsString := lLogradouroAPI.Localidade;
-        cdsBuscaCEPLogradourosLOCALIDADE_IBGE.AsInteger := lLogradouroAPI.LocalidadeIBGE;
-        cdsBuscaCEPLogradourosESTADO.AsString := lLogradouroAPI.Estado;
-        cdsBuscaCEPLogradourosESTADO_IBGE.AsInteger := lLogradouroAPI.EstadoIBGE;
-        cdsBuscaCEPLogradourosCEP.AsInteger := lLogradouroAPI.CEP;
-        cdsBuscaCEPLogradourosJSON.AsString := lJSONLogradouro.ToJSON;
-        cdsBuscaCEPLogradouros.Post;
+        memLogradouros.Append;
+        memLogradourosLOGRADOURO.AsString := lLogradouroAPI.Logradouro;
+        memLogradourosCOMPLEMENTO.AsString := lLogradouroAPI.Complemento;
+        memLogradourosBAIRRO.AsString := lLogradouroAPI.Bairro;
+        memLogradourosLOCALIDADE.AsString := lLogradouroAPI.Localidade;
+        memLogradourosLOCALIDADE_IBGE.AsInteger := lLogradouroAPI.LocalidadeIBGE;
+        memLogradourosESTADO.AsString := lLogradouroAPI.Estado;
+        memLogradourosESTADO_IBGE.AsInteger := lLogradouroAPI.EstadoIBGE;
+        memLogradourosCEP.AsInteger := lLogradouroAPI.CEP;
+        memLogradourosJSON.AsString := lJSONLogradouro.ToJSON;
+        memLogradouros.Post;
       finally
         lLogradouroAPI.Free;
       end;
@@ -128,6 +132,8 @@ begin
   finally
     lJSONValue.Free;
   end;
+
+  memLogradouros.First;
 end;
 
 end.

@@ -17,76 +17,6 @@ object frmSelecionarLogradouro: TfrmSelecionarLogradouro
   OnCreate = FormCreate
   PixelsPerInch = 96
   TextHeight = 13
-  object dbgBuscaCEP: TDBGrid
-    Left = 0
-    Top = 0
-    Width = 694
-    Height = 145
-    Align = alTop
-    DataSource = dsBuscaCEPLogradouros
-    Font.Charset = DEFAULT_CHARSET
-    Font.Color = clWindowText
-    Font.Height = -11
-    Font.Name = 'Tahoma'
-    Font.Style = []
-    Options = [dgTitles, dgIndicator, dgColumnResize, dgColLines, dgRowLines, dgTabs, dgRowSelect, dgConfirmDelete, dgCancelOnExit, dgTitleClick, dgTitleHotTrack]
-    ParentFont = False
-    TabOrder = 0
-    TitleFont.Charset = DEFAULT_CHARSET
-    TitleFont.Color = clWindowText
-    TitleFont.Height = -11
-    TitleFont.Name = 'Tahoma'
-    TitleFont.Style = [fsBold]
-    OnDblClick = dbgBuscaCEPDblClick
-    Columns = <
-      item
-        Expanded = False
-        FieldName = 'LOGRADOURO'
-        Width = 170
-        Visible = True
-      end
-      item
-        Expanded = False
-        FieldName = 'COMPLEMENTO'
-        Width = 120
-        Visible = True
-      end
-      item
-        Expanded = False
-        FieldName = 'BAIRRO'
-        Width = 90
-        Visible = True
-      end
-      item
-        Expanded = False
-        FieldName = 'LOCALIDADE'
-        Width = 90
-        Visible = True
-      end
-      item
-        Expanded = False
-        FieldName = 'LOCALIDADE_IBGE'
-        Width = 100
-        Visible = True
-      end
-      item
-        Expanded = False
-        FieldName = 'ESTADO'
-        Width = 110
-        Visible = True
-      end
-      item
-        Expanded = False
-        FieldName = 'ESTADO_IBGE'
-        Visible = True
-      end
-      item
-        Expanded = False
-        FieldName = 'CEP'
-        Width = 70
-        Visible = True
-      end>
-  end
   object pnlBottom: TPanel
     Left = 0
     Top = 145
@@ -96,7 +26,7 @@ object frmSelecionarLogradouro: TfrmSelecionarLogradouro
     BevelOuter = bvNone
     Caption = 'pnlBottom'
     ShowCaption = False
-    TabOrder = 1
+    TabOrder = 0
     object Shape1: TShape
       AlignWithMargins = True
       Left = 2
@@ -109,10 +39,8 @@ object frmSelecionarLogradouro: TfrmSelecionarLogradouro
       Margins.Bottom = 2
       Align = alClient
       Pen.Style = psDashDotDot
-      ExplicitLeft = 0
-      ExplicitTop = 6
-      ExplicitWidth = 684
-      ExplicitHeight = 26
+      ExplicitTop = 4
+      ExplicitHeight = 167
     end
     object Label1: TLabel
       AlignWithMargins = True
@@ -134,56 +62,155 @@ object frmSelecionarLogradouro: TfrmSelecionarLogradouro
       ExplicitHeight = 13
     end
   end
-  object cdsBuscaCEPLogradouros: TClientDataSet
-    Aggregates = <>
-    Params = <>
-    Left = 227
+  object dbgCEPLogradouros: TDBGrid
+    Left = 0
+    Top = 0
+    Width = 694
+    Height = 145
+    Align = alTop
+    DataSource = dsLogradouros
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -11
+    Font.Name = 'Tahoma'
+    Font.Style = []
+    Options = [dgTitles, dgIndicator, dgColumnResize, dgColLines, dgRowLines, dgTabs, dgRowSelect, dgConfirmDelete, dgCancelOnExit, dgTitleClick, dgTitleHotTrack]
+    ParentFont = False
+    TabOrder = 1
+    TitleFont.Charset = DEFAULT_CHARSET
+    TitleFont.Color = clWindowText
+    TitleFont.Height = -11
+    TitleFont.Name = 'Tahoma'
+    TitleFont.Style = [fsBold]
+    OnDblClick = dbgCEPLogradourosDblClick
+    Columns = <
+      item
+        Expanded = False
+        FieldName = 'LOGRADOURO'
+        Width = 150
+        Visible = True
+      end
+      item
+        Expanded = False
+        FieldName = 'COMPLEMENTO'
+        Width = 100
+        Visible = True
+      end
+      item
+        Expanded = False
+        FieldName = 'BAIRRO'
+        Width = 100
+        Visible = True
+      end
+      item
+        Expanded = False
+        FieldName = 'LOCALIDADE'
+        Width = 100
+        Visible = True
+      end
+      item
+        Expanded = False
+        FieldName = 'LOCALIDADE_IBGE'
+        Width = 110
+        Visible = True
+      end
+      item
+        Expanded = False
+        FieldName = 'ESTADO'
+        Width = 110
+        Visible = True
+      end
+      item
+        Expanded = False
+        FieldName = 'ESTADO_IBGE'
+        Visible = True
+      end
+      item
+        Expanded = False
+        FieldName = 'REGIAO'
+        Width = 100
+        Visible = True
+      end
+      item
+        Expanded = False
+        FieldName = 'REGIAO_IBGE'
+        Visible = True
+      end
+      item
+        Expanded = False
+        FieldName = 'CEP'
+        Width = 60
+        Visible = True
+      end>
+  end
+  object dsLogradouros: TDataSource
+    AutoEdit = False
+    DataSet = memLogradouros
+    Left = 291
     Top = 68
-    object cdsBuscaCEPLogradourosLOGRADOURO: TStringField
+  end
+  object memLogradouros: TFDMemTable
+    FieldDefs = <>
+    IndexDefs = <>
+    FetchOptions.AssignedValues = [evMode]
+    FetchOptions.Mode = fmAll
+    ResourceOptions.AssignedValues = [rvSilentMode]
+    ResourceOptions.SilentMode = True
+    UpdateOptions.AssignedValues = [uvCheckRequired, uvAutoCommitUpdates]
+    UpdateOptions.CheckRequired = False
+    UpdateOptions.AutoCommitUpdates = True
+    StoreDefs = True
+    Left = 232
+    Top = 69
+    object memLogradourosLOGRADOURO: TStringField
       DisplayLabel = 'Logradouro'
       FieldName = 'LOGRADOURO'
       Size = 200
     end
-    object cdsBuscaCEPLogradourosCOMPLEMENTO: TStringField
+    object memLogradourosCOMPLEMENTO: TStringField
       DisplayLabel = 'Complemento'
       FieldName = 'COMPLEMENTO'
       Size = 150
     end
-    object cdsBuscaCEPLogradourosBAIRRO: TStringField
+    object memLogradourosBAIRRO: TStringField
       DisplayLabel = 'Bairro'
       FieldName = 'BAIRRO'
       Size = 100
     end
-    object cdsBuscaCEPLogradourosLOCALIDADE: TStringField
+    object memLogradourosLOCALIDADE: TStringField
       DisplayLabel = 'Localidade'
       FieldName = 'LOCALIDADE'
       Size = 100
     end
-    object cdsBuscaCEPLogradourosLOCALIDADE_IBGE: TIntegerField
+    object memLogradourosLOCALIDADE_IBGE: TIntegerField
       DisplayLabel = 'Localidade IBGE'
       FieldName = 'LOCALIDADE_IBGE'
     end
-    object cdsBuscaCEPLogradourosESTADO: TStringField
+    object memLogradourosESTADO: TStringField
       DisplayLabel = 'Estado'
       FieldName = 'ESTADO'
       Size = 100
     end
-    object cdsBuscaCEPLogradourosESTADO_IBGE: TIntegerField
+    object memLogradourosESTADO_IBGE: TIntegerField
       DisplayLabel = 'Estado IBGE'
       FieldName = 'ESTADO_IBGE'
     end
-    object cdsBuscaCEPLogradourosCEP: TIntegerField
-      FieldName = 'CEP'
+    object memLogradourosREGIAO: TStringField
+      DisplayLabel = 'Regi'#227'o'
+      FieldName = 'REGIAO'
+      Size = 50
     end
-    object cdsBuscaCEPLogradourosJSON: TMemoField
+    object memLogradourosREGIAO_IBGE: TIntegerField
+      DisplayLabel = 'Regi'#227'o IBGE'
+      FieldName = 'REGIAO_IBGE'
+    end
+    object memLogradourosCEP: TStringField
+      FieldName = 'CEP'
+      Size = 10
+    end
+    object memLogradourosJSON: TMemoField
       FieldName = 'JSON'
       BlobType = ftMemo
     end
-  end
-  object dsBuscaCEPLogradouros: TDataSource
-    AutoEdit = False
-    DataSet = cdsBuscaCEPLogradouros
-    Left = 291
-    Top = 68
   end
 end
