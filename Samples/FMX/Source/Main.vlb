@@ -1,26 +1,17 @@
 ﻿[lblHeader]
 Coordinates=508,10,61,51
 
-[GroupBox3]
-Coordinates=79,298,70,51
-
 [memLogradourosCEP]
 Coordinates=368,232,123,33
 
 [memLogradourosLOCALIDADE_IBGE]
 Coordinates=547,1,200,33
 
-[Label2]
-Coordinates=640,80,46,51
-
 [Label1]
 Coordinates=733,10,46,51
 
 [memLogradourosLOGRADOURO]
 Coordinates=500,155,177,33
-
-[edtBuscaCEP]
-Coordinates=530,80,81,51
 
 [memLogradourosCOMPLEMENTO]
 Coordinates=818,1,183,33
@@ -46,22 +37,12 @@ Coordinates=465,298,62,33
 [memLogradourosESTADO]
 Coordinates=818,221,144,33
 
-[Line1]
-Coordinates=333,298,41,33
-
 [memLogradouros]
 Coordinates=20,10,101,33
 Visible=False
 
-[GroupBox1]
-Coordinates=419,10,70,51
-
 [memLogradourosBAIRRO]
 Coordinates=818,276,142,33
-
-[GroupBox2]
-Coordinates=168,298,70,51
-Visible=True
 
 []
 Coordinates=10,298,53,51
@@ -79,4 +60,23 @@ Coordinates=140,80,82,33
 
 [cbxProviders]
 Coordinates=420,80,84,123
+
+[gbxProviders]
+Coordinates=419,10,70,51
+
+[gbxCEP]
+Coordinates=168,298,70,51
+Visible=True
+
+[gbxResultadoJSON]
+Coordinates=79,298,70,51
+
+[lblCEP]
+Coordinates=640,80,46,51
+
+[linCEP]
+Coordinates=333,298,41,33
+
+[edtFiltroCEP]
+Coordinates=530,80,81,51
 

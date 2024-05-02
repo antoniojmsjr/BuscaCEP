@@ -50,7 +50,7 @@ object frmMain: TfrmMain
       ExplicitHeight = 19
     end
   end
-  object GroupBox1: TGroupBox
+  object gbxEndereco: TGroupBox
     Left = 0
     Top = 96
     Width = 684
@@ -121,8 +121,8 @@ object frmMain: TfrmMain
       Font.Style = [fsBold]
       ParentFont = False
     end
-    object edtBuscaCEP: TMaskEdit
-      Left = 45
+    object edtFiltroCEP: TMaskEdit
+      Left = 55
       Top = 27
       Width = 100
       Height = 21
@@ -231,7 +231,7 @@ object frmMain: TfrmMain
       TabOrder = 10
       OnClick = btnConsultarLogradouroClick
     end
-    object edtBuscaLogradouro: TEdit
+    object edtFiltroLogradouro: TEdit
       Left = 13
       Top = 84
       Width = 200
@@ -239,7 +239,7 @@ object frmMain: TfrmMain
       TabOrder = 11
       Text = 'Avenida Pl'#237'nio Brasil Milano'
     end
-    object edtBuscaLocalidade: TEdit
+    object edtFiltroLocalidade: TEdit
       Left = 237
       Top = 84
       Width = 150
@@ -247,7 +247,7 @@ object frmMain: TfrmMain
       TabOrder = 12
       Text = 'Porto Alegre'
     end
-    object edtBuscaUF: TEdit
+    object edtFiltroUF: TEdit
       Left = 410
       Top = 84
       Width = 50
@@ -256,7 +256,7 @@ object frmMain: TfrmMain
       Text = 'RS'
     end
   end
-  object GroupBox3: TGroupBox
+  object gbxResultadoJSON: TGroupBox
     Left = 0
     Top = 421
     Width = 684
@@ -276,7 +276,7 @@ object frmMain: TfrmMain
       TabOrder = 0
     end
   end
-  object GroupBox2: TGroupBox
+  object gbxIdentificacaoAPI: TGroupBox
     Left = 0
     Top = 41
     Width = 684

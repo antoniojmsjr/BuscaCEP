@@ -53,7 +53,7 @@ object frmMain: TfrmMain
       ExplicitHeight = 19
     end
   end
-  object gbxBuscaCEP: TGroupBox
+  object gbxCEP: TGroupBox
     AlignWithMargins = True
     Left = 3
     Top = 94
@@ -65,7 +65,7 @@ object frmMain: TfrmMain
     DesignSize = (
       678
       195)
-    object Label1: TLabel
+    object lblCEP: TLabel
       Left = 13
       Top = 30
       Width = 20
@@ -78,7 +78,7 @@ object frmMain: TfrmMain
       Font.Style = [fsBold]
       ParentFont = False
     end
-    object Bevel1: TBevel
+    object bvlCEP: TBevel
       Left = 5
       Top = 55
       Width = 670
@@ -86,7 +86,7 @@ object frmMain: TfrmMain
       Anchors = [akTop, akRight]
       Shape = bsTopLine
     end
-    object edtBuscaCEP: TMaskEdit
+    object edtFiltroCEP: TMaskEdit
       Left = 45
       Top = 27
       Width = 100
@@ -97,7 +97,7 @@ object frmMain: TfrmMain
       Text = '90520003'
       TextHint = 'Informe o CEP...'
     end
-    object btnBuscaCEPConsultarCEP: TButton
+    object btnConsultarCEP: TButton
       Left = 570
       Top = 25
       Width = 100
@@ -105,14 +105,14 @@ object frmMain: TfrmMain
       Anchors = [akTop, akRight]
       Caption = 'Consultar'
       TabOrder = 1
-      OnClick = btnBuscaCEPConsultarCEPClick
+      OnClick = btnConsultarCEPClick
     end
-    object dbgBuscaCEP: TDBGrid
+    object dbgCEPLogradouros: TDBGrid
       Left = 13
       Top = 65
       Width = 657
       Height = 120
-      DataSource = dsBuscaCEPLogradouros
+      DataSource = dsLogradouros
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clWindowText
       Font.Height = -11
@@ -187,7 +187,7 @@ object frmMain: TfrmMain
         end>
     end
   end
-  object GroupBox1: TGroupBox
+  object gbxLogradouro: TGroupBox
     AlignWithMargins = True
     Left = 3
     Top = 295
@@ -212,7 +212,7 @@ object frmMain: TfrmMain
       Font.Style = [fsBold]
       ParentFont = False
     end
-    object Bevel2: TBevel
+    object bvlLogradouro: TBevel
       Left = 5
       Top = 75
       Width = 670
@@ -246,17 +246,17 @@ object frmMain: TfrmMain
       Font.Style = [fsBold]
       ParentFont = False
     end
-    object btnBuscaCEPConsultarLogradouro: TButton
-      Left = 570
+    object btnConsultarLogradouro: TButton
+      Left = 575
       Top = 42
       Width = 100
       Height = 25
       Anchors = [akTop, akRight]
       Caption = 'Consultar'
       TabOrder = 3
-      OnClick = btnBuscaCEPConsultarLogradouroClick
+      OnClick = btnConsultarLogradouroClick
     end
-    object edtBuscaCEPLogradouro: TEdit
+    object edtFiltroLogradouro: TEdit
       Left = 13
       Top = 44
       Width = 200
@@ -264,7 +264,7 @@ object frmMain: TfrmMain
       TabOrder = 0
       Text = 'Avenida Pl'#237'nio Brasil Milano'
     end
-    object edtBuscaCEPLocalidade: TEdit
+    object edtFiltroLocalidade: TEdit
       Left = 237
       Top = 44
       Width = 150
@@ -272,7 +272,7 @@ object frmMain: TfrmMain
       TabOrder = 1
       Text = 'Porto Alegre'
     end
-    object edtBuscaCEPUF: TEdit
+    object edtFiltroUF: TEdit
       Left = 410
       Top = 44
       Width = 50
@@ -280,12 +280,12 @@ object frmMain: TfrmMain
       TabOrder = 2
       Text = 'RS'
     end
-    object dbgBuscaCEPLogradouro: TDBGrid
+    object dbgLogradouros: TDBGrid
       Left = 13
       Top = 85
       Width = 657
       Height = 150
-      DataSource = dsBuscaCEPLogradouros
+      DataSource = dsLogradouros
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clWindowText
       Font.Height = -11
@@ -360,7 +360,7 @@ object frmMain: TfrmMain
         end>
     end
   end
-  object GroupBox2: TGroupBox
+  object gbxProviders: TGroupBox
     Left = 0
     Top = 41
     Width = 684
@@ -392,7 +392,7 @@ object frmMain: TfrmMain
       TextHint = 'Selecione um provedor...'
     end
   end
-  object GroupBox3: TGroupBox
+  object gbxResultadoJSON: TGroupBox
     Left = 0
     Top = 543
     Width = 684
@@ -412,62 +412,67 @@ object frmMain: TfrmMain
       TabOrder = 0
     end
   end
-  object cdsBuscaCEPLogradouros: TClientDataSet
-    Aggregates = <>
-    Params = <>
-    Left = 227
-    Top = 68
-    object cdsBuscaCEPLogradourosLOGRADOURO: TStringField
+  object memLogradouros: TFDMemTable
+    FetchOptions.AssignedValues = [evMode]
+    FetchOptions.Mode = fmAll
+    ResourceOptions.AssignedValues = [rvSilentMode]
+    ResourceOptions.SilentMode = True
+    UpdateOptions.AssignedValues = [uvCheckRequired, uvAutoCommitUpdates]
+    UpdateOptions.CheckRequired = False
+    UpdateOptions.AutoCommitUpdates = True
+    Left = 480
+    Top = 5
+    object memLogradourosLOGRADOURO: TStringField
       DisplayLabel = 'Logradouro'
       FieldName = 'LOGRADOURO'
       Size = 200
     end
-    object cdsBuscaCEPLogradourosCOMPLEMENTO: TStringField
+    object memLogradourosCOMPLEMENTO: TStringField
       DisplayLabel = 'Complemento'
       FieldName = 'COMPLEMENTO'
       Size = 150
     end
-    object cdsBuscaCEPLogradourosBAIRRO: TStringField
+    object memLogradourosBAIRRO: TStringField
       DisplayLabel = 'Bairro'
       FieldName = 'BAIRRO'
       Size = 100
     end
-    object cdsBuscaCEPLogradourosLOCALIDADE: TStringField
+    object memLogradourosLOCALIDADE: TStringField
       DisplayLabel = 'Localidade'
       FieldName = 'LOCALIDADE'
       Size = 100
     end
-    object cdsBuscaCEPLogradourosLOCALIDADE_IBGE: TIntegerField
+    object memLogradourosLOCALIDADE_IBGE: TIntegerField
       DisplayLabel = 'Localidade IBGE'
       FieldName = 'LOCALIDADE_IBGE'
     end
-    object cdsBuscaCEPLogradourosESTADO: TStringField
+    object memLogradourosESTADO: TStringField
       DisplayLabel = 'Estado'
       FieldName = 'ESTADO'
       Size = 100
     end
-    object cdsBuscaCEPLogradourosESTADO_IBGE: TIntegerField
+    object memLogradourosESTADO_IBGE: TIntegerField
       DisplayLabel = 'Estado IBGE'
       FieldName = 'ESTADO_IBGE'
     end
-    object cdsBuscaCEPLogradourosREGIAO: TStringField
+    object memLogradourosREGIAO: TStringField
       DisplayLabel = 'Regi'#227'o'
       FieldName = 'REGIAO'
       Size = 50
     end
-    object cdsBuscaCEPLogradourosREGIAO_IBGE: TIntegerField
+    object memLogradourosREGIAO_IBGE: TIntegerField
       DisplayLabel = 'Regi'#227'o IBGE'
       FieldName = 'REGIAO_IBGE'
     end
-    object cdsBuscaCEPLogradourosCEP: TStringField
+    object memLogradourosCEP: TStringField
       FieldName = 'CEP'
       Size = 10
     end
   end
-  object dsBuscaCEPLogradouros: TDataSource
+  object dsLogradouros: TDataSource
     AutoEdit = False
-    DataSet = cdsBuscaCEPLogradouros
-    Left = 291
-    Top = 68
+    DataSet = memLogradouros
+    Left = 531
+    Top = 4
   end
 end

@@ -11,9 +11,9 @@ type
   TfrmMain = class(TForm)
     pnlHeader: TPanel;
     lblHeader: TLabel;
-    GroupBox1: TGroupBox;
+    gbxEndereco: TGroupBox;
     Label1: TLabel;
-    edtBuscaCEP: TMaskEdit;
+    edtFiltroCEP: TMaskEdit;
     btnConsultarCEP: TButton;
     Bevel1: TBevel;
     edtLogradouro: TLabeledEdit;
@@ -23,12 +23,12 @@ type
     edtLocalidade: TLabeledEdit;
     edtLocalidadeIBGE: TLabeledEdit;
     edtEstado: TLabeledEdit;
-    GroupBox3: TGroupBox;
+    gbxResultadoJSON: TGroupBox;
     mmoResultadoJSON: TMemo;
     edtEstadoIBGE: TLabeledEdit;
     NetHTTPClient: TNetHTTPClient;
     NetHTTPRequest: TNetHTTPRequest;
-    GroupBox2: TGroupBox;
+    gbxIdentificacaoAPI: TGroupBox;
     Label2: TLabel;
     edtAPIHost: TEdit;
     Label3: TLabel;
@@ -37,9 +37,9 @@ type
     Label5: TLabel;
     Label6: TLabel;
     btnConsultarLogradouro: TButton;
-    edtBuscaLogradouro: TEdit;
-    edtBuscaLocalidade: TEdit;
-    edtBuscaUF: TEdit;
+    edtFiltroLogradouro: TEdit;
+    edtFiltroLocalidade: TEdit;
+    edtFiltroUF: TEdit;
     procedure FormCreate(Sender: TObject);
     procedure btnConsultarCEPClick(Sender: TObject);
     procedure btnConsultarLogradouroClick(Sender: TObject);
@@ -84,7 +84,7 @@ var
   lLogradouroAPI: TLogradouroAPI;
 begin
   // CONSULTA NO SERVIDOR DE APLICAÇÃO - BUSCACEP API
-  lJSONLogradouros := ConsultarCEP(edtBuscaCEP.Text);
+  lJSONLogradouros := ConsultarCEP(edtFiltroCEP.Text);
 
   if (lJSONLogradouros =  EmptyStr) then
     Exit;
@@ -127,7 +127,7 @@ var
   lLogradouroAPI: TLogradouroAPI;
 begin
   // CONSULTA NO SERVIDOR DE APLICAÇÃO - BUSCACEP API
-  lJSONLogradouros := ConsultarLogradouro(edtBuscaUF.Text, edtBuscaLocalidade.Text, edtBuscaLogradouro.Text);
+  lJSONLogradouros := ConsultarLogradouro(edtFiltroUF.Text, edtFiltroLocalidade.Text, edtFiltroLogradouro.Text);
 
   if (lJSONLogradouros =  EmptyStr) then
     Exit;

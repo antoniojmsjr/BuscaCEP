@@ -5,50 +5,51 @@ interface
 uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes,
   Vcl.Graphics, Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls, Vcl.ExtCtrls,
-  Vcl.Mask, Data.DB, Datasnap.DBClient, Vcl.Grids, Vcl.DBGrids,
-  System.Net.URLClient, System.Net.HttpClient, System.Net.HttpClientComponent;
+  Vcl.Mask, Data.DB, FireDAC.Stan.Intf, FireDAC.Stan.Option, FireDAC.Stan.Param,
+  FireDAC.Stan.Error, FireDAC.DatS, FireDAC.Phys.Intf, FireDAC.DApt.Intf,
+  FireDAC.Comp.DataSet, FireDAC.Comp.Client, Vcl.Grids, Vcl.DBGrids;
 
 type
   TfrmMain = class(TForm)
     pnlHeader: TPanel;
     lblHeader: TLabel;
-    gbxBuscaCEP: TGroupBox;
-    Label1: TLabel;
-    Bevel1: TBevel;
-    edtBuscaCEP: TMaskEdit;
-    btnBuscaCEPConsultarCEP: TButton;
-    dbgBuscaCEP: TDBGrid;
-    cdsBuscaCEPLogradouros: TClientDataSet;
-    dsBuscaCEPLogradouros: TDataSource;
-    cdsBuscaCEPLogradourosLOGRADOURO: TStringField;
-    cdsBuscaCEPLogradourosCOMPLEMENTO: TStringField;
-    cdsBuscaCEPLogradourosBAIRRO: TStringField;
-    cdsBuscaCEPLogradourosLOCALIDADE: TStringField;
-    cdsBuscaCEPLogradourosLOCALIDADE_IBGE: TIntegerField;
-    cdsBuscaCEPLogradourosESTADO: TStringField;
-    cdsBuscaCEPLogradourosESTADO_IBGE: TIntegerField;
-    cdsBuscaCEPLogradourosREGIAO: TStringField;
-    cdsBuscaCEPLogradourosREGIAO_IBGE: TIntegerField;
-    cdsBuscaCEPLogradourosCEP: TStringField;
-    GroupBox1: TGroupBox;
+    gbxCEP: TGroupBox;
+    lblCEP: TLabel;
+    bvlCEP: TBevel;
+    edtFiltroCEP: TMaskEdit;
+    btnConsultarCEP: TButton;
+    dbgCEPLogradouros: TDBGrid;
+    dsLogradouros: TDataSource;
+    memLogradourosLOGRADOURO: TStringField;
+    memLogradourosCOMPLEMENTO: TStringField;
+    memLogradourosBAIRRO: TStringField;
+    memLogradourosLOCALIDADE: TStringField;
+    memLogradourosLOCALIDADE_IBGE: TIntegerField;
+    memLogradourosESTADO: TStringField;
+    memLogradourosESTADO_IBGE: TIntegerField;
+    memLogradourosREGIAO: TStringField;
+    memLogradourosREGIAO_IBGE: TIntegerField;
+    memLogradourosCEP: TStringField;
+    gbxLogradouro: TGroupBox;
     Label2: TLabel;
-    Bevel2: TBevel;
-    btnBuscaCEPConsultarLogradouro: TButton;
-    GroupBox2: TGroupBox;
-    edtBuscaCEPLogradouro: TEdit;
+    bvlLogradouro: TBevel;
+    btnConsultarLogradouro: TButton;
+    gbxProviders: TGroupBox;
+    edtFiltroLogradouro: TEdit;
     Label3: TLabel;
-    edtBuscaCEPLocalidade: TEdit;
+    edtFiltroLocalidade: TEdit;
     Label4: TLabel;
-    edtBuscaCEPUF: TEdit;
+    edtFiltroUF: TEdit;
     Label5: TLabel;
     cbxProviders: TComboBox;
-    GroupBox3: TGroupBox;
+    gbxResultadoJSON: TGroupBox;
     mmoResultadoJSON: TMemo;
-    dbgBuscaCEPLogradouro: TDBGrid;
+    dbgLogradouros: TDBGrid;
+    memLogradouros: TFDMemTable;
     procedure FormCreate(Sender: TObject);
     procedure FormResize(Sender: TObject);
-    procedure btnBuscaCEPConsultarCEPClick(Sender: TObject);
-    procedure btnBuscaCEPConsultarLogradouroClick(Sender: TObject);
+    procedure btnConsultarCEPClick(Sender: TObject);
+    procedure btnConsultarLogradouroClick(Sender: TObject);
   private
     { Private declarations }
     function GetBuscaCEPJSON(const pJSON: string): string;
@@ -82,7 +83,7 @@ begin
     if (lProvider <> TBuscaCEPProvidersKind.UNKNOWN) then
       cbxProviders.Items.AddObject(lProvider.AsString, TObject(lProvider));
 
-  cdsBuscaCEPLogradouros.CreateDataSet;
+  memLogradouros.CreateDataSet;
 end;
 
 procedure TfrmMain.FormResize(Sender: TObject);
@@ -106,7 +107,7 @@ begin
   end;
 end;
 
-procedure TfrmMain.btnBuscaCEPConsultarCEPClick(Sender: TObject);
+procedure TfrmMain.btnConsultarCEPClick(Sender: TObject);
 var
   lBuscaCEPResponse: IBuscaCEPResponse;
   lBuscaCEPLogradouro: TBuscaCEPLogradouro;
@@ -124,16 +125,17 @@ begin
 
   lBuscaCEPProvider := TBuscaCEPProvidersKind(cbxProviders.Items.Objects[cbxProviders.ItemIndex]);
 
-  cdsBuscaCEPLogradouros.Close;
-  dbgBuscaCEP.DataSource := dsBuscaCEPLogradouros;
-  dbgBuscaCEPLogradouro.DataSource := nil;
+  memLogradouros.Close;
+  memLogradouros.Open;
+  dbgCEPLogradouros.DataSource := dsLogradouros;
+  dbgLogradouros.DataSource := nil;
   mmoResultadoJSON.Clear;
 
   try
     lBuscaCEPResponse := TBuscaCEP.New
       .Providers[lBuscaCEPProvider]
         .Filtro
-          .SetCEP(edtBuscaCEP.Text)
+          .SetCEP(edtFiltroCEP.Text)
         .Request
           .SetTimeout(1000)
           .Execute;
@@ -159,28 +161,26 @@ begin
     end;
   end;
 
-  cdsBuscaCEPLogradouros.Close;
-  cdsBuscaCEPLogradouros.CreateDataSet;
   for lBuscaCEPLogradouro in lBuscaCEPResponse.Logradouros do
   begin
-    cdsBuscaCEPLogradouros.Append;
-    cdsBuscaCEPLogradourosLOGRADOURO.AsString := lBuscaCEPLogradouro.Logradouro;
-    cdsBuscaCEPLogradourosCOMPLEMENTO.AsString := lBuscaCEPLogradouro.Complemento;
-    cdsBuscaCEPLogradourosBAIRRO.AsString := lBuscaCEPLogradouro.Bairro;
-    cdsBuscaCEPLogradourosLOCALIDADE.AsString := lBuscaCEPLogradouro.Localidade.Nome;
-    cdsBuscaCEPLogradourosLOCALIDADE_IBGE.AsInteger := lBuscaCEPLogradouro.Localidade.IBGE;
-    cdsBuscaCEPLogradourosESTADO.AsString := lBuscaCEPLogradouro.Localidade.Estado.Nome;
-    cdsBuscaCEPLogradourosESTADO_IBGE.AsInteger := lBuscaCEPLogradouro.Localidade.Estado.IBGE;
-    cdsBuscaCEPLogradourosREGIAO.AsString := lBuscaCEPLogradouro.Localidade.Estado.Regiao.Nome;
-    cdsBuscaCEPLogradourosREGIAO_IBGE.AsInteger := lBuscaCEPLogradouro.Localidade.Estado.Regiao.IBGE;
-    cdsBuscaCEPLogradourosCEP.AsString := lBuscaCEPLogradouro.CEP;
-    cdsBuscaCEPLogradouros.Post;
+    memLogradouros.Append;
+    memLogradourosLOGRADOURO.AsString := lBuscaCEPLogradouro.Logradouro;
+    memLogradourosCOMPLEMENTO.AsString := lBuscaCEPLogradouro.Complemento;
+    memLogradourosBAIRRO.AsString := lBuscaCEPLogradouro.Bairro;
+    memLogradourosLOCALIDADE.AsString := lBuscaCEPLogradouro.Localidade.Nome;
+    memLogradourosLOCALIDADE_IBGE.AsInteger := lBuscaCEPLogradouro.Localidade.IBGE;
+    memLogradourosESTADO.AsString := lBuscaCEPLogradouro.Localidade.Estado.Nome;
+    memLogradourosESTADO_IBGE.AsInteger := lBuscaCEPLogradouro.Localidade.Estado.IBGE;
+    memLogradourosREGIAO.AsString := lBuscaCEPLogradouro.Localidade.Estado.Regiao.Nome;
+    memLogradourosREGIAO_IBGE.AsInteger := lBuscaCEPLogradouro.Localidade.Estado.Regiao.IBGE;
+    memLogradourosCEP.AsString := lBuscaCEPLogradouro.CEP;
+    memLogradouros.Post;
   end;
 
   mmoResultadoJSON.Text := GetBuscaCEPJSON(lBuscaCEPResponse.ToJSONString);
 end;
 
-procedure TfrmMain.btnBuscaCEPConsultarLogradouroClick(Sender: TObject);
+procedure TfrmMain.btnConsultarLogradouroClick(Sender: TObject);
 var
   lBuscaCEPResponse: IBuscaCEPResponse;
   lBuscaCEPLogradouro: TBuscaCEPLogradouro;
@@ -197,18 +197,19 @@ begin
 
   lBuscaCEPProvider := TBuscaCEPProvidersKind(cbxProviders.Items.Objects[cbxProviders.ItemIndex]);
 
-  cdsBuscaCEPLogradouros.Close;
-  dbgBuscaCEP.DataSource := nil;
-  dbgBuscaCEPLogradouro.DataSource := dsBuscaCEPLogradouros;
+  memLogradouros.Close;
+  memLogradouros.Open;
+  dbgCEPLogradouros.DataSource := nil;
+  dbgLogradouros.DataSource := dsLogradouros;
   mmoResultadoJSON.Clear;
 
   try
     lBuscaCEPResponse := TBuscaCEP.New
       .Providers[lBuscaCEPProvider]
         .Filtro
-          .SetLogradouro(edtBuscaCEPLogradouro.Text)
-          .SetLocalidade(edtBuscaCEPLocalidade.Text)
-          .SetUF(edtBuscaCEPUF.Text)
+          .SetLogradouro(edtFiltroLogradouro.Text)
+          .SetLocalidade(edtFiltroLocalidade.Text)
+          .SetUF(edtFiltroUF.Text)
         .&End
         .Request
           .SetTimeout(1000)
@@ -235,22 +236,20 @@ begin
     end;
   end;
 
-  cdsBuscaCEPLogradouros.Close;
-  cdsBuscaCEPLogradouros.CreateDataSet;
   for lBuscaCEPLogradouro in lBuscaCEPResponse.Logradouros do
   begin
-    cdsBuscaCEPLogradouros.Append;
-    cdsBuscaCEPLogradourosLOGRADOURO.AsString := lBuscaCEPLogradouro.Logradouro;
-    cdsBuscaCEPLogradourosCOMPLEMENTO.AsString := lBuscaCEPLogradouro.Complemento;
-    cdsBuscaCEPLogradourosBAIRRO.AsString := lBuscaCEPLogradouro.Bairro;
-    cdsBuscaCEPLogradourosLOCALIDADE.AsString := lBuscaCEPLogradouro.Localidade.Nome;
-    cdsBuscaCEPLogradourosLOCALIDADE_IBGE.AsInteger := lBuscaCEPLogradouro.Localidade.IBGE;
-    cdsBuscaCEPLogradourosESTADO.AsString := lBuscaCEPLogradouro.Localidade.Estado.Nome;
-    cdsBuscaCEPLogradourosESTADO_IBGE.AsInteger := lBuscaCEPLogradouro.Localidade.Estado.IBGE;
-    cdsBuscaCEPLogradourosREGIAO.AsString := lBuscaCEPLogradouro.Localidade.Estado.Regiao.Nome;
-    cdsBuscaCEPLogradourosREGIAO_IBGE.AsInteger := lBuscaCEPLogradouro.Localidade.Estado.Regiao.IBGE;
-    cdsBuscaCEPLogradourosCEP.AsString := lBuscaCEPLogradouro.CEP;
-    cdsBuscaCEPLogradouros.Post;
+    memLogradouros.Append;
+    memLogradourosLOGRADOURO.AsString := lBuscaCEPLogradouro.Logradouro;
+    memLogradourosCOMPLEMENTO.AsString := lBuscaCEPLogradouro.Complemento;
+    memLogradourosBAIRRO.AsString := lBuscaCEPLogradouro.Bairro;
+    memLogradourosLOCALIDADE.AsString := lBuscaCEPLogradouro.Localidade.Nome;
+    memLogradourosLOCALIDADE_IBGE.AsInteger := lBuscaCEPLogradouro.Localidade.IBGE;
+    memLogradourosESTADO.AsString := lBuscaCEPLogradouro.Localidade.Estado.Nome;
+    memLogradourosESTADO_IBGE.AsInteger := lBuscaCEPLogradouro.Localidade.Estado.IBGE;
+    memLogradourosREGIAO.AsString := lBuscaCEPLogradouro.Localidade.Estado.Regiao.Nome;
+    memLogradourosREGIAO_IBGE.AsInteger := lBuscaCEPLogradouro.Localidade.Estado.Regiao.IBGE;
+    memLogradourosCEP.AsString := lBuscaCEPLogradouro.CEP;
+    memLogradouros.Post;
   end;
 
   mmoResultadoJSON.Text := GetBuscaCEPJSON(lBuscaCEPResponse.ToJSONString);

@@ -34,7 +34,7 @@ object frmMain: TfrmMain
       TabOrder = 0
     end
   end
-  object GroupBox1: TGroupBox
+  object gbxProviders: TGroupBox
     Align = Top
     Position.Y = 50.000000000000000000
     Size.Width = 700.000000000000000000
@@ -63,7 +63,7 @@ object frmMain: TfrmMain
       TabOrder = 1
     end
   end
-  object GroupBox2: TGroupBox
+  object gbxCEP: TGroupBox
     Align = Top
     Position.Y = 100.000000000000000000
     Size.Width = 700.000000000000000000
@@ -71,7 +71,7 @@ object frmMain: TfrmMain
     Size.PlatformDefault = False
     Text = ' Busca por CEP '
     TabOrder = 1
-    object Label2: TLabel
+    object lblCEP: TLabel
       AutoSize = True
       StyledSettings = [Family, Size, FontColor]
       Position.X = 25.000000000000000000
@@ -83,14 +83,14 @@ object frmMain: TfrmMain
       Text = 'CEP:'
       TabOrder = 0
     end
-    object edtBuscaCEP: TEdit
+    object edtFiltroCEP: TEdit
       Touch.InteractiveGestures = [LongTap, DoubleTap]
       TabOrder = 1
       MaxLength = 9
       Text = '90520-003'
       Position.X = 65.000000000000000000
       Position.Y = 25.000000000000000000
-      OnKeyDown = edtBuscaCEPKeyDown
+      OnKeyDown = edtFiltroCEPKeyDown
     end
     object TButton
       Anchors = [akTop, akRight]
@@ -103,7 +103,7 @@ object frmMain: TfrmMain
       Text = 'Consultar'
       OnClick = btnConsultarCEPClick
     end
-    object Line1: TLine
+    object linCEP: TLine
       Anchors = [akLeft, akTop, akRight]
       LineType = Top
       Position.X = 10.000000000000000000
@@ -129,7 +129,7 @@ object frmMain: TfrmMain
       Viewport.Height = 75.000000000000000000
     end
   end
-  object GroupBox3: TGroupBox
+  object gbxResultadoJSON: TGroupBox
     Align = Client
     Padding.Left = 5.000000000000000000
     Padding.Top = 20.000000000000000000

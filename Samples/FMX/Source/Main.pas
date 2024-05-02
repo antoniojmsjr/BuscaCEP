@@ -17,15 +17,15 @@ type
   TfrmMain = class(TForm)
     rctHeader: TRectangle;
     lblHeader: TLabel;
-    GroupBox1: TGroupBox;
+    gbxProviders: TGroupBox;
     Label1: TLabel;
     cbxProviders: TComboBox;
-    GroupBox2: TGroupBox;
-    Label2: TLabel;
-    edtBuscaCEP: TEdit;
-    Line1: TLine;
+    gbxCEP: TGroupBox;
+    lblCEP: TLabel;
+    edtFiltroCEP: TEdit;
+    linCEP: TLine;
     grdLogradouros: TGrid;
-    GroupBox3: TGroupBox;
+    gbxResultadoJSON: TGroupBox;
     mmoResultadoJSON: TMemo;
     memLogradouros: TFDMemTable;
     memLogradourosLOGRADOURO: TStringField;
@@ -41,7 +41,7 @@ type
     BindSourceDB1: TBindSourceDB;
     BindingsList1: TBindingsList;
     LinkGridToDataSourceBindSourceDB1: TLinkGridToDataSource;
-    procedure edtBuscaCEPKeyDown(Sender: TObject; var Key: Word; var KeyChar: Char;
+    procedure edtFiltroCEPKeyDown(Sender: TObject; var Key: Word; var KeyChar: Char;
       Shift: TShiftState);
     procedure btnConsultarCEPClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
@@ -73,13 +73,13 @@ begin
   memLogradouros.CreateDataSet;
 end;
 
-procedure TfrmMain.edtBuscaCEPKeyDown(Sender: TObject; var Key: Word;
+procedure TfrmMain.edtFiltroCEPKeyDown(Sender: TObject; var Key: Word;
   var KeyChar: Char; Shift: TShiftState);
 begin
   if not CharInSet(KeyChar, ['-', '0'..'9']) then
     KeyChar := #0;
 
-  if ((KeyChar = '-') AND (edtBuscaCEP.Text.IndexOf('-') > -1)) then
+  if ((KeyChar = '-') AND (edtFiltroCEP.Text.IndexOf('-') > -1)) then
     KeyChar := #0;
 end;
 
@@ -108,7 +108,7 @@ begin
     lBuscaCEPResponse := TBuscaCEP.New
       .Providers[lBuscaCEPProvider]
         .Filtro
-          .SetCEP(edtBuscaCEP.Text)
+          .SetCEP(edtFiltroCEP.Text)
         .Request
           .SetTimeout(1000)
           .Execute;
