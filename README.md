@@ -1,4 +1,4 @@
-![Maintained YES](https://img.shields.io/badge/Maintained%3F-yes-green.svg?style=flat-square&color=important)
+ŭ![Maintained YES](https://img.shields.io/badge/Maintained%3F-yes-green.svg?style=flat-square&color=important)
 ![Memory Leak Verified YES](https://img.shields.io/badge/Memory%20Leak%20Verified%3F-yes-green.svg?style=flat-square&color=important)
 ![Release](https://img.shields.io/github/v/release/antoniojmsjr/BuscaCEP?label=Latest%20release&style=flat-square&color=important)
 ![Stars](https://img.shields.io/github/stars/antoniojmsjr/BuscaCEP.svg?style=flat-square)
@@ -21,12 +21,12 @@ Implementado na linguagem Delphi, utiliza o conceito de [fluent interface](https
 
 #### Recursos:
 
-* Consulta Abrangente: BuscaCEP permite consultar tanto por CEP quanto por logradouro, oferecendo flexibilidade na obtenção das informações de endereço.
-* Consulta Detalhada: Com BuscaCEP as informações do endereço são completas, incluindo: *logradouro, complemento, bairro, CEP, localidade, estado e região*.
-* Código IBGE: Com BuscaCEP o código IBGE é fornecido de forma off-line através do arquivo IBGE.dat disponibilizado junto com a biblioteca.
-* Integração com Principais Players: Integrado com os principais serviços de consulta de CEP do Brasil: [Correios](https://buscacepinter.correios.com.br/app/endereco/index.php), [ViaCEP](https://viacep.com.br/), [BrasilAPI](https://brasilapi.com.br/), entre outros. 
+* Consulta Abrangente: BuscaCEP permite consultar tanto por *CEP* quanto por *logradouro*, flexibilizando a obtenção das informações de endereço.
+* Consulta Detalhada: Com BuscaCEP as informações do endereço são completas, incluindo: *logradouro, complemento, bairro, CEP, localidade, estado, região e código IBGE*.
+* Código IBGE: Com BuscaCEP o código IBGE é fornecido de forma *off-line* através do arquivo *IBGE.dat* disponibilizado junto com a biblioteca.
+* Integração com Principais Players: Integrado com os principais serviços de consulta de CEP do Brasil: *[Correios](https://buscacepinter.correios.com.br/app/endereco/index.php), [ViaCEP](https://viacep.com.br/), [BrasilAPI](https://brasilapi.com.br/)*, entre outros. 
 * Facilidade de Integração: Com uma interface amigável e documentação detalhada, a BuscaCEP é fácil de integrar em qualquer projeto.
-* Exemplos de uso da biblioteca: Repositório com diversos exemplos de uso da biblioteca, por exemplo, VCL, FMX e um servidor de aplicação em [(Horse)](https://github.com/HashLoad/horse) simulando uma API de endereços.
+* Exemplos de uso: Repositório com diversos exemplos de uso da biblioteca, por exemplo, VCL, FMX e um servidor de aplicação em [(Horse)](https://github.com/HashLoad/horse) simulando uma API de endereços.
 </br>
 
 ## ⚙️ Instalação Automatizada
