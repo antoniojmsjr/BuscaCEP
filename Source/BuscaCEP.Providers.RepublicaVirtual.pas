@@ -55,7 +55,8 @@ type
     procedure Parse; override;
   public
     { public declarations }
-    constructor Create(const pContent: string; const pProvider: string; const pCEP: string); reintroduce;
+    constructor Create(const pContent: string; const pProvider: string;
+                       const pRequestTime: Integer; const pCEP: string); reintroduce;
   end;
   {$ENDREGION}
 
@@ -63,6 +64,7 @@ type
   TBuscaCEPRequestRepublicaVirtual = class sealed(TBuscaCEPRequest)
   private
     { private declarations }
+    function GetMessageStatusCode403(const pContent: string): string;
     function GetResource(pBuscaCEPFiltro: IBuscaCEPFiltro): string;
   protected
     { protected declarations }
@@ -79,7 +81,8 @@ implementation
 
 uses
   System.JSON, System.SysUtils, System.StrUtils, System.Net.URLClient,
-  System.Classes, BuscaCEP.Types, BuscaCEP.Utils;
+  System.Classes, System.NetEncoding, System.RegularExpressions, BuscaCEP.Types,
+  BuscaCEP.Utils;
 
 {$REGION 'TBuscaCEPProviderRepublicaVirtual'}
 constructor TBuscaCEPProviderRepublicaVirtual.Create(pParent: IBuscaCEP);
@@ -97,10 +100,10 @@ end;
 
 {$REGION 'TBuscaCEPResponseRepublicaVirtual'}
 constructor TBuscaCEPResponseRepublicaVirtual.Create(const pContent: string;
-  const pProvider: string; const pCEP: string);
+  const pProvider: string; const pRequestTime: Integer; const pCEP: string);
 begin
-  inherited Create(pContent, pProvider);
-  FCEP := Trim(OnlyNumber(pCEP));
+  inherited Create(pContent, pProvider, pRequestTime);
+  FCEP := OnlyNumber(pCEP);
 end;
 
 procedure TBuscaCEPResponseRepublicaVirtual.Parse;
@@ -134,6 +137,7 @@ begin
 
     lBuscaCEPLogradouro.Logradouro := Trim(Trim(lAPITipoLogradouro) + ' ' + Trim(lAPILogradouro));
     lBuscaCEPLogradouro.Complemento := EmptyStr;
+    lBuscaCEPLogradouro.Unidade := EmptyStr;
     lBuscaCEPLogradouro.Bairro := Trim(lAPIBairro);
     lBuscaCEPLogradouro.CEP := FCEP; // API NÃO DEVOLVE O CEP NO JSON
 
@@ -170,7 +174,7 @@ begin
   lBuscaCEPExceptionKind := TBuscaCEPExceptionKind.EXCEPTION_UNKNOWN;
   lMessage := EmptyStr;
 
-  lContent := Trim(pIHTTPResponse.ContentAsString);
+  lContent := pIHTTPResponse.ContentAsString;
   try
     case pIHTTPResponse.StatusCode of
       200:
@@ -201,10 +205,16 @@ begin
           lJSONResponse.Free;
         end;
       end;
+      403:
+      begin
+        lBuscaCEPExceptionKind := TBuscaCEPExceptionKind.EXCEPTION_REQUEST_INVALID;
+        lContent := TNetEncoding.URL.Decode(lContent);
+        lMessage := GetMessageStatusCode403(lContent);
+      end;
     else
     begin
-      lBuscaCEPExceptionKind := TBuscaCEPExceptionKind.EXCEPTION_REQUEST_INVALID;
       lMessage := lContent;
+      lBuscaCEPExceptionKind := TBuscaCEPExceptionKind.EXCEPTION_REQUEST_INVALID;
     end;
     end;
   finally
@@ -252,6 +262,26 @@ begin
                              'Provedor não possui busca por logradouro.');
 end;
 
+function TBuscaCEPRequestRepublicaVirtual.GetMessageStatusCode403(
+  const pContent: string): string;
+var
+  lRegEx: TRegEx;
+  lMatch: TMatch;
+begin
+  Result := pContent;
+
+  if (Pos('logradouro=', pContent) = 0) then
+    Exit;
+
+  lRegEx := TRegEx.Create('&logradouro=([^;]+)');
+  lMatch := lRegEx.Match(pContent);
+
+  if not lMatch.Success then
+    Exit;
+
+  Result := Trim(lMatch.Groups[1].Value);
+end;
+
 function TBuscaCEPRequestRepublicaVirtual.GetResource(
   pBuscaCEPFiltro: IBuscaCEPFiltro): string;
 var
@@ -266,7 +296,7 @@ function TBuscaCEPRequestRepublicaVirtual.GetResponse(
   pIHTTPResponse: IHTTPResponse): IBuscaCEPResponse;
 begin
   Result := TBuscaCEPResponseRepublicaVirtual.Create(
-    pIHTTPResponse.ContentAsString, FProvider, FBuscaCEPProvider.Filtro.CEP);
+    pIHTTPResponse.ContentAsString, FProvider, FRequestTime, FBuscaCEPProvider.Filtro.CEP);
 end;
 
 function TBuscaCEPRequestRepublicaVirtual.InternalExecute: IHTTPResponse;

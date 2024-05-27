@@ -186,7 +186,6 @@ begin
     lJSONResponse.Free;
   end;
 end;
-
 {$ENDREGION}
 
 {$REGION 'TBuscaCEPRequestCorreios'}
@@ -208,7 +207,7 @@ begin
   lBuscaCEPExceptionKind := TBuscaCEPExceptionKind.EXCEPTION_UNKNOWN;
   lMessage := EmptyStr;
 
-  lContent := Trim(pIHTTPResponse.ContentAsString);
+  lContent := pIHTTPResponse.ContentAsString;
   try
     case pIHTTPResponse.StatusCode of
       200:
@@ -251,8 +250,8 @@ begin
       end;
     else
     begin
-      lBuscaCEPExceptionKind := TBuscaCEPExceptionKind.EXCEPTION_REQUEST_INVALID;
       lMessage := lContent;
+      lBuscaCEPExceptionKind := TBuscaCEPExceptionKind.EXCEPTION_REQUEST_INVALID;
     end;
     end;
   finally
@@ -310,10 +309,9 @@ begin
   end;
 end;
 
-function TBuscaCEPRequestCorreios.GetResponse(
-  pIHTTPResponse: IHTTPResponse): IBuscaCEPResponse;
+function TBuscaCEPRequestCorreios.GetResponse(pIHTTPResponse: IHTTPResponse): IBuscaCEPResponse;
 begin
-  Result := TBuscaCEPResponseCorreios.Create(pIHTTPResponse.ContentAsString, FProvider);
+  Result := TBuscaCEPResponseCorreios.Create(pIHTTPResponse.ContentAsString, FProvider, FRequestTime);
 end;
 
 function TBuscaCEPRequestCorreios.InternalExecute: IHTTPResponse;

@@ -27,7 +27,7 @@ unit BuscaCEP.Interfaces;
 interface
 
 uses
-  BuscaCEP.Types, System.SysUtils, REST.Json.Types, System.Generics.Collections;
+  System.SysUtils, REST.Json.Types, System.Generics.Collections, BuscaCEP.Types;
 
 type
 
@@ -115,12 +115,14 @@ type
     ['{59F068C8-54EE-4D45-BA74-47F375C0CB43}']
     function GetProvider: string;
     function GetDateTime: TDateTime;
+    function GetRequestTime: string;
     function GetTotal: Integer;
     function GetLogradouros: TObjectList<TBuscaCEPLogradouro>;
     function ToJSONString: string;
 
     property Provider: string read GetProvider;
     property DateTime: TDateTime read GetDateTime;
+    property RequestTime: string read GetRequestTime;
     property Total: Integer read GetTotal;
     property Logradouros: TObjectList<TBuscaCEPLogradouro> read GetLogradouros;
   end;

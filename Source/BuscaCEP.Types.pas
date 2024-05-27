@@ -43,7 +43,10 @@ type
                             CEPCerto,
                             BrasilAPI,
                             KingHost,
-                            Postmon);
+                            Postmon,
+                            OpenCEP,
+                            ApiCEP,
+                            BrasilAberto);
   {$SCOPEDENUMS OFF}
 
   {$ENDREGION}
@@ -328,6 +331,9 @@ begin
     TBuscaCEPProvidersKind.BrasilAPI:    Result := 'BrasilAPI';
     TBuscaCEPProvidersKind.KingHost:     Result := 'KingHost';
     TBuscaCEPProvidersKind.Postmon:      Result := 'Postmon';
+    TBuscaCEPProvidersKind.OpenCEP:      Result := 'OpenCEP';
+    TBuscaCEPProvidersKind.ApiCEP:       Result := 'ApiCEP';
+    TBuscaCEPProvidersKind.BrasilAberto: Result := 'BrasilAberto';
   end;
 end;
 
@@ -344,6 +350,9 @@ begin
     TBuscaCEPProvidersKind.BrasilAPI:    Result := '#BRASIL_API';
     TBuscaCEPProvidersKind.KingHost:     Result := '#KINGHOST';
     TBuscaCEPProvidersKind.Postmon:      Result := '#POSTMON';
+    TBuscaCEPProvidersKind.OpenCEP:      Result := '#OPEN_CEP';
+    TBuscaCEPProvidersKind.ApiCEP:       Result := '#API_CEP';
+    TBuscaCEPProvidersKind.BrasilAberto: Result := '#BRASIL_ABERTO';
   end;
 end;
 function TBuscaCEPProvidersKindHelper.BaseURL: string;
@@ -359,6 +368,9 @@ begin
     TBuscaCEPProvidersKind.BrasilAPI:    Result := 'https://brasilapi.com.br';
     TBuscaCEPProvidersKind.KingHost:     Result := 'https://webservice.kinghost.net';
     TBuscaCEPProvidersKind.Postmon:      Result := 'https://api.postmon.com.br';
+    TBuscaCEPProvidersKind.OpenCEP:      Result := 'https://opencep.com';
+    TBuscaCEPProvidersKind.ApiCEP:       Result := 'https://cdn.apicep.com';
+    TBuscaCEPProvidersKind.BrasilAberto: Result := 'https://api.brasilaberto.com';
   end;
 end;
 

@@ -15,10 +15,8 @@ type
     lblHeader: TLabel;
     gbxCEP: TGroupBox;
     lblCEP: TLabel;
-    bvlCEP: TBevel;
     edtFiltroCEP: TMaskEdit;
     btnConsultarCEP: TButton;
-    dbgCEPLogradouros: TDBGrid;
     dsLogradouros: TDataSource;
     memLogradourosLOGRADOURO: TStringField;
     memLogradourosCOMPLEMENTO: TStringField;
@@ -32,7 +30,6 @@ type
     memLogradourosCEP: TStringField;
     gbxLogradouro: TGroupBox;
     Label2: TLabel;
-    bvlLogradouro: TBevel;
     btnConsultarLogradouro: TButton;
     gbxProviders: TGroupBox;
     edtFiltroLogradouro: TEdit;
@@ -44,8 +41,11 @@ type
     cbxProviders: TComboBox;
     gbxResultadoJSON: TGroupBox;
     mmoResultadoJSON: TMemo;
-    dbgLogradouros: TDBGrid;
     memLogradouros: TFDMemTable;
+    Label1: TLabel;
+    edtAPIKey: TEdit;
+    GroupBox1: TGroupBox;
+    dbgLogradouros: TDBGrid;
     procedure FormCreate(Sender: TObject);
     procedure FormResize(Sender: TObject);
     procedure btnConsultarCEPClick(Sender: TObject);
@@ -127,13 +127,12 @@ begin
 
   memLogradouros.Close;
   memLogradouros.Open;
-  dbgCEPLogradouros.DataSource := dsLogradouros;
-  dbgLogradouros.DataSource := nil;
   mmoResultadoJSON.Clear;
 
   try
     lBuscaCEPResponse := TBuscaCEP.New
       .Providers[lBuscaCEPProvider]
+        .SetAPIKey(edtAPIKey.Text)
         .Filtro
           .SetCEP(edtFiltroCEP.Text)
         .Request
@@ -199,13 +198,12 @@ begin
 
   memLogradouros.Close;
   memLogradouros.Open;
-  dbgCEPLogradouros.DataSource := nil;
-  dbgLogradouros.DataSource := dsLogradouros;
   mmoResultadoJSON.Clear;
 
   try
     lBuscaCEPResponse := TBuscaCEP.New
       .Providers[lBuscaCEPProvider]
+        .SetAPIKey(edtAPIKey.Text)
         .Filtro
           .SetLogradouro(edtFiltroLogradouro.Text)
           .SetLocalidade(edtFiltroLocalidade.Text)

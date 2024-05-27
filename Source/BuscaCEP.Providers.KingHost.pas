@@ -55,7 +55,8 @@ type
     procedure Parse; override;
   public
     { public declarations }
-    constructor Create(const pContent: string; const pProvider: string; const pCEP: string); reintroduce;
+    constructor Create(const pContent: string; const pProvider: string;
+                       const pRequestTime: Integer; const pCEP: string); reintroduce;
   end;
   {$ENDREGION}
 
@@ -96,10 +97,10 @@ end;
 {$ENDREGION}
 
 {$REGION 'TBuscaCEPResponseKingHost'}
-constructor TBuscaCEPResponseKingHost.Create(const pContent, pProvider,
-  pCEP: string);
+constructor TBuscaCEPResponseKingHost.Create(const pContent: string;
+  const pProvider: string; const pRequestTime: Integer; const pCEP: string);
 begin
-  inherited Create(pContent, pProvider);
+  inherited Create(pContent, pProvider, pRequestTime);
   FCEP := Trim(OnlyNumber(pCEP));
 end;
 
@@ -134,6 +135,7 @@ begin
 
     lBuscaCEPLogradouro.Logradouro := Trim(Trim(lAPITipoLogradouro) + ' ' + Trim(lAPILogradouro));
     lBuscaCEPLogradouro.Complemento := EmptyStr;
+    lBuscaCEPLogradouro.Unidade := EmptyStr;
     lBuscaCEPLogradouro.Bairro := Trim(lAPIBairro);
     lBuscaCEPLogradouro.CEP := FCEP; // API NÃO DEVOLVE O CEP NO JSON
 
@@ -220,8 +222,8 @@ begin
       end;
     else
     begin
-      lBuscaCEPExceptionKind := TBuscaCEPExceptionKind.EXCEPTION_REQUEST_INVALID;
       lMessage := lContent;
+      lBuscaCEPExceptionKind := TBuscaCEPExceptionKind.EXCEPTION_REQUEST_INVALID;
     end;
     end;
   finally
@@ -294,7 +296,7 @@ function TBuscaCEPRequestKingHost.GetResponse(
   pIHTTPResponse: IHTTPResponse): IBuscaCEPResponse;
 begin
   Result := TBuscaCEPResponseKingHost.Create(
-    pIHTTPResponse.ContentAsString, FProvider, FBuscaCEPProvider.Filtro.CEP);
+    pIHTTPResponse.ContentAsString, FProvider, FRequestTime, FBuscaCEPProvider.Filtro.CEP);
 end;
 
 function TBuscaCEPRequestKingHost.InternalExecute: IHTTPResponse;

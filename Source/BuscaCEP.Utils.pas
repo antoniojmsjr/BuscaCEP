@@ -109,6 +109,7 @@ Type
   {$ENDREGION}
 
 function OnlyNumber(const pString: string): string;
+function FormatCEP(const pCEP: string): string;
 
 implementation
 
@@ -384,6 +385,12 @@ begin
   for I := Low(pString) to High(pString) do
     if CharIsNumber(pString[I]) then
       Result := (Result + pString[I]);
+  Result := Trim(Result);
+end;
+
+function FormatCEP(const pCEP: string): string;
+begin
+  Result := Copy(pCEP, 1, 5) + '-' + Copy(pCEP, 6, 3);
 end;
 
 function ReplaceCharacter(const pChar: Char): Char;

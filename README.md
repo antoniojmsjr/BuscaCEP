@@ -1,4 +1,4 @@
-ŭ![Maintained YES](https://img.shields.io/badge/Maintained%3F-yes-green.svg?style=flat-square&color=important)
+![Maintained YES](https://img.shields.io/badge/Maintained%3F-yes-green.svg?style=flat-square&color=important)
 ![Memory Leak Verified YES](https://img.shields.io/badge/Memory%20Leak%20Verified%3F-yes-green.svg?style=flat-square&color=important)
 ![Release](https://img.shields.io/github/v/release/antoniojmsjr/BuscaCEP?label=Latest%20release&style=flat-square&color=important)
 ![Stars](https://img.shields.io/github/stars/antoniojmsjr/BuscaCEP.svg?style=flat-square)

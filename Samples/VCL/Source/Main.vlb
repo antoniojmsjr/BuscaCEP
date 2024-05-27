@@ -61,12 +61,6 @@ Coordinates=86,71,141,33
 [btnConsultarCEP]
 Coordinates=411,312,151,51
 
-[dbgCEPLogradouros]
-Coordinates=124,373,85,33
-
-[dbgLogradouros]
-Coordinates=572,312,143,33
-
 [btnConsultarLogradouro]
 Coordinates=140,251,188,51
 
@@ -85,12 +79,6 @@ Coordinates=338,251,70,33
 [lblCEP]
 Coordinates=10,251,46,51
 
-[bvlCEP]
-Coordinates=10,373,47,33
-
-[bvlLogradouro]
-Coordinates=67,373,47,33
-
 [edtFiltroCEP]
 Coordinates=10,312,81,51
 
@@ -102,4 +90,7 @@ Coordinates=261,10,135,51
 
 [edtFiltroUF]
 Coordinates=406,10,95,51
+
+[]
+Coordinates=67,373,47,33
 

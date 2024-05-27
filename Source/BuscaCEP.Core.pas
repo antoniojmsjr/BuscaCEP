@@ -28,7 +28,8 @@ interface
 
 uses
   BuscaCEP.Interfaces, BuscaCEP.Types, REST.JSon.Types, System.Net.URLClient,
-  System.Net.HttpClient, System.Net.HttpClientComponent, System.Generics.Collections;
+  System.Net.HttpClient, System.Net.HttpClientComponent, System.Generics.Collections,
+  System.Diagnostics;
 
 type
 
@@ -99,8 +100,10 @@ type
     { private declarations }
     FProvider: string;
     FDateTime: TDateTime;
+    FRequestTime: string;
     function GetProvider: string;
     function GetDateTime: TDateTime;
+    function GetRequestTime: string;
     function GetTotal: Integer;
     function GetLogradouros: TObjectList<TBuscaCEPLogradouro>;
     function ToJSONString: string;
@@ -111,7 +114,7 @@ type
     procedure Parse; virtual; abstract;
   public
     { public declarations }
-    constructor Create(const pContent: string; const pProvider: string); virtual;
+    constructor Create(const pContent: string; const pProvider: string; const pRequestTime: Integer); virtual;
     destructor Destroy; override;
     procedure AfterConstruction; override;
   end;
@@ -138,6 +141,7 @@ type
     FBuscaCEP: IBuscaCEP;
     FBuscaCEPFiltro: IBuscaCEPFiltro;
     FProvider: string;
+    FRequestTime: Integer;
     FTimeout: Integer;
     FProxyHost: string;
     FProxyPort: Integer;
@@ -154,6 +158,9 @@ type
   TBuscaCEPRequest = class(TBuscaCEPRequestCustom)
   strict private
     { private declarations }
+    procedure GetStatusResponse(pHTTPResponse: IHTTPResponse;
+                                out poStatusCode: Integer;
+                                out poStatusText: string);
   protected
     { protected declarations }
     FRequestHeaders: TNetHeaders;
@@ -269,21 +276,21 @@ end;
 function TBuscaCEPFiltro.SetCEP(const pCEP: string): IBuscaCEPProviders;
 begin
   Result := FBuscaCEPProviders;
-  FCEP := pCEP;
+  FCEP := Trim(pCEP);
   FFiltroPorCEP := True;
 end;
 
 function TBuscaCEPFiltro.SetLocalidade(const pLocalidade: string): IBuscaCEPFiltro;
 begin
   Result := Self;
-  FCidade := pLocalidade;
+  FCidade := Trim(pLocalidade);
   FFiltroPorLogradouro := True;
 end;
 
 function TBuscaCEPFiltro.SetUF(const pUF: string): IBuscaCEPFiltro;
 begin
   Result := Self;
-  FUF := pUF;
+  FUF := Trim(pUF);
   FFiltroPorLogradouro := True;
 end;
 
@@ -291,7 +298,7 @@ function TBuscaCEPFiltro.SetIdentificador(
   const pIdentificador: string): IBuscaCEPFiltro;
 begin
   Result := Self;
-  FIdentificador := pIdentificador;
+  FIdentificador := Trim(pIdentificador);
   FFiltroPorLogradouro := True;
 end;
 
@@ -299,7 +306,7 @@ function TBuscaCEPFiltro.SetLogradouro(
   const pLogradouro: string): IBuscaCEPFiltro;
 begin
   Result := Self;
-  FLogradouro := pLogradouro;
+  FLogradouro := Trim(pLogradouro);
   FFiltroPorLogradouro := True;
 end;
 
@@ -320,7 +327,8 @@ begin
   FBuscaCEPProvider := pParent;
   FBuscaCEPFiltro := FBuscaCEPProvider.Filtro;
   FProvider := FBuscaCEPProvider.ID;
-  FTimeout := 10000; //10 sgs
+  FTimeout := 10000; //10 sg
+  FRequestTime := 0;
 end;
 
 function TBuscaCEPRequestCustom.GetProxyHost: string;
@@ -430,9 +438,9 @@ begin
   // BUSCA POR LOGRADOURO
   if (FBuscaCEPFiltro.FiltroPorLogradouro = True)then
   begin
-    if (Trim(FBuscaCEPFiltro.Logradouro) = EmptyStr)
-    or (Trim(FBuscaCEPFiltro.Localidade) = EmptyStr)
-    or (Trim(FBuscaCEPFiltro.UF) = EmptyStr) then
+    if (FBuscaCEPFiltro.Logradouro = EmptyStr)
+    or (FBuscaCEPFiltro.Localidade = EmptyStr)
+    or (FBuscaCEPFiltro.UF = EmptyStr) then
     begin
       raise EBuscaCEP.Create(TBuscaCEPExceptionKind.EXCEPTION_FILTRO_INVALID,
                              FProvider,
@@ -501,15 +509,7 @@ begin
   except
     on E: EBuscaCEP do
     begin
-      try
-        if Assigned(lIHTTPResponse) then
-        begin
-          lStatusCode := lIHTTPResponse.StatusCode;
-          lStatusText := lIHTTPResponse.StatusText;
-        end;
-      except
-      end;
-
+      GetStatusResponse(lIHTTPResponse, lStatusCode, lStatusText);
       raise EBuscaCEPRequest.Create(
         E.Kind,
         E.Provider,
@@ -522,15 +522,7 @@ begin
     end;
     on E: Exception do
     begin
-      try
-        if Assigned(lIHTTPResponse) then
-        begin
-          lStatusCode := lIHTTPResponse.StatusCode;
-          lStatusText := lIHTTPResponse.StatusText;
-        end;
-      except
-      end;
-
+      GetStatusResponse(lIHTTPResponse, lStatusCode, lStatusText);
       raise EBuscaCEPRequest.Create(
         TBuscaCEPExceptionKind.EXCEPTION_OTHERS,
         FProvider,
@@ -544,26 +536,49 @@ begin
   end;
 end;
 
+procedure TBuscaCEPRequest.GetStatusResponse(pHTTPResponse: IHTTPResponse;
+  out poStatusCode: Integer; out poStatusText: string);
+begin
+  poStatusCode := 0;
+  poStatusText := EmptyStr;
+  try
+    if Assigned(pHTTPResponse) then
+    begin
+      poStatusCode := pHTTPResponse.StatusCode;
+      poStatusText := pHTTPResponse.StatusText;
+    end;
+  except
+  end;
+end;
+
 function TBuscaCEPRequest.InternalExecute: IHTTPResponse;
+var
+  lRequestTime: TStopWatch;
 begin
   CheckRequest;
 
   // REQUISIÇÃO
   try
-    Result := FHttpRequest.Execute(FRequestHeaders);
-  except
-    on E: ENetHTTPClientException do
-    begin
-      raise EBuscaCEP.Create(TBuscaCEPExceptionKind.EXCEPTION_HTTP,
-                                      FProvider,
-                                      Now(),
-                                      E.Message);
+    try
+      lRequestTime := TStopWatch.StartNew;
+
+      Result := FHttpRequest.Execute(FRequestHeaders);
+      lRequestTime.Stop;
+    except
+      on E: Exception do
+      begin
+        lRequestTime.Stop;
+
+        if (E is ENetHTTPClientException) then
+          raise EBuscaCEP.Create(TBuscaCEPExceptionKind.EXCEPTION_HTTP,
+                                 FProvider, Now(), E.Message);
+
+        raise EBuscaCEP.Create(TBuscaCEPExceptionKind.EXCEPTION_OTHERS,
+                               FProvider, Now(), E.Message);
+      end;
     end;
-    on E: Exception do
-      raise EBuscaCEP.Create(TBuscaCEPExceptionKind.EXCEPTION_OTHERS,
-                                      FProvider,
-                                      Now(),
-                                      E.Message);
+  finally
+    FRequestTime := lRequestTime.ElapsedMilliseconds;
   end;
 
   CheckContentResponse(Result);
@@ -572,11 +587,12 @@ end;
 
 {$REGION 'TBuscaCEPResponseCustom'}
 constructor TBuscaCEPResponseCustom.Create(const pContent: string;
-  const pProvider: string);
+  const pProvider: string; const pRequestTime: Integer);
 begin
   FContent := pContent;
   FProvider := pProvider;
   FDateTime := Now();
+  FRequestTime := Format('%dms', [pRequestTime]);
   FLogradouros := TObjectList<TBuscaCEPLogradouro>.Create;
 end;
 
@@ -607,6 +623,11 @@ begin
   Result := FProvider;
 end;
 
+function TBuscaCEPResponseCustom.GetRequestTime: string;
+begin
+  Result := FRequestTime;
+end;
+
 function TBuscaCEPResponseCustom.GetTotal: Integer;
 begin
   Result := FLogradouros.Count;
@@ -623,6 +644,7 @@ begin
 
     lJSONObject.AddPair('provider', TJSONString.Create(FProvider));
     lJSONObject.AddPair('date_time', TJSONString.Create(DateToISO8601(FDateTime, False)));
+    lJSONObject.AddPair('request_time', TJSONString.Create(FRequestTime));
     lJSONObject.AddPair('total', TJSONNumber.Create(FLogradouros.Count));
 
     lJSONArray := TJSONArray.Create;

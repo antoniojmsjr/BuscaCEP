@@ -48,7 +48,8 @@ uses
   BuscaCEP.Providers.CEPLivre, BuscaCEP.Providers.CEPAberto,
   BuscaCEP.Providers.RepublicaVirtual, BuscaCEP.Providers.CEPCerto,
   BuscaCEP.Providers.BrasilAPI, BuscaCEP.Providers.KingHost,
-  BuscaCEP.Providers.Postmon;
+  BuscaCEP.Providers.Postmon, BuscaCEP.Providers.OpenCEP,
+  BuscaCEP.Providers.ApiCEP, BuscaCEP.Providers.BrasilAberto;
 
 class function TBuscaCEPProviderFactory.New(const pProviderKind: TBuscaCEPProvidersKind;
   pBuscaCEP: IBuscaCEP): IBuscaCEPProviders;
@@ -64,6 +65,9 @@ begin
     TBuscaCEPProvidersKind.BrasilAPI: Result := TBuscaCEPProviderBrasilAPI.Create(pBuscaCEP);
     TBuscaCEPProvidersKind.KingHost: Result := TBuscaCEPProviderKingHost.Create(pBuscaCEP);
     TBuscaCEPProvidersKind.Postmon: Result := TBuscaCEPProviderPostmon.Create(pBuscaCEP);
+    TBuscaCEPProvidersKind.OpenCEP: Result := TBuscaCEPProviderOpenCEP.Create(pBuscaCEP);
+    TBuscaCEPProvidersKind.ApiCEP: Result := TBuscaCEPProviderApiCEP.Create(pBuscaCEP);
+    TBuscaCEPProvidersKind.BrasilAberto: Result := TBuscaCEPProviderBrasilAberto.Create(pBuscaCEP);
   else
     raise Exception.Create('Provider not implemented...');
   end;

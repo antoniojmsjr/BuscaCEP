@@ -130,6 +130,7 @@ begin
 
       lBuscaCEPLogradouro.Logradouro := Trim(lAPILogradouro);
       lBuscaCEPLogradouro.Complemento := Trim(lAPIComplemento);
+      lBuscaCEPLogradouro.Unidade := EmptyStr;
       lBuscaCEPLogradouro.Bairro := Trim(lAPIBairro);
       lBuscaCEPLogradouro.CEP := OnlyNumber(lAPICEP);
 
@@ -165,6 +166,7 @@ begin
 
         lBuscaCEPLogradouro.Logradouro := Trim(lAPILogradouro);
         lBuscaCEPLogradouro.Complemento := Trim(lAPIComplemento);
+        lBuscaCEPLogradouro.Unidade := EmptyStr;
         lBuscaCEPLogradouro.Bairro := Trim(lAPIBairro);
         lBuscaCEPLogradouro.CEP := OnlyNumber(lAPICEP);
 
@@ -203,7 +205,7 @@ begin
   lBuscaCEPExceptionKind := TBuscaCEPExceptionKind.EXCEPTION_UNKNOWN;
   lMessage := EmptyStr;
 
-  lContent := Trim(pIHTTPResponse.ContentAsString);
+  lContent := pIHTTPResponse.ContentAsString;
   try
     case pIHTTPResponse.StatusCode of
       200:
@@ -238,8 +240,8 @@ begin
       end;
     else
     begin
-      lBuscaCEPExceptionKind := TBuscaCEPExceptionKind.EXCEPTION_REQUEST_INVALID;
       lMessage := lContent;
+      lBuscaCEPExceptionKind := TBuscaCEPExceptionKind.EXCEPTION_REQUEST_INVALID;
     end;
     end;
   finally
@@ -269,10 +271,10 @@ begin
     end;
     False:
     begin
-      lUF := Trim(pBuscaCEPFiltro.UF);
-      lLocalidade := Trim(pBuscaCEPFiltro.Localidade);
+      lUF := pBuscaCEPFiltro.UF;
+      lLocalidade := pBuscaCEPFiltro.Localidade;
       lLocalidade := ReplaceStr(lLocalidade, ' ', '-');
-      lLogradouro := Trim(pBuscaCEPFiltro.Logradouro);
+      lLogradouro := pBuscaCEPFiltro.Logradouro;
       lLogradouro := ReplaceStr(lLogradouro, ' ', '-');
 
       // https://www.cepcerto.com/ws/json-endereco/uf/cidade/logradouro
@@ -287,7 +289,7 @@ end;
 function TBuscaCEPRequestCEPCerto.GetResponse(
   pIHTTPResponse: IHTTPResponse): IBuscaCEPResponse;
 begin
-  Result := TBuscaCEPResponseCEPCerto.Create(pIHTTPResponse.ContentAsString, FProvider);
+  Result := TBuscaCEPResponseCEPCerto.Create(pIHTTPResponse.ContentAsString, FProvider, FRequestTime);
 end;
 
 function TBuscaCEPRequestCEPCerto.InternalExecute: IHTTPResponse;

@@ -194,8 +194,8 @@ begin
       end;
     else
     begin
-      lBuscaCEPExceptionKind := TBuscaCEPExceptionKind.EXCEPTION_REQUEST_INVALID;
       lMessage := lContent;
+      lBuscaCEPExceptionKind := TBuscaCEPExceptionKind.EXCEPTION_REQUEST_INVALID;
     end;
     end;
   finally
@@ -229,7 +229,8 @@ begin
     begin
       // https://ceplivre.com.br/consultar/cep/APIKey/01311-000/json
       lCEP := OnlyNumber(FBuscaCEPProvider.Filtro.CEP);
-      lCEP := Copy(lCEP, 1, 5) + '-' + Copy(lCEP, 6, 3);
+      lCEP := FormatCEP(lCEP);
+
       Result := Concat(Result, '/consultar/cep/');
       Result := Concat(Result, Format('%s/', [FBuscaCEPProvider.APIKey]));
       Result := Concat(Result, Format('%s/', [lCEP]));
@@ -249,7 +250,7 @@ end;
 function TBuscaCEPRequestCEPLivre.GetResponse(
   pIHTTPResponse: IHTTPResponse): IBuscaCEPResponse;
 begin
-  Result := TBuscaCEPResponseCEPLivre.Create(pIHTTPResponse.ContentAsString, FProvider);
+  Result := TBuscaCEPResponseCEPLivre.Create(pIHTTPResponse.ContentAsString, FProvider, FRequestTime);
 end;
 
 function TBuscaCEPRequestCEPLivre.InternalExecute: IHTTPResponse;

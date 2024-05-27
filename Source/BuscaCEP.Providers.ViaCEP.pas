@@ -131,6 +131,7 @@ begin
 
       lBuscaCEPLogradouro.Logradouro := Trim(lAPILogradouro);
       lBuscaCEPLogradouro.Complemento := Trim(lAPIComplemento);
+      lBuscaCEPLogradouro.Unidade := EmptyStr;
       lBuscaCEPLogradouro.Bairro := Trim(lAPIBairro);
       lBuscaCEPLogradouro.CEP := OnlyNumber(lAPICEP);
 
@@ -167,6 +168,7 @@ begin
 
         lBuscaCEPLogradouro.Logradouro := Trim(lAPILogradouro);
         lBuscaCEPLogradouro.Complemento := Trim(lAPIComplemento);
+        lBuscaCEPLogradouro.Unidade := EmptyStr;
         lBuscaCEPLogradouro.Bairro := Trim(lAPIBairro);
         lBuscaCEPLogradouro.CEP := OnlyNumber(lAPICEP);
 
@@ -203,7 +205,7 @@ begin
   lBuscaCEPExceptionKind := TBuscaCEPExceptionKind.EXCEPTION_UNKNOWN;
   lMessage := EmptyStr;
 
-  lContent := Trim(pIHTTPResponse.ContentAsString);
+  lContent := pIHTTPResponse.ContentAsString;
   try
     case pIHTTPResponse.StatusCode of
       200:
@@ -243,8 +245,8 @@ begin
       end;
     else
     begin
-      lBuscaCEPExceptionKind := TBuscaCEPExceptionKind.EXCEPTION_REQUEST_INVALID;
       lMessage := lContent;
+      lBuscaCEPExceptionKind := TBuscaCEPExceptionKind.EXCEPTION_REQUEST_INVALID;
     end;
     end;
   finally
@@ -284,7 +286,7 @@ end;
 function TBuscaCEPRequestViaCEP.GetResponse(
   pIHTTPResponse: IHTTPResponse): IBuscaCEPResponse;
 begin
-  Result := TBuscaCEPResponseViaCEP.Create(pIHTTPResponse.ContentAsString, FProvider);
+  Result := TBuscaCEPResponseViaCEP.Create(pIHTTPResponse.ContentAsString, FProvider, FRequestTime);
 end;
 
 function TBuscaCEPRequestViaCEP.InternalExecute: IHTTPResponse;

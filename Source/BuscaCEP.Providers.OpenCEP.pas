@@ -1,28 +1,4 @@
-{******************************************************************************}
-{                                                                              }
-{           BuscaCEP.Providers.BrasilAPI.pas                                   }
-{                                                                              }
-{           Copyright (C) Antônio José Medeiros Schneider Júnior               }
-{                                                                              }
-{           https://github.com/antoniojmsjr/BuscaCEP                           }
-{                                                                              }
-{                                                                              }
-{******************************************************************************}
-{                                                                              }
-{  Licensed under the Apache License, Version 2.0 (the "License");             }
-{  you may not use this file except in compliance with the License.            }
-{  You may obtain a copy of the License at                                     }
-{                                                                              }
-{      http://www.apache.org/licenses/LICENSE-2.0                              }
-{                                                                              }
-{  Unless required by applicable law or agreed to in writing, software         }
-{  distributed under the License is distributed on an "AS IS" BASIS,           }
-{  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.    }
-{  See the License for the specific language governing permissions and         }
-{  limitations under the License.                                              }
-{                                                                              }
-{******************************************************************************}
-unit BuscaCEP.Providers.BrasilAPI;
+unit BuscaCEP.Providers.OpenCEP;
 
 interface
 
@@ -32,8 +8,8 @@ uses
 
 type
 
-  {$REGION 'TBuscaCEPProviderBrasilAPI'}
-  TBuscaCEPProviderBrasilAPI = class sealed(TBuscaCEPProvidersCustom)
+  {$REGION 'TBuscaCEPProviderOpenCEP'}
+  TBuscaCEPProviderOpenCEP = class sealed(TBuscaCEPProvidersCustom)
   private
     { private declarations }
   protected
@@ -45,12 +21,10 @@ type
   end;
   {$ENDREGION}
 
-  {$REGION 'TBuscaCEPResponseBrasilAPI'}
-  TBuscaCEPResponseBrasilAPI = class(TBuscaCEPResponseCustom)
+  {$REGION 'TBuscaCEPResponseOpenCEP'}
+  TBuscaCEPResponseOpenCEP = class(TBuscaCEPResponseCustom)
   private
     { private declarations }
-    function GetLogradouro(const pLogradouro: string): string;
-    function GetComplemento(const pLogradouro: string): string;
   protected
     { protected declarations }
     procedure Parse; override;
@@ -59,8 +33,8 @@ type
   end;
   {$ENDREGION}
 
-  {$REGION 'TBuscaCEPRequestBrasilAPI'}
-  TBuscaCEPRequestBrasilAPI = class sealed(TBuscaCEPRequest)
+  {$REGION 'TBuscaCEPRequestOpenCEP'}
+  TBuscaCEPRequestOpenCEP = class sealed(TBuscaCEPRequest)
   private
     { private declarations }
     function GetResource(pBuscaCEPFiltro: IBuscaCEPFiltro): string;
@@ -78,60 +52,36 @@ type
 implementation
 
 uses
-  System.JSON, System.SysUtils, System.Net.URLClient, System.Classes,
-  BuscaCEP.Types, BuscaCEP.Utils;
+  System.JSON, System.SysUtils, System.StrUtils, System.Net.URLClient,
+  System.Classes, System.NetEncoding, System.RegularExpressions, BuscaCEP.Types,
+  BuscaCEP.Utils;
 
-{$REGION 'TBuscaCEPProviderBrasilAPI'}
-constructor TBuscaCEPProviderBrasilAPI.Create(pParent: IBuscaCEP);
+{$REGION 'TBuscaCEPProviderOpenCEP'}
+constructor TBuscaCEPProviderOpenCEP.Create(pParent: IBuscaCEP);
 begin
   inherited Create(pParent);
-  FID   := TBuscaCEPProvidersKind.BrasilAPI.Token;
-  FURL  := TBuscaCEPProvidersKind.BrasilAPI.BaseURL;
+  FID   := TBuscaCEPProvidersKind.OpenCEP.Token;
+  FURL  := TBuscaCEPProvidersKind.OpenCEP.BaseURL;
 end;
 
-function TBuscaCEPProviderBrasilAPI.GetRequest: IBuscaCEPRequest;
+function TBuscaCEPProviderOpenCEP.GetRequest: IBuscaCEPRequest;
 begin
-  Result := TBuscaCEPRequestBrasilAPI.Create(Self, FBuscaCEP);
+  Result := TBuscaCEPRequestOpenCEP.Create(Self, FBuscaCEP);
 end;
 {$ENDREGION}
 
-{$REGION 'TBuscaCEPResponseBrasilAPI'}
-function TBuscaCEPResponseBrasilAPI.GetComplemento(
-  const pLogradouro: string): string;
-var
-  lPosComplemento: Integer;
-begin
-  Result := EmptyStr;
-  lPosComplemento := Pos(' - ', pLogradouro);
-
-  if (lPosComplemento > 0) then
-    Result := Trim(Copy(pLogradouro, lPosComplemento+2, (Length(pLogradouro))));
-end;
-
-function TBuscaCEPResponseBrasilAPI.GetLogradouro(
-  const pLogradouro: string): string;
-var
-  lPosComplemento: Integer;
-begin
-  Result := Trim(pLogradouro);
-  lPosComplemento := Pos(' - ', pLogradouro);
-
-  if (lPosComplemento > 0) then
-    Delete(Result, lPosComplemento, (lPosComplemento + Length(pLogradouro)));
-
-  Result := Trim(Result);
-end;
-
-procedure TBuscaCEPResponseBrasilAPI.Parse;
+{$REGION 'TBuscaCEPResponseOpenCEP'}
+procedure TBuscaCEPResponseOpenCEP.Parse;
 var
   lJSONResponse: TJSONValue;
   lJSONLogradouro: TJSONObject;
   lAPILogradouro: string;
+  lAPIComplemento: string;
   lAPIBairro: string;
   lAPILocalidade: string;
   lAPIUF: string;
   lAPICEP: string;
-  lLocalidadeIBGE: Integer;
+  lAPILocalidadeIBGE: Integer;
   lBuscaCEPLogradouro: TBuscaCEPLogradouro;
   lBuscaCEPLogradouroEstado: TBuscaCEPLogradouroEstado;
 begin
@@ -143,16 +93,18 @@ begin
 
     lJSONLogradouro := (lJSONResponse as TJSONObject);
 
-    lJSONLogradouro.TryGetValue<string>('street',       lAPILogradouro);
-    lJSONLogradouro.TryGetValue<string>('neighborhood', lAPIBairro);
-    lJSONLogradouro.TryGetValue<string>('city',         lAPILocalidade);
-    lJSONLogradouro.TryGetValue<string>('state',        lAPIUF);
-    lJSONLogradouro.TryGetValue<string>('cep',          lAPICEP);
+    lJSONLogradouro.TryGetValue<string>('cep',         lAPICEP);
+    lJSONLogradouro.TryGetValue<string>('logradouro',  lAPILogradouro);
+    lJSONLogradouro.TryGetValue<string>('complemento', lAPIComplemento);
+    lJSONLogradouro.TryGetValue<string>('bairro',      lAPIBairro);
+    lJSONLogradouro.TryGetValue<string>('localidade',  lAPILocalidade);
+    lJSONLogradouro.TryGetValue<string>('uf',          lAPIUF);
+    lJSONLogradouro.TryGetValue<Integer>('ibge',       lAPILocalidadeIBGE);
 
     lBuscaCEPLogradouro := TBuscaCEPLogradouro.Create;
 
-    lBuscaCEPLogradouro.Logradouro := GetLogradouro(lAPILogradouro);
-    lBuscaCEPLogradouro.Complemento := GetComplemento(lAPILogradouro);
+    lBuscaCEPLogradouro.Logradouro := Trim(lAPILogradouro);
+    lBuscaCEPLogradouro.Complemento := Trim(lAPIComplemento);
     lBuscaCEPLogradouro.Unidade := EmptyStr;
     lBuscaCEPLogradouro.Bairro := Trim(lAPIBairro);
     lBuscaCEPLogradouro.CEP := OnlyNumber(lAPICEP);
@@ -162,9 +114,8 @@ begin
     lBuscaCEPLogradouroEstado.Assign(TBuscaCEPEstados.Default.GetEstado(lAPIUF));
 
     lAPILocalidade := Trim(lAPILocalidade);
-    lLocalidadeIBGE := TBuscaCEPLocalidadesIBGE.Default.GetCodigoIBGE(lAPIUF, lAPILocalidade);
     lBuscaCEPLogradouro.Localidade :=
-      TBuscaCEPLogradouroLocalidade.Create(lLocalidadeIBGE,
+      TBuscaCEPLogradouroLocalidade.Create(lAPILocalidadeIBGE,
                                            lAPILocalidade,
                                            lBuscaCEPLogradouroEstado);
 
@@ -175,8 +126,8 @@ begin
 end;
 {$ENDREGION}
 
-{$REGION 'TBuscaCEPRequestBrasilAPI'}
-procedure TBuscaCEPRequestBrasilAPI.CheckContentResponse(
+{$REGION 'TBuscaCEPRequestOpenCEP'}
+procedure TBuscaCEPRequestOpenCEP.CheckContentResponse(
   pIHTTPResponse: IHTTPResponse);
 var
   lMessage: string;
@@ -207,6 +158,7 @@ begin
           begin
             lMessage := 'JSON inválido, não é um TJSONObject.';
             lBuscaCEPExceptionKind := TBuscaCEPExceptionKind.EXCEPTION_RESPONSE_INVALID;
+            Exit;
           end;
         finally
           lJSONResponse.Free;
@@ -232,7 +184,7 @@ begin
   end;
 end;
 
-procedure TBuscaCEPRequestBrasilAPI.CheckRequest;
+procedure TBuscaCEPRequestOpenCEP.CheckRequest;
 var
   lCEP: string;
 begin
@@ -268,23 +220,24 @@ begin
                              'Provedor não possui busca por logradouro.');
 end;
 
-function TBuscaCEPRequestBrasilAPI.GetResource(
+function TBuscaCEPRequestOpenCEP.GetResource(
   pBuscaCEPFiltro: IBuscaCEPFiltro): string;
 var
   lCEP: string;
 begin
-  // https://brasilapi.com.br/api/cep/v1/90520003
+  // https://opencep.com/v1/90520003.json
   lCEP := OnlyNumber(FBuscaCEPProvider.Filtro.CEP);
-  Result := Format('/api/cep/v1/%s', [lCEP]);
+  Result := Format('/v1/%s.%s', [lCEP, 'json']);
 end;
 
-function TBuscaCEPRequestBrasilAPI.GetResponse(
+function TBuscaCEPRequestOpenCEP.GetResponse(
   pIHTTPResponse: IHTTPResponse): IBuscaCEPResponse;
 begin
-  Result := TBuscaCEPResponseBrasilAPI.Create(pIHTTPResponse.ContentAsString, FProvider, FRequestTime);
+  Result := TBuscaCEPResponseOpenCEP.Create(
+    pIHTTPResponse.ContentAsString, FProvider, FRequestTime);
 end;
 
-function TBuscaCEPRequestBrasilAPI.InternalExecute: IHTTPResponse;
+function TBuscaCEPRequestOpenCEP.InternalExecute: IHTTPResponse;
 var
   lURL: TURI;
   lResource: string;
@@ -292,14 +245,13 @@ begin
   // RESOURCE
   lResource := GetResource(FBuscaCEPProvider.Filtro);
 
-  // CONFORME A DOCUMENTAÇÃO DA API
+  //CONFORME A DOCUMENTAÇÃO DA API
   lURL := TURI.Create(Format('%s%s', [FBuscaCEPProvider.URL, lResource]));
 
-  FHttpClient.HandleRedirects := True;
   FHttpRequest.URL := lURL.ToString;
   FHttpRequest.MethodString := 'GET';
 
-  // REQUISIÇÃO
+  //REQUISIÇÃO
   Result := inherited InternalExecute;
 end;
 {$ENDREGION}
