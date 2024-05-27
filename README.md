@@ -47,7 +47,7 @@ Se você optar por instalar manualmente, basta adicionar as seguintes pastas ao 
 
 ## :beginner: Provedores Homologados
 
-| Provedor | Usa APIKey? | Busca por CEP? | * Busca por Logradouro? | Usa IBGE.dat? |
+| Provedor | Usa APIKey? | Busca por CEP? | * Busca por Logradouro? | ** Usa IBGE.dat? |
 |---|---|---|---|---|
 | [Correios](https://buscacepinter.correios.com.br/app/cep/index.php) | NÃO | SIM | SIM | SIM |
 | [Via CEP](https://viacep.com.br) | NÃO | SIM | SIM | NÃO |
@@ -58,8 +58,12 @@ Se você optar por instalar manualmente, basta adicionar as seguintes pastas ao 
 | [KingHost](https://king.host) | SIM | SIM | NÃO | SIM |
 | [Postmon](https://postmon.com.br) | NÃO | SIM | NÃO | NÃO |
 | [CEP Livre](https://ceplivre.com.br) | SIM | SIM | SIM | SIM |
+| [Open CEP](https://opencep.com) | SIM | SIM | SIM | NÃO |
+| [API CEP](https://apicep.com) | SIM | SIM | SIM | SIM |
+| [Brasil Aberto](https://brasilaberto.com) | SIM | SIM | SIM | SIM |
 
-* Para consultar usando o logradouro são necessários três parâmetros obrigatórios (UF, Cidade e Logradouro)
+\* Para consultar usando o logradouro são necessários três parâmetros obrigatórios (UF, Cidade e Logradouro).
+** Algumas APIs de CEP não retorna o código IBGE na consulta, então é utilizado o arquivo IBGE.dat.
 
 ## :globe_with_meridians: Código IBGE
 
