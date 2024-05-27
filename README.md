@@ -207,6 +207,7 @@ begin
 {
   "provider": "#CORREIOS",
   "date_time": "2024-05-01T02:35:14.772-03:00",
+  "request_time": "75ms",
   "total": 1,
   "logradouros": [
     {
