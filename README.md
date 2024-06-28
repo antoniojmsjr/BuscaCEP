@@ -8,8 +8,10 @@
 ![Delphi Supported Versions](https://img.shields.io/badge/Delphi%20Supported%20Versions-XE7%20and%20higher-3db36a?style=flat-square)
 
 <p align="center">
+</br>
+</br>
   <a href="https://github.com/antoniojmsjr/BuscaCEP/blob/main/Image/Logo.png">
-    <img alt="IPGeolocation" height="200" src="https://github.com/antoniojmsjr/BuscaCEP/blob/main/Image/Logo.png">
+    <img alt="IPGeolocation" height="130" width="700" src="https://github.com/antoniojmsjr/BuscaCEP/blob/main/Image/Logo.png">
   </a>
 </p>
 
