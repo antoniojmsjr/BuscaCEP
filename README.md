@@ -10,7 +10,7 @@
 </br>
 <p align="center">
   <a href="https://github.com/antoniojmsjr/BuscaCEP/blob/main/Image/Logo.png">
-    <img alt="IPGeolocation" height="130" width="700" src="https://github.com/antoniojmsjr/BuscaCEP/blob/main/Image/Logo.png">
+    <img alt="IPGeolocation" height="130" width="600" src="https://github.com/antoniojmsjr/BuscaCEP/blob/main/Image/Logo.png">
   </a>
 </p>
 </br>
