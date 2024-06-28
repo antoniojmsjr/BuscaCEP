@@ -7,13 +7,13 @@
 ![Compatibility](https://img.shields.io/badge/Compatibility-VCL,%20Firemonkey,%20DataSnap,%20Horse,%20RDW,%20RADServer-3db36a?style=flat-square)
 ![Delphi Supported Versions](https://img.shields.io/badge/Delphi%20Supported%20Versions-XE7%20and%20higher-3db36a?style=flat-square)
 
+</br>
 <p align="center">
-</br>
-</br>
   <a href="https://github.com/antoniojmsjr/BuscaCEP/blob/main/Image/Logo.png">
     <img alt="IPGeolocation" height="130" width="700" src="https://github.com/antoniojmsjr/BuscaCEP/blob/main/Image/Logo.png">
   </a>
 </p>
+</br>
 
 # BuscaCEP
 
