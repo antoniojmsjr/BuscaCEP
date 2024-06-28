@@ -63,7 +63,7 @@ Se você optar por instalar manualmente, basta adicionar as seguintes pastas ao 
 | [Brasil Aberto](https://brasilaberto.com) | SIM | SIM | SIM | SIM |
 
 \* Para consultar usando o logradouro são necessários três parâmetros obrigatórios (UF, Cidade e Logradouro).</br>
-** Algumas APIs de CEP não retornam o código IBGE na consulta, então é utilizado o arquivo IBGE.dat para disponibilizar esse código.
+** Algumas APIs de CEP não retornam o código IBGE na consulta. Por isso, utilizamos o arquivo **IBGE.dat** para fornecer esse código.
 
 ## :globe_with_meridians: Código IBGE
 
