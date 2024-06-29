@@ -81,7 +81,7 @@ implementation
 
 uses
   System.JSON, System.SysUtils, System.Net.URLClient, System.Classes,
-  BuscaCEP.Types, BuscaCEP.Utils;
+  BuscaCEP.Types, BuscaCEP.Utils, BuscaCEP.Providers.Correios.Utils;
 
 {$REGION 'TBuscaCEPProviderCorreios'}
 constructor TBuscaCEPProviderCorreios.Create(pParent: IBuscaCEP);
@@ -263,34 +263,9 @@ begin
   end;
 end;
 
-function TBuscaCEPRequestCorreios.GetFORMData(
-  pBuscaCEPFiltro: IBuscaCEPFiltro): string;
-var
-  lCEP: string;
+function TBuscaCEPRequestCorreios.GetFORMData(pBuscaCEPFiltro: IBuscaCEPFiltro): string;
 begin
-  Result := EmptyStr;
-  case pBuscaCEPFiltro.FiltroPorCEP of
-    True:
-    begin
-      lCEP := OnlyNumber(FBuscaCEPProvider.Filtro.CEP);
-      Result := Concat(Result , 'mensagem_alerta', '=', EmptyStr, '&');
-      Result := Concat(Result , 'cep', '=', lCEP, '&');
-      Result := Concat(Result , 'cepaux', '=', EmptyStr);
-    end;
-    False:
-    begin
-      Result := Concat(Result , 'letraLocalidade', '=', EmptyStr, '&');
-      Result := Concat(Result , 'ufaux', '=', EmptyStr, '&');
-      Result := Concat(Result , 'cepaux', '=', EmptyStr, '&');
-      Result := Concat(Result , 'pagina', '=', '/app/localidade_logradouro/index.php', '&');
-      Result := Concat(Result , 'mensagem_alerta', '=', EmptyStr, '&');
-      Result := Concat(Result , 'uf', '=', pBuscaCEPFiltro.UF, '&');
-      Result := Concat(Result , 'localidade', '=', pBuscaCEPFiltro.Localidade, '&');
-      Result := Concat(Result , 'tipologradouro', '=', pBuscaCEPFiltro.Tipo.AsString, '&');
-      Result := Concat(Result , 'logradouro', '=', pBuscaCEPFiltro.Logradouro, '&');
-      Result := Concat(Result , 'numeroLogradouro', '=', pBuscaCEPFiltro.Identificador);
-    end;
-  end;
+  Result := BuscaCEP.Providers.Correios.Utils.GetFORMData(pBuscaCEPFiltro);
 end;
 
 procedure TBuscaCEPRequestCorreios.GetResource(
