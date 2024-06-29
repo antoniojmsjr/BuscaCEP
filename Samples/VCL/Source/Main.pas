@@ -7,12 +7,12 @@ uses
   Vcl.Graphics, Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls, Vcl.ExtCtrls,
   Vcl.Mask, Data.DB, FireDAC.Stan.Intf, FireDAC.Stan.Option, FireDAC.Stan.Param,
   FireDAC.Stan.Error, FireDAC.DatS, FireDAC.Phys.Intf, FireDAC.DApt.Intf,
-  FireDAC.Comp.DataSet, FireDAC.Comp.Client, Vcl.Grids, Vcl.DBGrids;
+  FireDAC.Comp.DataSet, FireDAC.Comp.Client, Vcl.Grids, Vcl.DBGrids,
+  dxGDIPlusClasses;
 
 type
   TfrmMain = class(TForm)
     pnlHeader: TPanel;
-    lblHeader: TLabel;
     gbxCEP: TGroupBox;
     lblCEP: TLabel;
     edtFiltroCEP: TMaskEdit;
@@ -46,6 +46,7 @@ type
     edtAPIKey: TEdit;
     GroupBox1: TGroupBox;
     dbgLogradouros: TDBGrid;
+    imgLogo: TImage;
     procedure FormCreate(Sender: TObject);
     procedure FormResize(Sender: TObject);
     procedure btnConsultarCEPClick(Sender: TObject);

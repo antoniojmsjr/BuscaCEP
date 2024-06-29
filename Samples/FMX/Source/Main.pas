@@ -16,7 +16,6 @@ uses
 type
   TfrmMain = class(TForm)
     rctHeader: TRectangle;
-    lblHeader: TLabel;
     gbxProviders: TGroupBox;
     Label1: TLabel;
     cbxProviders: TComboBox;
@@ -41,6 +40,7 @@ type
     BindSourceDB1: TBindSourceDB;
     BindingsList1: TBindingsList;
     LinkGridToDataSourceBindSourceDB1: TLinkGridToDataSource;
+    imgLogo: TImage;
     procedure edtFiltroCEPKeyDown(Sender: TObject; var Key: Word; var KeyChar: Char;
       Shift: TShiftState);
     procedure btnConsultarCEPClick(Sender: TObject);

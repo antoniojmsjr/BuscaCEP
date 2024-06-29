@@ -1,7 +1,4 @@
-﻿[lblHeader]
-Coordinates=508,10,61,51
-
-[memLogradourosCEP]
+﻿[memLogradourosCEP]
 Coordinates=368,232,123,33
 
 [memLogradourosLOCALIDADE_IBGE]
@@ -45,7 +42,7 @@ Visible=False
 Coordinates=818,276,142,33
 
 []
-Coordinates=10,298,53,51
+Coordinates=508,10,61,51
 Visible=True
 
 [grdLogradouros]

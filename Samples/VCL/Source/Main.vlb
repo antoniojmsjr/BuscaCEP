@@ -4,9 +4,6 @@ Coordinates=511,335,190,33
 [Label5]
 Coordinates=418,251,46,51
 
-[lblHeader]
-Coordinates=474,251,61,51
-
 [cdsBuscaCEPLogradourosESTADO_IBGE]
 Coordinates=553,123,221,33
 
@@ -92,5 +89,5 @@ Coordinates=261,10,135,51
 Coordinates=406,10,95,51
 
 []
-Coordinates=67,373,47,33
+Coordinates=474,251,61,51
 
