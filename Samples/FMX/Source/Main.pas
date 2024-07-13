@@ -11,11 +11,10 @@ uses
   FireDAC.Stan.Error, FireDAC.DatS, FireDAC.Phys.Intf, FireDAC.DApt.Intf,
   Data.DB, FireDAC.Comp.DataSet, FireDAC.Comp.Client, Data.Bind.EngExt,
   Fmx.Bind.DBEngExt, Fmx.Bind.Grid, System.Bindings.Outputs, Fmx.Bind.Editors,
-  Data.Bind.Components, Data.Bind.Grid, Data.Bind.DBScope;
+  Data.Bind.Components, Data.Bind.Grid, Data.Bind.DBScope, FMX.Layouts;
 
 type
   TfrmMain = class(TForm)
-    rctHeader: TRectangle;
     gbxProviders: TGroupBox;
     Label1: TLabel;
     cbxProviders: TComboBox;
@@ -37,14 +36,19 @@ type
     memLogradourosREGIAO: TStringField;
     memLogradourosREGIAO_IBGE: TIntegerField;
     memLogradourosCEP: TStringField;
-    BindSourceDB1: TBindSourceDB;
-    BindingsList1: TBindingsList;
+    BindSourceDB: TBindSourceDB;
+    BindingsList: TBindingsList;
     LinkGridToDataSourceBindSourceDB1: TLinkGridToDataSource;
     imgLogo: TImage;
+    lytHeader: TLayout;
+    lytHeaderApp: TLayout;
+    lblAppName: TLabel;
+    lblAppSite: TLabel;
     procedure edtFiltroCEPKeyDown(Sender: TObject; var Key: Word; var KeyChar: Char;
       Shift: TShiftState);
     procedure btnConsultarCEPClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
+    procedure lblAppSiteClick(Sender: TObject);
   private
     { Private declarations }
     function GetBuscaCEPJSON(const pJSON: string): string;
@@ -58,9 +62,10 @@ var
 implementation
 
 uses
-  System.JSON, BuscaCEP, BuscaCEP.Types, BuscaCEP.Interfaces;
+  System.JSON, Winapi.ShellApi, BuscaCEP, BuscaCEP.Types, BuscaCEP.Interfaces;
 
 {$R *.fmx}
+{$I BuscaCEP.inc}
 
 procedure TfrmMain.FormCreate(Sender: TObject);
 var
@@ -69,6 +74,8 @@ begin
   for lProvider := Low(TBuscaCEPProvidersKind) to High(TBuscaCEPProvidersKind) do
     if (lProvider <> TBuscaCEPProvidersKind.UNKNOWN) then
       cbxProviders.Items.AddObject(lProvider.AsString, TObject(lProvider));
+
+  lblAppName.Text := Format('BuscaCEP v%s', [BuscaCEPVersion]);
 
   memLogradouros.CreateDataSet;
 end;
@@ -165,6 +172,11 @@ begin
   finally
     lJSONObject.Free;
   end;
+end;
+
+procedure TfrmMain.lblAppSiteClick(Sender: TObject);
+begin
+  ShellExecute(0, nil, PChar('https://github.com/antoniojmsjr/BuscaCEP'), nil, nil, 1);
 end;
 
 end.

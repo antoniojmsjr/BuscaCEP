@@ -28,9 +28,6 @@ Coordinates=818,111,142,33
 [memLogradourosLOCALIDADE]
 Coordinates=818,166,169,33
 
-[rctHeader]
-Coordinates=465,298,62,33
-
 [memLogradourosESTADO]
 Coordinates=818,221,144,33
 
@@ -42,18 +39,12 @@ Visible=False
 Coordinates=818,276,142,33
 
 []
-Coordinates=508,10,61,51
+Coordinates=465,298,62,33
 Visible=True
 
 [grdLogradouros]
 Coordinates=190,10,94,69
 Visible=True
-
-[BindSourceDB1]
-Coordinates=20,10,101,249
-
-[BindingsList1]
-Coordinates=140,80,82,33
 
 [cbxProviders]
 Coordinates=420,80,84,123
@@ -76,4 +67,10 @@ Coordinates=333,298,41,33
 
 [edtFiltroCEP]
 Coordinates=530,80,81,51
+
+[BindSourceDB]
+Coordinates=20,10,101,249
+
+[BindingsList]
+Coordinates=140,80,82,33
 

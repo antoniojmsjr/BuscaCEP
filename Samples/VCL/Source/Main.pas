@@ -8,7 +8,7 @@ uses
   Vcl.Mask, Data.DB, FireDAC.Stan.Intf, FireDAC.Stan.Option, FireDAC.Stan.Param,
   FireDAC.Stan.Error, FireDAC.DatS, FireDAC.Phys.Intf, FireDAC.DApt.Intf,
   FireDAC.Comp.DataSet, FireDAC.Comp.Client, Vcl.Grids, Vcl.DBGrids,
-  dxGDIPlusClasses;
+  Vcl.Imaging.pngimage;
 
 type
   TfrmMain = class(TForm)
@@ -47,10 +47,15 @@ type
     GroupBox1: TGroupBox;
     dbgLogradouros: TDBGrid;
     imgLogo: TImage;
+    pnlApp: TPanel;
+    lblAppName: TLinkLabel;
+    lblAppSite: TLinkLabel;
     procedure FormCreate(Sender: TObject);
     procedure FormResize(Sender: TObject);
     procedure btnConsultarCEPClick(Sender: TObject);
     procedure btnConsultarLogradouroClick(Sender: TObject);
+    procedure lblAppSiteLinkClick(Sender: TObject; const Link: string;
+      LinkType: TSysLinkType);
   private
     { Private declarations }
     function GetBuscaCEPJSON(const pJSON: string): string;
@@ -64,9 +69,10 @@ var
 implementation
 
 uses
-  System.Types, System.JSON, BuscaCEP, BuscaCEP.Types, BuscaCEP.Interfaces;
+  System.Types, System.JSON, Winapi.ShellApi, BuscaCEP, BuscaCEP.Types, BuscaCEP.Interfaces;
 
 {$R *.dfm}
+{$I BuscaCEP.inc}
 
 procedure TfrmMain.FormCreate(Sender: TObject);
 var
@@ -80,6 +86,10 @@ begin
             Width,
             Screen.WorkAreaRect.Height);
 
+  lblAppName.Caption := Format('BuscaCEP v%s', [BuscaCEPVersion]);
+  lblAppSite.Caption := '<a href="https://github.com/antoniojmsjr/BuscaCEP">https://github.com/antoniojmsjr/BuscaCEP</a>';
+
+
   for lProvider := Low(TBuscaCEPProvidersKind) to High(TBuscaCEPProvidersKind) do
     if (lProvider <> TBuscaCEPProvidersKind.UNKNOWN) then
       cbxProviders.Items.AddObject(lProvider.AsString, TObject(lProvider));
@@ -89,9 +99,9 @@ end;
 
 procedure TfrmMain.FormResize(Sender: TObject);
 begin
-  if (Self.Width < 700) then
+  if (Self.Width < 740) then
   begin
-    Self.Width := 700;
+    Self.Width := 740;
     Abort;
   end;
 end;
@@ -106,6 +116,12 @@ begin
   finally
     lJSONObject.Free;
   end;
+end;
+
+procedure TfrmMain.lblAppSiteLinkClick(Sender: TObject; const Link: string;
+  LinkType: TSysLinkType);
+begin
+  ShellExecute(0, nil, PChar(Link), nil, nil, 1);
 end;
 
 procedure TfrmMain.btnConsultarCEPClick(Sender: TObject);
