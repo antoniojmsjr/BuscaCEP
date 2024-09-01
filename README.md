@@ -19,7 +19,7 @@
 
 **BuscaCEP** é uma biblioteca de consulta de endereço online, que permite consulta por CEP (Código de Endereçamento Postal) ou por logradouro (UF, Localidade e Logradouro). 
 
-Implementado na linguagem Delphi, utiliza o conceito de [fluent interface](https://en.wikipedia.org/wiki/Fluent_interface) para guiar no uso da biblioteca, desenvolvida para oferecer praticidade e eficiência, a BuscaCEP integra os principais players do mercado: [Correios](https://buscacepinter.correios.com.br/app/endereco/index.php), [ViaCEP](https://viacep.com.br/), [BrasilAPI](https://brasilapi.com.br/), entre outros.
+Implementado na linguagem `Delphi`, utiliza o conceito de [fluent interface](https://en.wikipedia.org/wiki/Fluent_interface) para guiar no uso da biblioteca, desenvolvida para oferecer praticidade e eficiência, a BuscaCEP integra os principais players do mercado: [Correios](https://buscacepinter.correios.com.br/app/endereco/index.php), [ViaCEP](https://viacep.com.br/), [BrasilAPI](https://brasilapi.com.br/), entre outros.
 
 #### Recursos:
 
