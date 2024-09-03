@@ -21,6 +21,8 @@
 
 Implementado na linguagem `Delphi`, utiliza o conceito de [fluent interface](https://en.wikipedia.org/wiki/Fluent_interface) para guiar no uso da biblioteca, desenvolvida para oferecer praticidade e eficiência, a BuscaCEP integra os principais players do mercado: [Correios](https://buscacepinter.correios.com.br/app/endereco/index.php), [ViaCEP](https://viacep.com.br/), [BrasilAPI](https://brasilapi.com.br/), entre outros.
 
+Essa biblioteca é ideal para desenvolvedores Delphi que buscam uma solução robusta, flexível e eficiente para integrar consultas por CEP em suas aplicações.
+
 #### Recursos:
 
 * Consulta Abrangente: BuscaCEP permite consultar tanto por *CEP* quanto por *logradouro*, flexibilizando a obtenção das informações de endereço.
