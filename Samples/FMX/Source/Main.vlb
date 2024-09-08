@@ -1,76 +1,94 @@
 ﻿[memLogradourosCEP]
-Coordinates=368,232,123,33
+Coordinates=368,232,141,36
 
 [memLogradourosLOCALIDADE_IBGE]
-Coordinates=547,1,200,33
+Coordinates=547,1,233,36
 
 [Label1]
-Coordinates=733,10,46,51
+Coordinates=733,10,53,58
 
 [memLogradourosLOGRADOURO]
-Coordinates=500,155,177,33
+Coordinates=500,155,207,36
 
 [memLogradourosCOMPLEMENTO]
-Coordinates=818,1,183,33
+Coordinates=818,1,214,36
 
 [mmoResultadoJSON]
-Coordinates=588,10,116,51
+Coordinates=588,10,135,58
 
 [memLogradourosESTADO_IBGE]
-Coordinates=500,287,175,33
+Coordinates=500,287,205,36
 
 [memLogradourosREGIAO_IBGE]
-Coordinates=818,56,173,33
+Coordinates=818,56,202,36
 
 [memLogradourosREGIAO]
-Coordinates=818,111,142,33
+Coordinates=818,111,164,36
 
 [memLogradourosLOCALIDADE]
-Coordinates=818,166,169,33
+Coordinates=818,166,196,36
 
 [memLogradourosESTADO]
-Coordinates=818,221,144,33
+Coordinates=818,221,167,36
 
 [memLogradouros]
-Coordinates=20,10,101,33
+Coordinates=20,10,115,36
 Visible=False
 
 [memLogradourosBAIRRO]
-Coordinates=818,276,142,33
+Coordinates=818,276,164,36
 
 []
 Coordinates=465,298,62,33
 Visible=True
 
 [grdLogradouros]
-Coordinates=190,10,94,69
+Coordinates=190,10,105,278
 Visible=True
 
 [cbxProviders]
-Coordinates=420,80,84,123
+Coordinates=420,80,101,146
 
 [gbxProviders]
-Coordinates=419,10,70,51
+Coordinates=419,10,90,58
 
 [gbxCEP]
-Coordinates=168,298,70,51
+Coordinates=168,298,61,58
 Visible=True
 
 [gbxResultadoJSON]
-Coordinates=79,298,70,51
+Coordinates=79,298,127,58
 
 [lblCEP]
-Coordinates=640,80,46,51
+Coordinates=640,80,54,58
 
 [linCEP]
-Coordinates=333,298,41,33
+Coordinates=333,298,54,36
 
 [edtFiltroCEP]
-Coordinates=530,80,81,51
+Coordinates=530,80,88,58
 
 [BindSourceDB]
-Coordinates=20,10,101,249
+Coordinates=20,10,121,322
 
 [BindingsList]
-Coordinates=140,80,82,33
+Coordinates=140,80,84,36
+
+[lytHeader]
+Coordinates=333,155,70,36
+
+[lytHeaderApp]
+Coordinates=333,353,92,36
+
+[lblAppName]
+Coordinates=79,351,84,58
+
+[lblAppSite]
+Coordinates=333,78,73,58
+
+[imgLogo]
+Coordinates=333,1,64,58
+
+[memLogradourosLOCALIDADE_DDD]
+Coordinates=743,331,230,36
 

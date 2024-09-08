@@ -29,8 +29,6 @@ object frmMain: TfrmMain
     ParentBackground = False
     ShowCaption = False
     TabOrder = 0
-    ExplicitTop = -6
-    ExplicitWidth = 734
     object imgLogo: TImage
       AlignWithMargins = True
       Left = 5
@@ -1560,7 +1558,6 @@ object frmMain: TfrmMain
       Caption = 'pnlApp'
       ShowCaption = False
       TabOrder = 0
-      ExplicitLeft = 519
       object lblAppName: TLinkLabel
         AlignWithMargins = True
         Left = 3
@@ -1609,7 +1606,6 @@ object frmMain: TfrmMain
     Align = alTop
     Caption = ' Busca por CEP '
     TabOrder = 1
-    ExplicitWidth = 678
     DesignSize = (
       718
       55)
@@ -1646,7 +1642,6 @@ object frmMain: TfrmMain
       Caption = 'Consultar'
       TabOrder = 1
       OnClick = btnConsultarCEPClick
-      ExplicitLeft = 570
     end
   end
   object gbxLogradouro: TGroupBox
@@ -1658,7 +1653,6 @@ object frmMain: TfrmMain
     Align = alTop
     Caption = ' Busca por Logradouro'
     TabOrder = 2
-    ExplicitWidth = 678
     DesignSize = (
       718
       75)
@@ -1710,7 +1704,6 @@ object frmMain: TfrmMain
       Caption = 'Consultar'
       TabOrder = 3
       OnClick = btnConsultarLogradouroClick
-      ExplicitLeft = 570
     end
     object edtFiltroLogradouro: TEdit
       Left = 13
@@ -1745,7 +1738,6 @@ object frmMain: TfrmMain
     Align = alTop
     Caption = ' Providers '
     TabOrder = 3
-    ExplicitWidth = 684
     object Label5: TLabel
       Left = 10
       Top = 20
@@ -1799,7 +1791,6 @@ object frmMain: TfrmMain
     Align = alClient
     Caption = ' Resultado JSON '
     TabOrder = 4
-    ExplicitWidth = 684
     object mmoResultadoJSON: TMemo
       AlignWithMargins = True
       Left = 5
@@ -1810,7 +1801,6 @@ object frmMain: TfrmMain
       BorderStyle = bsNone
       ScrollBars = ssVertical
       TabOrder = 0
-      ExplicitWidth = 674
     end
   end
   object GroupBox1: TGroupBox
@@ -1821,7 +1811,6 @@ object frmMain: TfrmMain
     Align = alTop
     Caption = ' Resultado da Consulta '
     TabOrder = 5
-    ExplicitWidth = 684
     object dbgLogradouros: TDBGrid
       AlignWithMargins = True
       Left = 5
@@ -1872,6 +1861,12 @@ object frmMain: TfrmMain
           Expanded = False
           FieldName = 'LOCALIDADE_IBGE'
           Width = 100
+          Visible = True
+        end
+        item
+          Expanded = False
+          FieldName = 'LOCALIDADE_DDD'
+          Width = 90
           Visible = True
         end
         item
@@ -1937,6 +1932,10 @@ object frmMain: TfrmMain
     object memLogradourosLOCALIDADE_IBGE: TIntegerField
       DisplayLabel = 'Localidade IBGE'
       FieldName = 'LOCALIDADE_IBGE'
+    end
+    object memLogradourosLOCALIDADE_DDD: TIntegerField
+      DisplayLabel = 'Localidade DDD'
+      FieldName = 'LOCALIDADE_DDD'
     end
     object memLogradourosESTADO: TStringField
       DisplayLabel = 'Estado'

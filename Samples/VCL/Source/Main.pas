@@ -50,6 +50,7 @@ type
     pnlApp: TPanel;
     lblAppName: TLinkLabel;
     lblAppSite: TLinkLabel;
+    memLogradourosLOCALIDADE_DDD: TIntegerField;
     procedure FormCreate(Sender: TObject);
     procedure FormResize(Sender: TObject);
     procedure btnConsultarCEPClick(Sender: TObject);
@@ -72,7 +73,6 @@ uses
   System.Types, System.JSON, Winapi.ShellApi, BuscaCEP, BuscaCEP.Types, BuscaCEP.Interfaces;
 
 {$R *.dfm}
-{$I BuscaCEP.inc}
 
 procedure TfrmMain.FormCreate(Sender: TObject);
 var
@@ -86,7 +86,7 @@ begin
             Width,
             Screen.WorkAreaRect.Height);
 
-  lblAppName.Caption := Format('BuscaCEP v%s', [BuscaCEPVersion]);
+  lblAppName.Caption := Format('BuscaCEP v%s', [TBuscaCEP.New.Version]);
   lblAppSite.Caption := '<a href="https://github.com/antoniojmsjr/BuscaCEP">https://github.com/antoniojmsjr/BuscaCEP</a>';
 
 
@@ -118,8 +118,7 @@ begin
   end;
 end;
 
-procedure TfrmMain.lblAppSiteLinkClick(Sender: TObject; const Link: string;
-  LinkType: TSysLinkType);
+procedure TfrmMain.lblAppSiteLinkClick(Sender: TObject; const Link: string;  LinkType: TSysLinkType);
 begin
   ShellExecute(0, nil, PChar(Link), nil, nil, 1);
 end;
@@ -185,6 +184,7 @@ begin
     memLogradourosBAIRRO.AsString := lBuscaCEPLogradouro.Bairro;
     memLogradourosLOCALIDADE.AsString := lBuscaCEPLogradouro.Localidade.Nome;
     memLogradourosLOCALIDADE_IBGE.AsInteger := lBuscaCEPLogradouro.Localidade.IBGE;
+    memLogradourosLOCALIDADE_DDD.AsInteger := lBuscaCEPLogradouro.Localidade.DDD;
     memLogradourosESTADO.AsString := lBuscaCEPLogradouro.Localidade.Estado.Nome;
     memLogradourosESTADO_IBGE.AsInteger := lBuscaCEPLogradouro.Localidade.Estado.IBGE;
     memLogradourosREGIAO.AsString := lBuscaCEPLogradouro.Localidade.Estado.Regiao.Nome;
@@ -259,6 +259,7 @@ begin
     memLogradourosBAIRRO.AsString := lBuscaCEPLogradouro.Bairro;
     memLogradourosLOCALIDADE.AsString := lBuscaCEPLogradouro.Localidade.Nome;
     memLogradourosLOCALIDADE_IBGE.AsInteger := lBuscaCEPLogradouro.Localidade.IBGE;
+    memLogradourosLOCALIDADE_DDD.AsInteger := lBuscaCEPLogradouro.Localidade.DDD;
     memLogradourosESTADO.AsString := lBuscaCEPLogradouro.Localidade.Estado.Nome;
     memLogradourosESTADO_IBGE.AsInteger := lBuscaCEPLogradouro.Localidade.Estado.IBGE;
     memLogradourosREGIAO.AsString := lBuscaCEPLogradouro.Localidade.Estado.Regiao.Nome;

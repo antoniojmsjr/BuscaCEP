@@ -44,6 +44,7 @@ type
     lytHeaderApp: TLayout;
     lblAppName: TLabel;
     lblAppSite: TLabel;
+    memLogradourosLOCALIDADE_DDD: TIntegerField;
     procedure edtFiltroCEPKeyDown(Sender: TObject; var Key: Word; var KeyChar: Char;
       Shift: TShiftState);
     procedure btnConsultarCEPClick(Sender: TObject);
@@ -65,7 +66,6 @@ uses
   System.JSON, Winapi.ShellApi, BuscaCEP, BuscaCEP.Types, BuscaCEP.Interfaces;
 
 {$R *.fmx}
-{$I BuscaCEP.inc}
 
 procedure TfrmMain.FormCreate(Sender: TObject);
 var
@@ -75,13 +75,12 @@ begin
     if (lProvider <> TBuscaCEPProvidersKind.UNKNOWN) then
       cbxProviders.Items.AddObject(lProvider.AsString, TObject(lProvider));
 
-  lblAppName.Text := Format('BuscaCEP v%s', [BuscaCEPVersion]);
+  lblAppName.Text := Format('BuscaCEP v%s', [TBuscaCEP.New.Version]);
 
   memLogradouros.CreateDataSet;
 end;
 
-procedure TfrmMain.edtFiltroCEPKeyDown(Sender: TObject; var Key: Word;
-  var KeyChar: Char; Shift: TShiftState);
+procedure TfrmMain.edtFiltroCEPKeyDown(Sender: TObject; var Key: Word; var KeyChar: Char; Shift: TShiftState);
 begin
   if not CharInSet(KeyChar, ['-', '0'..'9']) then
     KeyChar := #0;
@@ -151,6 +150,7 @@ begin
     memLogradourosBAIRRO.AsString := lBuscaCEPLogradouro.Bairro;
     memLogradourosLOCALIDADE.AsString := lBuscaCEPLogradouro.Localidade.Nome;
     memLogradourosLOCALIDADE_IBGE.AsInteger := lBuscaCEPLogradouro.Localidade.IBGE;
+    memLogradourosLOCALIDADE_DDD.AsInteger := lBuscaCEPLogradouro.Localidade.DDD;
     memLogradourosESTADO.AsString := lBuscaCEPLogradouro.Localidade.Estado.Nome;
     memLogradourosESTADO_IBGE.AsInteger := lBuscaCEPLogradouro.Localidade.Estado.IBGE;
     memLogradourosREGIAO.AsString := lBuscaCEPLogradouro.Localidade.Estado.Regiao.Nome;
