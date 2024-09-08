@@ -105,6 +105,7 @@ var
   lAPILocalidade: string;
   lAPIUF: string;
   lAPICEP: string;
+  lLocalidadeDDD: Integer;
   lLocalidadeIBGE: Integer;
   lBuscaCEPLogradouro: TBuscaCEPLogradouro;
   lBuscaCEPLogradouroEstado: TBuscaCEPLogradouroEstado;
@@ -125,7 +126,6 @@ begin
       lJSONLogradouro.TryGetValue<string>('localidade',  lAPILocalidade);
       lJSONLogradouro.TryGetValue<string>('uf',          lAPIUF);
       lJSONLogradouro.TryGetValue<string>('cep',         lAPICEP);
-      lJSONLogradouro.TryGetValue<Integer>('ibge',       lLocalidadeIBGE);
 
       lBuscaCEPLogradouro := TBuscaCEPLogradouro.Create;
 
@@ -140,8 +140,10 @@ begin
       lBuscaCEPLogradouroEstado.Assign(TBuscaCEPEstados.Default.GetEstado(lAPIUF));
 
       lAPILocalidade := Trim(lAPILocalidade);
+      TBuscaCEPCache.Default.GetCodigos(lAPIUF, lAPILocalidade, lLocalidadeIBGE, lLocalidadeDDD);
       lBuscaCEPLogradouro.Localidade :=
         TBuscaCEPLogradouroLocalidade.Create(lLocalidadeIBGE,
+                                             lLocalidadeDDD,
                                              lAPILocalidade,
                                              lBuscaCEPLogradouroEstado);
 
@@ -162,7 +164,6 @@ begin
         lJSONLogradouro.TryGetValue<string>('localidade',  lAPILocalidade);
         lJSONLogradouro.TryGetValue<string>('uf',          lAPIUF);
         lJSONLogradouro.TryGetValue<string>('cep',         lAPICEP);
-        lJSONLogradouro.TryGetValue<Integer>('ibge',       lLocalidadeIBGE);
 
         lBuscaCEPLogradouro := TBuscaCEPLogradouro.Create;
 
@@ -177,8 +178,10 @@ begin
         lBuscaCEPLogradouroEstado.Assign(TBuscaCEPEstados.Default.GetEstado(lAPIUF));
 
         lAPILocalidade := Trim(lAPILocalidade);
+        TBuscaCEPCache.Default.GetCodigos(lAPIUF, lAPILocalidade, lLocalidadeIBGE, lLocalidadeDDD);
         lBuscaCEPLogradouro.Localidade :=
           TBuscaCEPLogradouroLocalidade.Create(lLocalidadeIBGE,
+                                               lLocalidadeDDD,
                                                lAPILocalidade,
                                                lBuscaCEPLogradouroEstado);
 

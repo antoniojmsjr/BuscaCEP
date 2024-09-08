@@ -104,6 +104,7 @@ var
   lAPILocalidade: string;
   lAPIUF: string;
   lAPICEP: string;
+  lLocalidadeDDD: Integer;
   lLocalidadeIBGE: Integer;
   lBuscaCEPLogradouro: TBuscaCEPLogradouro;
   lBuscaCEPLogradouroEstado: TBuscaCEPLogradouroEstado;
@@ -122,7 +123,6 @@ begin
     lJSONLogradouro.TryGetValue<string>('cidade',      lAPILocalidade);
     lJSONLogradouro.TryGetValue<string>('estado',      lAPIUF);
     lJSONLogradouro.TryGetValue<string>('cep',         lAPICEP);
-    lJSONLogradouro.GetValue('cidade_info').TryGetValue<Integer>('codigo_ibge', lLocalidadeIBGE);
 
     lBuscaCEPLogradouro := TBuscaCEPLogradouro.Create;
 
@@ -137,8 +137,10 @@ begin
     lBuscaCEPLogradouroEstado.Assign(TBuscaCEPEstados.Default.GetEstado(lAPIUF));
 
     lAPILocalidade := Trim(lAPILocalidade);
+    TBuscaCEPCache.Default.GetCodigos(lAPIUF, lAPILocalidade, lLocalidadeIBGE, lLocalidadeDDD);
     lBuscaCEPLogradouro.Localidade :=
       TBuscaCEPLogradouroLocalidade.Create(lLocalidadeIBGE,
+                                           lLocalidadeDDD,
                                            lAPILocalidade,
                                            lBuscaCEPLogradouroEstado);
 
@@ -189,6 +191,11 @@ begin
       404:
       begin
         lMessage := 'Logradouro não localizado, verificar os parâmetros de filtro.';
+        lBuscaCEPExceptionKind := TBuscaCEPExceptionKind.EXCEPTION_FILTRO_NOT_FOUND;
+      end;
+      503:
+      begin
+        lMessage := 'Servidor indisponível!';
         lBuscaCEPExceptionKind := TBuscaCEPExceptionKind.EXCEPTION_FILTRO_NOT_FOUND;
       end;
     else

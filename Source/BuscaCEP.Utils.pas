@@ -60,51 +60,55 @@ Type
   {$ENDREGION}
 
   {$REGION 'TBuscaCEPLocalidadeIBGE'}
-  TBuscaCEPLocalidadeIBGE = class
+  TBuscaCEPCacheLocalidade = class
   strict private
     { private declarations }
     FUF: string;
     FIBGE: Integer;
+    FDDD: Integer;
     FNome: string;
     FHash: string;
   protected
     { protected declarations }
   public
     { public declarations }
-    function Add(const pText: string): TBuscaCEPLocalidadeIBGE;
+    function Add(const pTexto: string): TBuscaCEPCacheLocalidade;
     property UF: string read FUF;
     property IBGE: Integer read FIBGE;
+    property DDD: Integer read FDDD;
     property Nome: string read FNome;
     property Hash: string read FHash;
   end;
   {$ENDREGION}
 
-  {$REGION 'TBuscaCEPLocalidadesIBGE'}
-  TBuscaCEPLocalidadesIBGE = class
+  {$REGION 'TBuscaCEPCache'}
+  TBuscaCEPCache = class
   strict private
     { private declarations }
   class var
     FLock: TCriticalSection;
-    FInstance: TBuscaCEPLocalidadesIBGE;
+    FInstance: TBuscaCEPCache;
     class constructor Create;
     class destructor Destroy;
-    class function GetDefault: TBuscaCEPLocalidadesIBGE; static;
+    class function GetDefault: TBuscaCEPCache; static;
   private
-    FLocalidades: TObjectDictionary<string, TBuscaCEPLocalidadeIBGE>;
-    FArquivoIBGE: string;
-    FArquivoIBGECarregado: Boolean;
+    FLocalidades: TObjectDictionary<string, TBuscaCEPCacheLocalidade>;
+    FArquivoCache: string;
+    FArquivoCacheCarregado: Boolean;
   protected
     { protected declarations }
   public
     { public declarations }
     constructor Create;
     destructor Destroy; override;
-    procedure Processar(const pArquivoIBGE: string);
-    function GetLocalidade(const pHashIBGE: string): TBuscaCEPLocalidadeIBGE; overload;
-    function GetLocalidade(const pUF: string; const pLocalidade: string): TBuscaCEPLocalidadeIBGE; overload;
-    function GetHashIBGE(const pUF: string; const pLocalidade: string): string;
+    procedure Processar(const pBuscaCEPCache: string);
+    function GetLocalidade(const pHash: string): TBuscaCEPCacheLocalidade; overload;
+    function GetLocalidade(const pUF: string; const pLocalidade: string): TBuscaCEPCacheLocalidade; overload;
+    function GetHash(const pUF: string; const pLocalidade: string): string;
+    procedure GetCodigos(const pUF: string; const pLocalidade: string; out pCodigoIBGE: Integer; out pCodigoDDD: Integer);
     function GetCodigoIBGE(const pUF: string; const pLocalidade: string): Integer;
-    class property Default: TBuscaCEPLocalidadesIBGE read GetDefault;
+    function GetCodigoDDD(const pUF: string; const pLocalidade: string): Integer;
+    class property Default: TBuscaCEPCache read GetDefault;
   end;
   {$ENDREGION}
 
@@ -121,7 +125,7 @@ function GetHashLocalidadeIBGE(const pUF: string; const pLocalidade: string): st
 {$REGION 'TBuscaCEPEstados'}
 constructor TBuscaCEPEstados.Create;
 begin
-  FEstados := TObjectDictionary<string, TBuscaCEPLogradouroEstado>.Create([doOwnsValues]);
+  FEstados := TObjectDictionary<string, TBuscaCEPLogradouroEstado>.Create([doOwnsValues], 1024);
 end;
 
 destructor TBuscaCEPEstados.Destroy;
@@ -235,55 +239,56 @@ begin
 end;
 {$ENDREGION}
 
-{$REGION 'TBuscaCEPLocalidadeIBGE'}
-function TBuscaCEPLocalidadeIBGE.Add(const pText: string): TBuscaCEPLocalidadeIBGE;
+{$REGION 'TBuscaCEPCacheLocalidade'}
+function TBuscaCEPCacheLocalidade.Add(const pTexto: string): TBuscaCEPCacheLocalidade;
 var
   lValues: TArray<string>;
 begin
   Result := Self;
 
-  // RO|1100015|Alta Floresta D'Oeste|1ca7667a519fdb57a14df2459eae67bf
-  lValues := pText.Split(['|']);
+  // RO|069|1100015|Alta Floresta D'Oeste|91d3d0bbdda98e15bed18dd5b625f319
+  lValues := pTexto.Split(['|']);
 
   FUF   := lValues[0];
-  FIBGE := StrToIntDef(lValues[1], 0);
-  FNome := lValues[2];
-  FHash := lValues[3];
+  FDDD := StrToIntDef(lValues[1], 0);
+  FIBGE := StrToIntDef(lValues[2], 0);
+  FNome := lValues[3];
+  FHash := lValues[4];
 end;
 {$ENDREGION}
 
-{$REGION 'TBuscaCEPLocalidadesIBGE'}
-constructor TBuscaCEPLocalidadesIBGE.Create;
+{$REGION 'TBuscaCEPCache'}
+constructor TBuscaCEPCache.Create;
 begin
-  FArquivoIBGECarregado := False;
-  FLocalidades := TObjectDictionary<string, TBuscaCEPLocalidadeIBGE>.Create([doOwnsValues]);
+  FArquivoCacheCarregado := False;
+  FLocalidades := TObjectDictionary<string, TBuscaCEPCacheLocalidade>.Create([doOwnsValues], 1024);
 end;
 
-destructor TBuscaCEPLocalidadesIBGE.Destroy;
+destructor TBuscaCEPCache.Destroy;
 begin
   FreeAndNil(FLocalidades);
   inherited Destroy;
 end;
 
-class constructor TBuscaCEPLocalidadesIBGE.Create;
+class constructor TBuscaCEPCache.Create;
 begin
   FLock := TCriticalSection.Create;
 end;
 
-class destructor TBuscaCEPLocalidadesIBGE.Destroy;
+class destructor TBuscaCEPCache.Destroy;
 begin
   FreeAndNil(FInstance);
   FreeAndNil(FLock);
 end;
 
-class function TBuscaCEPLocalidadesIBGE.GetDefault: TBuscaCEPLocalidadesIBGE;
+class function TBuscaCEPCache.GetDefault: TBuscaCEPCache;
 begin
   if not Assigned(FInstance) then
   begin
     FLock.Enter;
     try
       if not Assigned(FInstance) then
-        FInstance := TBuscaCEPLocalidadesIBGE.Create;
+        FInstance := TBuscaCEPCache.Create;
     finally
       FLock.Leave;
     end;
@@ -291,10 +296,20 @@ begin
   Result := FInstance;
 end;
 
-function TBuscaCEPLocalidadesIBGE.GetCodigoIBGE(const pUF: string;
-  const pLocalidade: string): Integer;
+function TBuscaCEPCache.GetCodigoDDD(const pUF: string; const pLocalidade: string): Integer;
 var
-  lLocalidade: TBuscaCEPLocalidadeIBGE;
+  lLocalidade: TBuscaCEPCacheLocalidade;
+begin
+  Result := 0;
+
+  lLocalidade := GetLocalidade(pUF, pLocalidade);
+  if Assigned(lLocalidade) then
+    Result := lLocalidade.DDD;
+end;
+
+function TBuscaCEPCache.GetCodigoIBGE(const pUF: string; const pLocalidade: string): Integer;
+var
+  lLocalidade: TBuscaCEPCacheLocalidade;
 begin
   Result := 0;
 
@@ -303,65 +318,87 @@ begin
     Result := lLocalidade.IBGE;
 end;
 
-function TBuscaCEPLocalidadesIBGE.GetLocalidade(const pUF: string;
-  const pLocalidade: string): TBuscaCEPLocalidadeIBGE;
+procedure TBuscaCEPCache.GetCodigos(const pUF: string; const pLocalidade: string;
+  out pCodigoIBGE: Integer; out pCodigoDDD: Integer);
+var
+  lLocalidade: TBuscaCEPCacheLocalidade;
+begin
+  pCodigoDDD := 0;
+  pCodigoIBGE := 0;
+
+  lLocalidade := GetLocalidade(pUF, pLocalidade);
+  if Assigned(lLocalidade) then
+  begin
+    pCodigoDDD := lLocalidade.DDD;
+    pCodigoIBGE := lLocalidade.IBGE;
+  end;
+end;
+
+function TBuscaCEPCache.GetLocalidade(const pUF: string; const pLocalidade: string): TBuscaCEPCacheLocalidade;
 var
   lHash: string;
 begin
   Result := nil;
 
-  // ARQUIVO IBGE.dat
-  Assert(FArquivoIBGECarregado, 'Arquivo IBGE não processado.');
+  // ARQUIVO BuscaCEP.dat
+  Assert(FArquivoCacheCarregado, 'Arquivo BuscaCEP.dat não processado.');
 
-  lHash := GetHashIBGE(pUF, pLocalidade);
+  lHash := GetHash(pUF, pLocalidade);
   FLocalidades.TryGetValue(lHash, Result);
 end;
 
-function TBuscaCEPLocalidadesIBGE.GetHashIBGE(const pUF: string;
-  const pLocalidade: string): string;
+function TBuscaCEPCache.GetHash(const pUF: string; const pLocalidade: string): string;
 begin
   Result := GetHashLocalidadeIBGE(pUF, pLocalidade);
 end;
 
-function TBuscaCEPLocalidadesIBGE.GetLocalidade(
-  const pHashIBGE: string): TBuscaCEPLocalidadeIBGE;
+function TBuscaCEPCache.GetLocalidade(const pHash: string): TBuscaCEPCacheLocalidade;
 begin
   Result := nil;
 
-  // ARQUIVO IBGE.dat
-  Assert(FArquivoIBGECarregado, 'Arquivo IBGE não processado.');
+  // ARQUIVO BuscaCEP.dat
+  Assert(FArquivoCacheCarregado, 'Arquivo BuscaCEP.dat não processado.');
 
-  FLocalidades.TryGetValue(pHashIBGE, Result);
+  FLocalidades.TryGetValue(pHash, Result);
 end;
 
-procedure TBuscaCEPLocalidadesIBGE.Processar(const pArquivoIBGE: string);
+procedure TBuscaCEPCache.Processar(const pBuscaCEPCache: string);
 var
   lFile: TextFile;
   lText: string;
-  lLocalidade: TBuscaCEPLocalidadeIBGE;
+  lLocalidade: TBuscaCEPCacheLocalidade;
 begin
-  if FArquivoIBGECarregado then
+  if FArquivoCacheCarregado then
     Exit;
 
-  FArquivoIBGE := Trim(pArquivoIBGE);
-  if not FileExists(FArquivoIBGE) then
+  FArquivoCache := Trim(pBuscaCEPCache);
+  if not FileExists(FArquivoCache) then
     Exit;
 
   FLock.Enter;
   try
-    AssignFile(lFile, FArquivoIBGE);
+    AssignFile(lFile, FArquivoCache);
     try
       Reset(lFile);
       Readln(lFile, lText); //IGNORA A 1º LINHA
 
-      FArquivoIBGECarregado := True;
+      FArquivoCacheCarregado := True;
 
       while not Eof(lFile) do
       begin
         Readln(lFile, lText);
 
-        lLocalidade := TBuscaCEPLocalidadeIBGE.Create.Add(lText);
-        FLocalidades.Add(lLocalidade.Hash, lLocalidade);
+        lLocalidade := TBuscaCEPCacheLocalidade.Create.Add(lText);
+        try
+          FLocalidades.Add(lLocalidade.Hash, lLocalidade);
+        except
+          on E: EListError do
+            raise Exception.Create('Falha ao processar o arquivo "BuscaCEP.dat": ' + sLineBreak +
+                                   'Hash: ' + lLocalidade.Hash + sLineBreak +
+                                   E.Message);
+          on E: Exception do
+            raise Exception.Create('Falha ao processar o arquivo "BuscaCEP.dat": ' + E.Message);
+        end;
       end;
     finally
       CloseFile(lFile);

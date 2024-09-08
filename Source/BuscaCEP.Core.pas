@@ -400,7 +400,7 @@ begin
   lContent := Trim(pIHTTPResponse.ContentAsString);
 
   // RESPOSTA COM CONTEÚDO?
-  if lContent.IsEmpty then
+  if ((pIHTTPResponse.StatusCode = 200) and lContent.IsEmpty) then
     raise EBuscaCEP.Create(TBuscaCEPExceptionKind.EXCEPTION_FILTRO_INVALID,
                            FProvider,
                            Now(),
@@ -466,8 +466,8 @@ begin
   FHttpRequest := TNetHTTPRequest.Create(nil);
   FHttpRequest.Client := FHttpClient;
 
-  // PROCESSAR ARQUIVO IBGE.dat
-  TBuscaCEPLocalidadesIBGE.Default.Processar(FBuscaCEP.ArquivoIBGE);
+  // PROCESSAR ARQUIVO BuscaCEP.dat
+  TBuscaCEPCache.Default.Processar(FBuscaCEP.ArquivoCache);
 end;
 
 destructor TBuscaCEPRequest.Destroy;

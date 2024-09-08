@@ -38,11 +38,13 @@ type
   IBuscaCEP = interface
     ['{7FAF6DFF-4B8C-409A-8B51-5C38643ECD8D}']
     function GetProviders(const Provider: TBuscaCEPProvidersKind): IBuscaCEPProviders;
-    function GetArquivoIBGE: string;
-    function SetArquivoIBGE(const ArquivoIBGE: string): IBuscaCEP;
+    function GetArquivoCache: string;
+    function SetArquivoCache(const ArquivoCache: string): IBuscaCEP;
+    function GetVersion: string;
 
     property Providers[const Provider: TBuscaCEPProvidersKind]: IBuscaCEPProviders read GetProviders;
-    property ArquivoIBGE: string read GetArquivoIBGE;
+    property ArquivoCache: string read GetArquivoCache;
+    property Version: string read GetVersion;
   end;
 
   IBuscaCEPFiltro = interface

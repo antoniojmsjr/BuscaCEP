@@ -83,6 +83,7 @@ var
   lAPIUF: string;
   lAPICEP: string;
   lLocalidadeIBGE: Integer;
+  lLocalidadeDDD: Integer;
   lBuscaCEPLogradouro: TBuscaCEPLogradouro;
   lBuscaCEPLogradouroEstado: TBuscaCEPLogradouroEstado;
 begin
@@ -115,9 +116,10 @@ begin
     lBuscaCEPLogradouroEstado.Assign(TBuscaCEPEstados.Default.GetEstado(lAPIUF));
 
     lAPILocalidade := Trim(lAPILocalidade);
-    lLocalidadeIBGE := TBuscaCEPLocalidadesIBGE.Default.GetCodigoIBGE(lAPIUF, lAPILocalidade);
+    TBuscaCEPCache.Default.GetCodigos(lAPIUF, lAPILocalidade, lLocalidadeIBGE, lLocalidadeDDD);
     lBuscaCEPLogradouro.Localidade :=
       TBuscaCEPLogradouroLocalidade.Create(lLocalidadeIBGE,
+                                           lLocalidadeDDD,
                                            lAPILocalidade,
                                            lBuscaCEPLogradouroEstado);
 

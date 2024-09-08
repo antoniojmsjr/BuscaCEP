@@ -81,7 +81,8 @@ var
   lAPILocalidade: string;
   lAPIUF: string;
   lAPICEP: string;
-  lAPILocalidadeIBGE: Integer;
+  lLocalidadeDDD: Integer;
+  lLocalidadeIBGE: Integer;
   lBuscaCEPLogradouro: TBuscaCEPLogradouro;
   lBuscaCEPLogradouroEstado: TBuscaCEPLogradouroEstado;
 begin
@@ -99,7 +100,6 @@ begin
     lJSONLogradouro.TryGetValue<string>('bairro',      lAPIBairro);
     lJSONLogradouro.TryGetValue<string>('localidade',  lAPILocalidade);
     lJSONLogradouro.TryGetValue<string>('uf',          lAPIUF);
-    lJSONLogradouro.TryGetValue<Integer>('ibge',       lAPILocalidadeIBGE);
 
     lBuscaCEPLogradouro := TBuscaCEPLogradouro.Create;
 
@@ -114,8 +114,10 @@ begin
     lBuscaCEPLogradouroEstado.Assign(TBuscaCEPEstados.Default.GetEstado(lAPIUF));
 
     lAPILocalidade := Trim(lAPILocalidade);
+    TBuscaCEPCache.Default.GetCodigos(lAPIUF, lAPILocalidade, lLocalidadeIBGE, lLocalidadeDDD);
     lBuscaCEPLogradouro.Localidade :=
-      TBuscaCEPLogradouroLocalidade.Create(lAPILocalidadeIBGE,
+      TBuscaCEPLogradouroLocalidade.Create(lLocalidadeIBGE,
+                                           lLocalidadeDDD,
                                            lAPILocalidade,
                                            lBuscaCEPLogradouroEstado);
 

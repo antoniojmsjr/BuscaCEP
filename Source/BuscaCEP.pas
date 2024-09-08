@@ -35,11 +35,12 @@ type
   TBuscaCEP = class sealed(TInterfacedObject, IBuscaCEP)
   strict private
     { private declarations }
-    FArquivoIBGE: string;
+    FArquivoCache: string;
     FBuscaCEPProviders: IBuscaCEPProviders;
     function GetProviders(const pProvider: TBuscaCEPProvidersKind): IBuscaCEPProviders;
-    function GetArquivoIBGE: string;
-    function SetArquivoIBGE(const pArquivoIBGE: string): IBuscaCEP;
+    function GetArquivoCache: string;
+    function SetArquivoCache(const pArquivoCache: string): IBuscaCEP;
+    function GetVersion: string;
     constructor Create;
   protected
     { protected declarations }
@@ -54,6 +55,8 @@ implementation
 uses
   BuscaCEP.Factory;
 
+{$I BuscaCEP.inc}
+
 {$REGION 'TBuscaCEP'}
 class function TBuscaCEP.New: IBuscaCEP;
 begin
@@ -63,27 +66,31 @@ end;
 constructor TBuscaCEP.Create;
 begin
   {$IFDEF MSWINDOWS}
-  FArquivoIBGE := IncludeTrailingPathDelimiter(GetCurrentDir) + 'IBGE.dat';
+  FArquivoCache := IncludeTrailingPathDelimiter(GetCurrentDir) + 'BuscaCEP.dat';
   {$ENDIF}
 end;
 
-function TBuscaCEP.GetArquivoIBGE: string;
+function TBuscaCEP.GetArquivoCache: string;
 begin
-  Result := FArquivoIBGE;
+  Result := FArquivoCache;
 end;
 
-function TBuscaCEP.SetArquivoIBGE(const pArquivoIBGE: string): IBuscaCEP;
+function TBuscaCEP.SetArquivoCache(const pArquivoCache: string): IBuscaCEP;
 begin
   Result := Self;
-  FArquivoIBGE := pArquivoIBGE;
+  FArquivoCache := pArquivoCache;
 end;
 
-function TBuscaCEP.GetProviders(
-  const pProvider: TBuscaCEPProvidersKind): IBuscaCEPProviders;
+function TBuscaCEP.GetProviders(const pProvider: TBuscaCEPProvidersKind): IBuscaCEPProviders;
 begin
   if not Assigned(FBuscaCEPProviders) then
     FBuscaCEPProviders := TBuscaCEPProviderFactory.New(pProvider, Self);
   Result := FBuscaCEPProviders;
+end;
+
+function TBuscaCEP.GetVersion: string;
+begin
+  Result := BuscaCEPVersion;
 end;
 {$ENDREGION}
 

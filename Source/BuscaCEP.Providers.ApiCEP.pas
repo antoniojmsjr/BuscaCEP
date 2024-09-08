@@ -73,8 +73,7 @@ end;
 {$ENDREGION}
 
 {$REGION 'TBuscaCEPResponseApiCEP'}
-function TBuscaCEPResponseApiCEP.GetComplemento(
-  const pLogradouro: string): string;
+function TBuscaCEPResponseApiCEP.GetComplemento(const pLogradouro: string): string;
 var
   lPosComplemento: Integer;
 begin
@@ -85,8 +84,7 @@ begin
     Result := Trim(Copy(pLogradouro, lPosComplemento+2, (Length(pLogradouro))));
 end;
 
-function TBuscaCEPResponseApiCEP.GetLogradouro(
-  const pLogradouro: string): string;
+function TBuscaCEPResponseApiCEP.GetLogradouro(const pLogradouro: string): string;
 var
   lPosComplemento: Integer;
 begin
@@ -109,6 +107,7 @@ var
   lAPIUF: string;
   lAPICEP: string;
   lLocalidadeIBGE: Integer;
+  lLocalidadeDDD: Integer;
   lBuscaCEPLogradouro: TBuscaCEPLogradouro;
   lBuscaCEPLogradouroEstado: TBuscaCEPLogradouroEstado;
 begin
@@ -139,9 +138,10 @@ begin
     lBuscaCEPLogradouroEstado.Assign(TBuscaCEPEstados.Default.GetEstado(lAPIUF));
 
     lAPILocalidade := Trim(lAPILocalidade);
-    lLocalidadeIBGE := TBuscaCEPLocalidadesIBGE.Default.GetCodigoIBGE(lAPIUF, lAPILocalidade);
+    TBuscaCEPCache.Default.GetCodigos(lAPIUF, lAPILocalidade, lLocalidadeIBGE, lLocalidadeDDD);
     lBuscaCEPLogradouro.Localidade :=
       TBuscaCEPLogradouroLocalidade.Create(lLocalidadeIBGE,
+                                           lLocalidadeDDD,
                                            lAPILocalidade,
                                            lBuscaCEPLogradouroEstado);
 

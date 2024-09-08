@@ -258,6 +258,8 @@ type
     { private declarations }
     [JsonName('ibge')]
     FIBGE: Integer;
+    [JsonName('ddd')]
+    FDDD: Integer;
     [JsonName('nome')]
     FNome: string;
     [JsonName('estado')]
@@ -267,10 +269,12 @@ type
   public
     { public declarations }
     constructor Create(const pIBGE: Integer;
+                       const pDDD: Integer;
                        const pLocalidade: string;
                        const pEstado: TBuscaCEPLogradouroEstado); overload;
     destructor Destroy; override;
     property IBGE: Integer read FIBGE;
+    property DDD: Integer read FDDD;
     property Nome: string read FNome;
     property Estado: TBuscaCEPLogradouroEstado read FEstado;
   end;
@@ -529,10 +533,11 @@ end;
 
 {$REGION 'TBuscaCEPLogradouroLocalidade'}
 constructor TBuscaCEPLogradouroLocalidade.Create(const pIBGE: Integer;
-  const pLocalidade: string;
+  const pDDD: Integer; const pLocalidade: string;
   const pEstado: TBuscaCEPLogradouroEstado);
 begin
   FIBGE := pIBGE;
+  FDDD := pDDD;
   FNome := Trim(pLocalidade);
   FEstado := pEstado;
 end;
