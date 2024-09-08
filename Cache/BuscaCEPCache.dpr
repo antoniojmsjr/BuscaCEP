@@ -1,4 +1,4 @@
-program BuscaCEPIBGE;
+program BuscaCEPCache;
 
 uses
   Vcl.Forms,
@@ -11,7 +11,7 @@ begin
 
   Application.Initialize;
   Application.MainFormOnTaskbar := True;
-  Application.Title := 'BuscaCEP - Gerar Arquivo IBGE';
+  Application.Title := 'BuscaCEP - Gerar Arquivo Cache';
   Application.CreateForm(TfrmMain, frmMain);
   Application.Run;
 end.
