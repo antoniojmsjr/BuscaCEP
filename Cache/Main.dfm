@@ -27,7 +27,6 @@ object frmMain: TfrmMain
     ParentBackground = False
     ShowCaption = False
     TabOrder = 0
-    ExplicitWidth = 494
     object lblHeader: TLabel
       AlignWithMargins = True
       Left = 1
@@ -60,9 +59,6 @@ object frmMain: TfrmMain
     Align = alTop
     Caption = ' Gera'#231#227'o do arquivo de Cache '
     TabOrder = 1
-    ExplicitLeft = 0
-    ExplicitTop = 43
-    ExplicitWidth = 449
     object Label1: TLabel
       AlignWithMargins = True
       Left = 7
@@ -77,9 +73,7 @@ object frmMain: TfrmMain
       Color = cl3DLight
       ParentColor = False
       Transparent = False
-      ExplicitLeft = 9
-      ExplicitTop = 45
-      ExplicitWidth = 480
+      ExplicitWidth = 59
     end
     object lblIBGETotalRegistros: TLabel
       AlignWithMargins = True
@@ -95,8 +89,7 @@ object frmMain: TfrmMain
       Color = clWindow
       ParentColor = False
       Transparent = True
-      ExplicitLeft = 9
-      ExplicitWidth = 435
+      ExplicitWidth = 104
     end
     object Label4: TLabel
       AlignWithMargins = True
@@ -128,8 +121,7 @@ object frmMain: TfrmMain
       Color = clWindow
       ParentColor = False
       Transparent = True
-      ExplicitLeft = 9
-      ExplicitWidth = 435
+      ExplicitWidth = 67
     end
     object Bevel1: TBevel
       AlignWithMargins = True
@@ -171,15 +163,11 @@ object frmMain: TfrmMain
     Align = alClient
     Caption = ' Teste e valida'#231#227'o do arquivo de cache '
     TabOrder = 2
-    ExplicitLeft = 1
-    ExplicitTop = 208
-    ExplicitWidth = 449
-    ExplicitHeight = 280
     object Label3: TLabel
       Left = 73
       Top = 40
-      Width = 13
-      Height = 20
+      Width = 8
+      Height = 13
       Caption = '+'
     end
     object edtUF: TLabeledEdit
@@ -274,8 +262,6 @@ object frmMain: TfrmMain
             'BuscaCEP.Utils.TBuscaCEPCache.Default.GetHash('#39'RS'#39', '#39'Porto Alegr' +
             'e'#39');')
         TabOrder = 0
-        ExplicitLeft = 0
-        ExplicitHeight = 104
       end
     end
   end

@@ -98,7 +98,10 @@ begin
     raise Exception.Create('Hash não calculado!');
   end;
 
+  // PROCESSAMENTO DO ARQUIVO BuscaCEP.dat
   TBuscaCEPCache.Default.Processar(lArquivo);
+
+  // LOCALIZAÇÃO DA LOCALIDADE
   lLocalidade := TBuscaCEPCache.Default.GetLocalidade(edtHash.Text);
 
   if not Assigned(lLocalidade) then
@@ -107,8 +110,8 @@ begin
   lLocalidadeStr := EmptyStr;
   lLocalidadeStr := Concat(lLocalidadeStr, 'Estado: ', lLocalidade.UF, sLineBreak);
   lLocalidadeStr := Concat(lLocalidadeStr, 'Localidade: ', lLocalidade.Nome, sLineBreak);
-  lLocalidadeStr := Concat(lLocalidadeStr, 'DDD: ', IntToStr(lLocalidade.DDD), sLineBreak);
   lLocalidadeStr := Concat(lLocalidadeStr, 'IBGE: ', IntToStr(lLocalidade.IBGE), sLineBreak);
+  lLocalidadeStr := Concat(lLocalidadeStr, 'DDD: ', IntToStr(lLocalidade.DDD), sLineBreak);
   lLocalidadeStr := Concat(lLocalidadeStr, 'Hash: ', lLocalidade.Hash);
 
   ShowMessage(lLocalidadeStr);
