@@ -22,7 +22,7 @@ Com base nos dados importado da [API de localidades](https://servicodados.ibge.g
 
 ### Estrututa
 
-| UF | CÓDIGO IBGE | DDD | LOCALIDADE | * HASH |
+| UF | DDD | CÓDIGO IBGE | LOCALIDADE | * HASH |
 |---|---|---|---|---|
 |RS|51|3550308|Porto Alegre|cab02944fee56ad06c1f288340ae02f1|
 |SP|11|3550308|São Paulo|35b3cb29a9f04e415cd69c4dd2e45083|
