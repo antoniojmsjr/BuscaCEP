@@ -28,13 +28,13 @@ Com base nos dados importado da [API de localidades](https://servicodados.ibge.g
 |SP|11|3550308|São Paulo|35b3cb29a9f04e415cd69c4dd2e45083|
 |RJ|21|3304557|Rio de Janeiro|a245015dea599745f99cf43da0e882f9|
 
-* O Hash é utilizado para otimizar na busca da localidade, e é calculado usando **UF** e **Localidade**.
+* O Hash é utilizado para otimizar na busca dos dados, e é calculado usando **UF** e a **Localidade**.
 
 ```delphi
 uses
 BuscaCEP.Utils;
   
-TBuscaCEPLocalidadesIBGE.Default.GetHashIBGE('RS', 'Porto alegre');
+TBuscaCEPCache.Default.GetHash('RS', 'Porto alegre');
 ```
 
 ### Uso
@@ -47,15 +47,18 @@ uses
 ```delphi
 var
   lArquivo: string;
-  lLocalidade: TBuscaCEPLocalidadeIBGE;
+  lLocalidade: TBuscaCEPCacheLocalidade;
   lLocalidadeStr: string;
 begin
-  lArquivo := IncludeTrailingPathDelimiter(GetCurrentDir) + 'IBGE.dat';
+  lArquivo := IncludeTrailingPathDelimiter(GetCurrentDir) + 'BuscaCEP.dat';
   if not FileExists(lArquivo) then
     raise Exception.Create('Arquivo não localizado: ' + lArquivo);
 
-  TBuscaCEPLocalidadesIBGE.Default.Processar(lArquivo);
-  lLocalidade := TBuscaCEPLocalidadesIBGE.Default.GetLocalidade('RS', 'Porto Alegre');
+  // PROCESSAMENTO DO ARQUIVO BuscaCEP.dat
+  TBuscaCEPCache.Default.Processar(lArquivo);
+
+  // LOCALIZAÇÃO DA LOCALIDADE
+  lLocalidade := TBuscaCEPCache.Default.GetLocalidade('RS', 'Porto Alegre');
 
   if not Assigned(lLocalidade) then
     raise Exception.Create('Localidade não encontrada.');
@@ -64,6 +67,7 @@ begin
   lLocalidadeStr := Concat(lLocalidadeStr, 'Estado: ', lLocalidade.UF, sLineBreak);
   lLocalidadeStr := Concat(lLocalidadeStr, 'Localidade: ', lLocalidade.Nome, sLineBreak);
   lLocalidadeStr := Concat(lLocalidadeStr, 'IBGE: ', IntToStr(lLocalidade.IBGE), sLineBreak);
+  lLocalidadeStr := Concat(lLocalidadeStr, 'DDD: ', IntToStr(lLocalidade.DDD), sLineBreak);
   lLocalidadeStr := Concat(lLocalidadeStr, 'Hash: ', lLocalidade.Hash);
 
   ShowMessage(lLocalidadeStr);
