@@ -26,7 +26,7 @@ Essa biblioteca é ideal para desenvolvedores Delphi que buscam uma solução ro
 #### Recursos:
 
 * Consulta Abrangente: BuscaCEP permite consultar tanto por *CEP* quanto por *logradouro*, flexibilizando a obtenção das informações de endereço.
-* Consulta Detalhada: Com BuscaCEP as informações do endereço são completas, incluindo: *logradouro, complemento, bairro, CEP, localidade, estado, região e código IBGE*.
+* Consulta Detalhada: Com BuscaCEP as informações do endereço são completas, incluindo: *logradouro, complemento, bairro, CEP, localidade, estado, região, código IBGE e código DDD*.
 * Código IBGE: Com BuscaCEP o código IBGE é fornecido de forma *off-line* através do arquivo *IBGE.dat* disponibilizado junto com a biblioteca.
 * Integração com Principais Players: Integrado com os principais serviços de consulta de CEP do Brasil: *[Correios](https://buscacepinter.correios.com.br/app/endereco/index.php), [ViaCEP](https://viacep.com.br/), [BrasilAPI](https://brasilapi.com.br/)*, entre outros. 
 * Facilidade de Integração: Com uma interface amigável e documentação detalhada, a BuscaCEP é fácil de integrar em qualquer projeto.
@@ -51,30 +51,29 @@ Se você optar por instalar manualmente, basta adicionar as seguintes pastas ao 
 
 ## :beginner: Provedores Homologados
 
-| Provedor | Usa APIKey? | Busca por CEP? | * Busca por Logradouro? | ** Usa IBGE.dat? |
-|---|---|---|---|---|
-| [Correios](https://buscacepinter.correios.com.br/app/cep/index.php) | NÃO | SIM | SIM | SIM |
-| [Via CEP](https://viacep.com.br) | NÃO | SIM | SIM | NÃO |
-| [Brasil API](https://brasilapi.com.br) | NÃO | SIM | NÃO | SIM| SIM |
-| [CEP Aberto](https://www.cepaberto.com) | SIM | SIM | SIM | NÃO |
-| [Republica Virtual](https://www.republicavirtual.com.br/cep) | NÃO | SIM | NÃO | SIM |
-| [CEP Certo](https://www.cepcerto.com) | NÃO | SIM | SIM | SIM |
-| [KingHost](https://king.host) | SIM | SIM | NÃO | SIM |
-| [Postmon](https://postmon.com.br) | NÃO | SIM | NÃO | NÃO |
-| [CEP Livre](https://ceplivre.com.br) | SIM | SIM | SIM | SIM |
-| [Open CEP](https://opencep.com) | SIM | SIM | SIM | NÃO |
-| [API CEP](https://apicep.com) | SIM | SIM | SIM | SIM |
-| [Brasil Aberto](https://brasilaberto.com) | SIM | SIM | SIM | SIM |
+| Provedor | Usa APIKey? | Busca por CEP? | * Busca por Logradouro? |
+|---|---|---|---|
+| [Correios](https://buscacepinter.correios.com.br/app/cep/index.php) | NÃO | SIM | SIM |
+| [Via CEP](https://viacep.com.br) | NÃO | SIM | SIM |
+| [Brasil API](https://brasilapi.com.br) | NÃO | SIM | NÃO | SIM|
+| [CEP Aberto](https://www.cepaberto.com) | SIM | SIM | SIM |
+| [Republica Virtual](https://www.republicavirtual.com.br/cep) | NÃO | SIM | NÃO |
+| [CEP Certo](https://www.cepcerto.com) | NÃO | SIM | SIM |
+| [KingHost](https://king.host) | SIM | SIM | NÃO |
+| [Postmon](https://postmon.com.br) | NÃO | SIM | NÃO |
+| [CEP Livre](https://ceplivre.com.br) | SIM | SIM | SIM |
+| [Open CEP](https://opencep.com) | SIM | SIM | SIM |
+| [API CEP](https://apicep.com) | SIM | SIM | SIM |
+| [Brasil Aberto](https://brasilaberto.com) | SIM | SIM | SIM |
 
 \* Para consultar usando o logradouro são necessários três parâmetros obrigatórios (UF, Cidade e Logradouro).</br>
-** Algumas APIs de CEP não retornam o código IBGE na consulta. Por isso, é utilizado o arquivo **IBGE.dat** para fornecer esse código.
 
-## :globe_with_meridians: Código IBGE
+## :globe_with_meridians: Arquivo de Cache(BuscaCEP.dat)
 
-Para disponibilizar o código IBGE da localidade no retorno da consulta, foi criado o arquivo **IBGE.dat** com base na [API de localidades](https://servicodados.ibge.gov.br/api/docs/localidades) do IBGE.
+Para disponibilizar o código IBGE e o código DDD da localidade no retorno da consulta, foi criado o arquivo **BuscaCEP.dat** com base na [API de localidades](https://servicodados.ibge.gov.br/api/docs/localidades) do IBGE e no site da [Anatel](https://www.anatel.gov.br/dadosabertos/PDA/Codigo_Nacional/PGCN.csv).
 
 * O arquivo dever ser usado junto ao aplicativo ou ser definido na biblioteca.
-* Esse arquivo pode ser atualizado usando o projeto [BuscaCEPIBGE](https://github.com/antoniojmsjr/BuscaCEP/tree/main/IBGE).
+* Esse arquivo pode ser atualizado usando o projeto [BuscaCEPCache](https://github.com/antoniojmsjr/BuscaCEP/tree/main/Cache).
 
 ## ⚡️ Uso da biblioteca
 
@@ -97,7 +96,7 @@ var
 begin
   try
     lBuscaCEPResponse := TBuscaCEP.New
-      //.SetArquivoIBGE() [OPCIONAL]
+      //.SetArquivoCache() [OPCIONAL]
       .Providers[TBuscaCEPProvidersKind.Correios]
         //.SetAPIKey() [CONFORME O PROVEDOR]
         .Filtro
@@ -142,7 +141,7 @@ var
 begin
   try
     lBuscaCEPResponse := TBuscaCEP.New
-      //.SetArquivoIBGE() [OPCIONAL]
+      //.SetArquivoCache() [OPCIONAL]
       .Providers[TBuscaCEPProvidersKind.Correios]
         //.SetAPIKey() [CONFORME O PROVEDOR]
         .Filtro
@@ -196,6 +195,7 @@ begin
     lBuscaCEPLogradouro.Bairro;
     lBuscaCEPLogradouro.Localidade.Nome;
     lBuscaCEPLogradouro.Localidade.IBGE;
+    lBuscaCEPLogradouro.Localidade.DDD;
     lBuscaCEPLogradouro.Localidade.Estado.Nome;
     lBuscaCEPLogradouro.Localidade.Estado.IBGE;
     lBuscaCEPLogradouro.Localidade.Estado.Sigla;
@@ -222,6 +222,7 @@ begin
       "cep": "90520003",
       "localidade": {
         "ibge": 4314902,
+        "ddd": 51,
         "nome": "Porto Alegre",
         "estado": {
           "ibge": 43,
