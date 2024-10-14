@@ -129,8 +129,7 @@ end;
 {$ENDREGION}
 
 {$REGION 'TBuscaCEPRequestOpenCEP'}
-procedure TBuscaCEPRequestOpenCEP.CheckContentResponse(
-  pIHTTPResponse: IHTTPResponse);
+procedure TBuscaCEPRequestOpenCEP.CheckContentResponse(pIHTTPResponse: IHTTPResponse);
 var
   lMessage: string;
   lContent: string;
@@ -168,7 +167,7 @@ begin
       end;
       404:
       begin
-        lMessage := 'Logradouro não localizado, verificar os parâmetros de filtro.';
+        lMessage := 'Logradouro não encontrado. Verifique os parâmetros de filtro.';
         lBuscaCEPExceptionKind := TBuscaCEPExceptionKind.EXCEPTION_FILTRO_NOT_FOUND;
       end;
     else
@@ -210,7 +209,7 @@ begin
       raise EBuscaCEP.Create(TBuscaCEPExceptionKind.EXCEPTION_FILTRO_INVALID,
                              FProvider,
                              Now(),
-                             'CEP informado é inválido.');
+                             'O CEP informado é inválido.');
     end;
   end;
 
@@ -219,11 +218,10 @@ begin
       raise EBuscaCEP.Create(TBuscaCEPExceptionKind.EXCEPTION_FILTRO_INVALID,
                              FProvider,
                              Now(),
-                             'Provedor não possui busca por logradouro.');
+                             'O provedor não oferece busca por logradouro.');
 end;
 
-function TBuscaCEPRequestOpenCEP.GetResource(
-  pBuscaCEPFiltro: IBuscaCEPFiltro): string;
+function TBuscaCEPRequestOpenCEP.GetResource(pBuscaCEPFiltro: IBuscaCEPFiltro): string;
 var
   lCEP: string;
 begin
@@ -232,11 +230,9 @@ begin
   Result := Format('/v1/%s.%s', [lCEP, 'json']);
 end;
 
-function TBuscaCEPRequestOpenCEP.GetResponse(
-  pIHTTPResponse: IHTTPResponse): IBuscaCEPResponse;
+function TBuscaCEPRequestOpenCEP.GetResponse(pIHTTPResponse: IHTTPResponse): IBuscaCEPResponse;
 begin
-  Result := TBuscaCEPResponseOpenCEP.Create(
-    pIHTTPResponse.ContentAsString, FProvider, FRequestTime);
+  Result := TBuscaCEPResponseOpenCEP.Create(pIHTTPResponse.ContentAsString, FProvider, FRequestTime);
 end;
 
 function TBuscaCEPRequestOpenCEP.InternalExecute: IHTTPResponse;

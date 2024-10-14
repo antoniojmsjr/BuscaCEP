@@ -97,8 +97,7 @@ end;
 {$ENDREGION}
 
 {$REGION 'TBuscaCEPResponseKingHost'}
-constructor TBuscaCEPResponseKingHost.Create(const pContent: string;
-  const pProvider: string; const pRequestTime: Integer; const pCEP: string);
+constructor TBuscaCEPResponseKingHost.Create(const pContent: string; const pProvider: string; const pRequestTime: Integer; const pCEP: string);
 begin
   inherited Create(pContent, pProvider, pRequestTime);
   FCEP := Trim(OnlyNumber(pCEP));
@@ -160,8 +159,7 @@ end;
 {$ENDREGION}
 
 {$REGION 'TBuscaCEPRequestKingHost'}
-procedure TBuscaCEPRequestKingHost.CheckContentResponse(
-  pIHTTPResponse: IHTTPResponse);
+procedure TBuscaCEPRequestKingHost.CheckContentResponse(pIHTTPResponse: IHTTPResponse);
 var
   lMessage: string;
   lContent: string;
@@ -177,7 +175,7 @@ begin
   try
     if (pIHTTPResponse.HeaderValue['Content-Type'] = 'text/xml') then
     begin
-      lMessage := 'Chave de Autenticação é inválida/não autorizada.';
+      lMessage := 'A Chave de Autenticação é obrigatória e deve ser informada.';
       lBuscaCEPExceptionKind := TBuscaCEPExceptionKind.EXCEPTION_REQUEST_INVALID;
       Exit;
     end;
@@ -215,7 +213,7 @@ begin
           lJSONResponse.TryGetValue<integer>('resultado', lAPIResultado);
           if (lAPIResultado = 0) then
           begin
-            lMessage := 'Logradouro não localizado, verificar os parâmetros de filtro.';
+            lMessage := 'Logradouro não encontrado. Verifique os parâmetros de filtro.';
             lBuscaCEPExceptionKind := TBuscaCEPExceptionKind.EXCEPTION_FILTRO_NOT_FOUND;
           end;
         finally
@@ -261,7 +259,7 @@ begin
       raise EBuscaCEP.Create(TBuscaCEPExceptionKind.EXCEPTION_FILTRO_INVALID,
                              FProvider,
                              Now(),
-                             'CEP informado é inválido.');
+                             'O CEP informado é inválido.');
     end;
   end;
 
@@ -270,17 +268,16 @@ begin
       raise EBuscaCEP.Create(TBuscaCEPExceptionKind.EXCEPTION_FILTRO_INVALID,
                              FProvider,
                              Now(),
-                             'Provedor não possui busca por logradouro.');
+                             'O provedor não oferece busca por logradouro.');
 
   if (FBuscaCEPProvider.APIKey = EmptyStr) then
     raise EBuscaCEP.Create(TBuscaCEPExceptionKind.EXCEPTION_REQUEST_INVALID,
                            FProvider,
                            Now(),
-                           'Chave de Autenticação é obrigatório e deve ser informado.');
+                           'A Chave de Autenticação é obrigatória e deve ser informada.');
 end;
 
-function TBuscaCEPRequestKingHost.GetResource(
-  pBuscaCEPFiltro: IBuscaCEPFiltro): string;
+function TBuscaCEPRequestKingHost.GetResource(pBuscaCEPFiltro: IBuscaCEPFiltro): string;
 var
   lCEP: string;
 begin
@@ -294,11 +291,9 @@ begin
   Result := Concat(Result, Format('cep=%s', [lCEP]));
 end;
 
-function TBuscaCEPRequestKingHost.GetResponse(
-  pIHTTPResponse: IHTTPResponse): IBuscaCEPResponse;
+function TBuscaCEPRequestKingHost.GetResponse(pIHTTPResponse: IHTTPResponse): IBuscaCEPResponse;
 begin
-  Result := TBuscaCEPResponseKingHost.Create(
-    pIHTTPResponse.ContentAsString, FProvider, FRequestTime, FBuscaCEPProvider.Filtro.CEP);
+  Result := TBuscaCEPResponseKingHost.Create(pIHTTPResponse.ContentAsString, FProvider, FRequestTime, FBuscaCEPProvider.Filtro.CEP);
 end;
 
 function TBuscaCEPRequestKingHost.InternalExecute: IHTTPResponse;

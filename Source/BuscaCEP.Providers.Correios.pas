@@ -98,8 +98,7 @@ end;
 {$ENDREGION}
 
 {$REGION 'TBuscaCEPResponseCorreios'}
-function TBuscaCEPResponseCorreios.GetComplemento(
-  const pLogradouro: string): string;
+function TBuscaCEPResponseCorreios.GetComplemento(const pLogradouro: string): string;
 var
   lPosComplemento: Integer;
 begin
@@ -107,11 +106,10 @@ begin
   lPosComplemento := Pos(' - ', pLogradouro);
 
   if (lPosComplemento > 0) then
-    Result := Trim(Copy(pLogradouro, lPosComplemento+2, (Length(pLogradouro))));
+    Result := Trim(Copy(pLogradouro, (lPosComplemento + 2), (Length(pLogradouro))));
 end;
 
-function TBuscaCEPResponseCorreios.GetLogradouro(
-  const pLogradouro: string): string;
+function TBuscaCEPResponseCorreios.GetLogradouro(const pLogradouro: string): string;
 var
   lPosComplemento: Integer;
 begin
@@ -191,8 +189,7 @@ end;
 {$ENDREGION}
 
 {$REGION 'TBuscaCEPRequestCorreios'}
-procedure TBuscaCEPRequestCorreios.CheckContentResponse(
-  pIHTTPResponse: IHTTPResponse);
+procedure TBuscaCEPRequestCorreios.CheckContentResponse(pIHTTPResponse: IHTTPResponse);
 var
   lMessage: string;
   lContent: string;
@@ -247,7 +244,7 @@ begin
       end;
       302:
       begin
-        lMessage := 'Filtro informado é inválido.';
+        lMessage := 'O filtro informado é inválido.';
         lBuscaCEPExceptionKind := TBuscaCEPExceptionKind.EXCEPTION_FILTRO_INVALID;
       end;
     else
@@ -270,9 +267,7 @@ begin
   Result := BuscaCEP.Providers.Correios.Utils.GetFORMData(pBuscaCEPFiltro);
 end;
 
-procedure TBuscaCEPRequestCorreios.GetResource(
-  pBuscaCEPFiltro: IBuscaCEPFiltro; out poResource: string;
-  out poReferer: string);
+procedure TBuscaCEPRequestCorreios.GetResource(pBuscaCEPFiltro: IBuscaCEPFiltro; out poResource: string; out poReferer: string);
 begin
   if pBuscaCEPFiltro.FiltroPorCEP then
   begin

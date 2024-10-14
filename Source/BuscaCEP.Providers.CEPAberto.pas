@@ -151,8 +151,7 @@ end;
 {$ENDREGION}
 
 {$REGION 'TBuscaCEPRequestCEPAberto'}
-procedure TBuscaCEPRequestCEPAberto.CheckContentResponse(
-  pIHTTPResponse: IHTTPResponse);
+procedure TBuscaCEPRequestCEPAberto.CheckContentResponse(pIHTTPResponse: IHTTPResponse);
 var
   lMessage: string;
   lContent: string;
@@ -181,7 +180,7 @@ begin
 
           if (lJSONResponse.ToString = '{}') then
           begin
-            lMessage := 'Logradouro não localizado, verificar os parâmetros de filtro.';
+            lMessage := 'Logradouro não encontrado. Verifique os parâmetros de filtro.';
             lBuscaCEPExceptionKind := TBuscaCEPExceptionKind.EXCEPTION_FILTRO_NOT_FOUND;
           end;
         finally
@@ -206,12 +205,12 @@ begin
       end;
       401:
       begin
-        lMessage := 'Chave de Autenticação é obrigatório e deve ser informado.';
+        lMessage := 'A Chave de Autenticação é obrigatória e deve ser informada.';
         lBuscaCEPExceptionKind := TBuscaCEPExceptionKind.EXCEPTION_REQUEST_INVALID;
       end;
       403:
       begin
-        lMessage := 'O limite de requisições atingido, tente mais tarde.';
+        lMessage := 'O limite de requisições foi atingido. Tente novamente mais tarde.';
         lBuscaCEPExceptionKind := TBuscaCEPExceptionKind.EXCEPTION_REQUEST_INVALID;
       end;
     else
@@ -237,11 +236,10 @@ begin
     raise EBuscaCEP.Create(TBuscaCEPExceptionKind.EXCEPTION_REQUEST_INVALID,
                            FProvider,
                            Now(),
-                           'Chave de Autenticação é obrigatório e deve ser informado.');
+                           'A Chave de Autenticação é obrigatória e deve ser informada.');
 end;
 
-function TBuscaCEPRequestCEPAberto.GetResource(
-  pBuscaCEPFiltro: IBuscaCEPFiltro): string;
+function TBuscaCEPRequestCEPAberto.GetResource(pBuscaCEPFiltro: IBuscaCEPFiltro): string;
 var
   lCEP: string;
 begin
@@ -264,8 +262,7 @@ begin
   end;
 end;
 
-function TBuscaCEPRequestCEPAberto.GetResponse(
-  pIHTTPResponse: IHTTPResponse): IBuscaCEPResponse;
+function TBuscaCEPRequestCEPAberto.GetResponse(pIHTTPResponse: IHTTPResponse): IBuscaCEPResponse;
 begin
   Result := TBuscaCEPResponseCEPAberto.Create(pIHTTPResponse.ContentAsString, FProvider, FRequestTime);
 end;

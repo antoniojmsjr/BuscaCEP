@@ -195,8 +195,7 @@ end;
 {$ENDREGION}
 
 {$REGION 'TBuscaCEPRequestViaCEP'}
-procedure TBuscaCEPRequestViaCEP.CheckContentResponse(
-  pIHTTPResponse: IHTTPResponse);
+procedure TBuscaCEPRequestViaCEP.CheckContentResponse(pIHTTPResponse: IHTTPResponse);
 var
   lMessage: string;
   lContent: string;
@@ -224,7 +223,7 @@ begin
 
           if (lJSONResponse.ToString = '[]') then
           begin
-            lMessage := 'Logradouro não localizado, verificar os parâmetros de filtro.';
+            lMessage := 'Logradouro não encontrado. Verifique os parâmetros de filtro.';
             lBuscaCEPExceptionKind := TBuscaCEPExceptionKind.EXCEPTION_FILTRO_NOT_FOUND;
             Exit;
           end;
@@ -233,7 +232,7 @@ begin
           begin
             if Assigned(lJSONResponse.FindValue('erro')) then
             begin
-              lMessage := 'Logradouro não localizado, verificar os parâmetros de filtro.';
+              lMessage := 'Logradouro não encontrado. Verifique os parâmetros de filtro.';
               lBuscaCEPExceptionKind := TBuscaCEPExceptionKind.EXCEPTION_FILTRO_NOT_FOUND;
             end;
           end;
@@ -243,7 +242,7 @@ begin
       end;
       400:
       begin
-        lMessage := 'Requisição inválida, verificar os parâmetros de filtro.';
+        lMessage := 'Requisição inválida. Verifique os parâmetros de filtro.';
         lBuscaCEPExceptionKind := TBuscaCEPExceptionKind.EXCEPTION_FILTRO_INVALID;
       end;
     else
@@ -261,8 +260,7 @@ begin
   end;
 end;
 
-function TBuscaCEPRequestViaCEP.GetResource(
-  pBuscaCEPFiltro: IBuscaCEPFiltro): string;
+function TBuscaCEPRequestViaCEP.GetResource(pBuscaCEPFiltro: IBuscaCEPFiltro): string;
 var
   lCEP: string;
 begin
@@ -286,8 +284,7 @@ begin
   end;
 end;
 
-function TBuscaCEPRequestViaCEP.GetResponse(
-  pIHTTPResponse: IHTTPResponse): IBuscaCEPResponse;
+function TBuscaCEPRequestViaCEP.GetResponse(pIHTTPResponse: IHTTPResponse): IBuscaCEPResponse;
 begin
   Result := TBuscaCEPResponseViaCEP.Create(pIHTTPResponse.ContentAsString, FProvider, FRequestTime);
 end;

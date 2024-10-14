@@ -224,7 +224,7 @@ begin
 
           if (lJSONResponse.ToString = '[]') then
           begin
-            lMessage := 'Logradouro não localizado, verificar os parâmetros de filtro.';
+            lMessage := 'Logradouro não encontrado. Verifique os parâmetros de filtro.';
             lBuscaCEPExceptionKind := TBuscaCEPExceptionKind.EXCEPTION_FILTRO_NOT_FOUND;
             Exit;
           end;
@@ -256,8 +256,7 @@ begin
   end;
 end;
 
-function TBuscaCEPRequestCEPCerto.GetResource(
-  pBuscaCEPFiltro: IBuscaCEPFiltro): string;
+function TBuscaCEPRequestCEPCerto.GetResource(pBuscaCEPFiltro: IBuscaCEPFiltro): string;
 var
   lCEP: string;
   lUF: string;
@@ -289,8 +288,7 @@ begin
   end;
 end;
 
-function TBuscaCEPRequestCEPCerto.GetResponse(
-  pIHTTPResponse: IHTTPResponse): IBuscaCEPResponse;
+function TBuscaCEPRequestCEPCerto.GetResponse(pIHTTPResponse: IHTTPResponse): IBuscaCEPResponse;
 begin
   Result := TBuscaCEPResponseCEPCerto.Create(pIHTTPResponse.ContentAsString, FProvider, FRequestTime);
 end;

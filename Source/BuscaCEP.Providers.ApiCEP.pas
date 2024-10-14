@@ -81,7 +81,7 @@ begin
   lPosComplemento := Pos(' - ', pLogradouro);
 
   if (lPosComplemento > 0) then
-    Result := Trim(Copy(pLogradouro, lPosComplemento+2, (Length(pLogradouro))));
+    Result := Trim(Copy(pLogradouro, (lPosComplemento + 2), (Length(pLogradouro))));
 end;
 
 function TBuscaCEPResponseApiCEP.GetLogradouro(const pLogradouro: string): string;
@@ -153,8 +153,7 @@ end;
 {$ENDREGION}
 
 {$REGION 'TBuscaCEPRequestApiCEP'}
-procedure TBuscaCEPRequestApiCEP.CheckContentResponse(
-  pIHTTPResponse: IHTTPResponse);
+procedure TBuscaCEPRequestApiCEP.CheckContentResponse(pIHTTPResponse: IHTTPResponse);
 var
   lMessage: string;
   lContent: string;
@@ -192,7 +191,7 @@ begin
       end;
       404:
       begin
-        lMessage := 'Logradouro não localizado, verificar os parâmetros de filtro.';
+        lMessage := 'Logradouro não encontrado. Verifique os parâmetros de filtro.';
         lBuscaCEPExceptionKind := TBuscaCEPExceptionKind.EXCEPTION_FILTRO_NOT_FOUND;
       end;
       429:
@@ -258,7 +257,7 @@ begin
       raise EBuscaCEP.Create(TBuscaCEPExceptionKind.EXCEPTION_FILTRO_INVALID,
                              FProvider,
                              Now(),
-                             'CEP informado é inválido.');
+                             'O CEP informado é inválido.');
     end;
   end;
 
@@ -267,11 +266,10 @@ begin
       raise EBuscaCEP.Create(TBuscaCEPExceptionKind.EXCEPTION_FILTRO_INVALID,
                              FProvider,
                              Now(),
-                             'Provedor não possui busca por logradouro.');
+                             'O provedor não oferece busca por logradouro.');
 end;
 
-function TBuscaCEPRequestApiCEP.GetResource(
-  pBuscaCEPFiltro: IBuscaCEPFiltro): string;
+function TBuscaCEPRequestApiCEP.GetResource(pBuscaCEPFiltro: IBuscaCEPFiltro): string;
 var
   lCEP: string;
 begin
@@ -282,11 +280,9 @@ begin
   Result := Format('/file/apicep/%s.%s', [lCEP, 'json']);
 end;
 
-function TBuscaCEPRequestApiCEP.GetResponse(
-  pIHTTPResponse: IHTTPResponse): IBuscaCEPResponse;
+function TBuscaCEPRequestApiCEP.GetResponse(pIHTTPResponse: IHTTPResponse): IBuscaCEPResponse;
 begin
-  Result := TBuscaCEPResponseApiCEP.Create(
-    pIHTTPResponse.ContentAsString, FProvider, FRequestTime);
+  Result := TBuscaCEPResponseApiCEP.Create(pIHTTPResponse.ContentAsString, FProvider, FRequestTime);
 end;
 
 function TBuscaCEPRequestApiCEP.InternalExecute: IHTTPResponse;

@@ -131,8 +131,7 @@ end;
 {$ENDREGION}
 
 {$REGION 'TBuscaCEPRequestBrasilAberto'}
-procedure TBuscaCEPRequestBrasilAberto.CheckContentResponse(
-  pIHTTPResponse: IHTTPResponse);
+procedure TBuscaCEPRequestBrasilAberto.CheckContentResponse(pIHTTPResponse: IHTTPResponse);
 var
   lMessage: string;
   lContent: string;
@@ -168,9 +167,14 @@ begin
           lJSONResponse.Free;
         end;
       end;
+      401:
+      begin
+        lMessage := 'A Chave de Autenticação é obrigatória e deve ser informada.';
+        lBuscaCEPExceptionKind := TBuscaCEPExceptionKind.EXCEPTION_REQUEST_INVALID;
+      end;
       404:
       begin
-        lMessage := 'Logradouro não localizado, verificar os parâmetros de filtro.';
+        lMessage := 'Logradouro não encontrado. Verifique os parâmetros de filtro.';
         lBuscaCEPExceptionKind := TBuscaCEPExceptionKind.EXCEPTION_FILTRO_NOT_FOUND;
       end;
     else
@@ -212,7 +216,7 @@ begin
       raise EBuscaCEP.Create(TBuscaCEPExceptionKind.EXCEPTION_FILTRO_INVALID,
                              FProvider,
                              Now(),
-                             'CEP informado é inválido.');
+                             'O CEP informado é inválido.');
     end;
   end;
 
@@ -221,25 +225,27 @@ begin
       raise EBuscaCEP.Create(TBuscaCEPExceptionKind.EXCEPTION_FILTRO_INVALID,
                              FProvider,
                              Now(),
-                             'Provedor não possui busca por logradouro.');
+                             'O provedor não oferece busca por logradouro.');
+
+  if (FBuscaCEPProvider.APIKey = EmptyStr) then
+    raise EBuscaCEP.Create(TBuscaCEPExceptionKind.EXCEPTION_REQUEST_INVALID,
+                           FProvider,
+                           Now(),
+                           'A Chave de Autenticação é obrigatória e deve ser informada.');
 end;
 
-function TBuscaCEPRequestBrasilAberto.GetResource(
-  pBuscaCEPFiltro: IBuscaCEPFiltro): string;
+function TBuscaCEPRequestBrasilAberto.GetResource(pBuscaCEPFiltro: IBuscaCEPFiltro): string;
 var
   lCEP: string;
 begin
   // https://api.brasilaberto.com/v1/zipcode/90520003
   lCEP := OnlyNumber(FBuscaCEPProvider.Filtro.CEP);
-
   Result := Format('/v1/zipcode/%s', [lCEP]);
 end;
 
-function TBuscaCEPRequestBrasilAberto.GetResponse(
-  pIHTTPResponse: IHTTPResponse): IBuscaCEPResponse;
+function TBuscaCEPRequestBrasilAberto.GetResponse(pIHTTPResponse: IHTTPResponse): IBuscaCEPResponse;
 begin
-  Result := TBuscaCEPResponseBrasilAberto.Create(
-    pIHTTPResponse.ContentAsString, FProvider, FRequestTime);
+  Result := TBuscaCEPResponseBrasilAberto.Create(pIHTTPResponse.ContentAsString, FProvider, FRequestTime);
 end;
 
 function TBuscaCEPRequestBrasilAberto.InternalExecute: IHTTPResponse;

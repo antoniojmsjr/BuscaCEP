@@ -152,8 +152,7 @@ end;
 {$ENDREGION}
 
 {$REGION 'TBuscaCEPRequestPostmon'}
-procedure TBuscaCEPRequestPostmon.CheckContentResponse(
-  pIHTTPResponse: IHTTPResponse);
+procedure TBuscaCEPRequestPostmon.CheckContentResponse(pIHTTPResponse: IHTTPResponse);
 var
   lMessage: string;
   lContent: string;
@@ -190,7 +189,7 @@ begin
       end;
       404:
       begin
-        lMessage := 'Logradouro não localizado, verificar os parâmetros de filtro.';
+        lMessage := 'Logradouro não encontrado. Verifique os parâmetros de filtro.';
         lBuscaCEPExceptionKind := TBuscaCEPExceptionKind.EXCEPTION_FILTRO_NOT_FOUND;
       end;
       503:
@@ -237,7 +236,7 @@ begin
       raise EBuscaCEP.Create(TBuscaCEPExceptionKind.EXCEPTION_FILTRO_INVALID,
                              FProvider,
                              Now(),
-                             'CEP informado é inválido.');
+                             'O CEP informado é inválido.');
     end;
   end;
 
@@ -246,12 +245,10 @@ begin
       raise EBuscaCEP.Create(TBuscaCEPExceptionKind.EXCEPTION_FILTRO_INVALID,
                              FProvider,
                              Now(),
-                             'Provedor não possui busca por logradouro.');
-
+                             'O provedor não oferece busca por logradouro.');
 end;
 
-function TBuscaCEPRequestPostmon.GetResource(
-  pBuscaCEPFiltro: IBuscaCEPFiltro): string;
+function TBuscaCEPRequestPostmon.GetResource(pBuscaCEPFiltro: IBuscaCEPFiltro): string;
 var
   lCEP: string;
 begin
@@ -262,8 +259,7 @@ begin
   Result := Format('/v1/cep/%s', [lCEP]);
 end;
 
-function TBuscaCEPRequestPostmon.GetResponse(
-  pIHTTPResponse: IHTTPResponse): IBuscaCEPResponse;
+function TBuscaCEPRequestPostmon.GetResponse(pIHTTPResponse: IHTTPResponse): IBuscaCEPResponse;
 begin
   Result := TBuscaCEPResponsePostmon.Create(pIHTTPResponse.ContentAsString, FProvider, FRequestTime);
 end;

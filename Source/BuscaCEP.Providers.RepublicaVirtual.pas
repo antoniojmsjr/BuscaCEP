@@ -99,8 +99,7 @@ end;
 {$ENDREGION}
 
 {$REGION 'TBuscaCEPResponseRepublicaVirtual'}
-constructor TBuscaCEPResponseRepublicaVirtual.Create(const pContent: string;
-  const pProvider: string; const pRequestTime: Integer; const pCEP: string);
+constructor TBuscaCEPResponseRepublicaVirtual.Create(const pContent: string; const pProvider: string; const pRequestTime: Integer; const pCEP: string);
 begin
   inherited Create(pContent, pProvider, pRequestTime);
   FCEP := OnlyNumber(pCEP);
@@ -162,8 +161,7 @@ end;
 {$ENDREGION}
 
 {$REGION 'TBuscaCEPRequestRepublicaVirtual'}
-procedure TBuscaCEPRequestRepublicaVirtual.CheckContentResponse(
-  pIHTTPResponse: IHTTPResponse);
+procedure TBuscaCEPRequestRepublicaVirtual.CheckContentResponse(pIHTTPResponse: IHTTPResponse);
 var
   lMessage: string;
   lContent: string;
@@ -200,7 +198,7 @@ begin
           lJSONResponse.TryGetValue<integer>('resultado', lAPIResultado);
           if (lAPIResultado = 0) then
           begin
-            lMessage := 'Logradouro não localizado, verificar os parâmetros de filtro.';
+            lMessage := 'Logradouro não encontrado. Verifique os parâmetros de filtro.';
             lBuscaCEPExceptionKind := TBuscaCEPExceptionKind.EXCEPTION_FILTRO_NOT_FOUND;
           end;
         finally
@@ -252,7 +250,7 @@ begin
       raise EBuscaCEP.Create(TBuscaCEPExceptionKind.EXCEPTION_FILTRO_INVALID,
                              FProvider,
                              Now(),
-                             'CEP informado é inválido.');
+                             'O CEP informado é inválido.');
     end;
   end;
 
@@ -261,11 +259,10 @@ begin
       raise EBuscaCEP.Create(TBuscaCEPExceptionKind.EXCEPTION_FILTRO_INVALID,
                              FProvider,
                              Now(),
-                             'Provedor não possui busca por logradouro.');
+                             'O provedor não oferece busca por logradouro.');
 end;
 
-function TBuscaCEPRequestRepublicaVirtual.GetMessageStatusCode403(
-  const pContent: string): string;
+function TBuscaCEPRequestRepublicaVirtual.GetMessageStatusCode403(const pContent: string): string;
 var
   lRegEx: TRegEx;
   lMatch: TMatch;
@@ -284,8 +281,7 @@ begin
   Result := Trim(lMatch.Groups[1].Value);
 end;
 
-function TBuscaCEPRequestRepublicaVirtual.GetResource(
-  pBuscaCEPFiltro: IBuscaCEPFiltro): string;
+function TBuscaCEPRequestRepublicaVirtual.GetResource(pBuscaCEPFiltro: IBuscaCEPFiltro): string;
 var
   lCEP: string;
 begin
@@ -294,11 +290,9 @@ begin
   Result := Format('/web_cep.php?cep=%s&formato=%s', [lCEP, 'json']);
 end;
 
-function TBuscaCEPRequestRepublicaVirtual.GetResponse(
-  pIHTTPResponse: IHTTPResponse): IBuscaCEPResponse;
+function TBuscaCEPRequestRepublicaVirtual.GetResponse(pIHTTPResponse: IHTTPResponse): IBuscaCEPResponse;
 begin
-  Result := TBuscaCEPResponseRepublicaVirtual.Create(
-    pIHTTPResponse.ContentAsString, FProvider, FRequestTime, FBuscaCEPProvider.Filtro.CEP);
+  Result := TBuscaCEPResponseRepublicaVirtual.Create(pIHTTPResponse.ContentAsString, FProvider, FRequestTime, FBuscaCEPProvider.Filtro.CEP);
 end;
 
 function TBuscaCEPRequestRepublicaVirtual.InternalExecute: IHTTPResponse;

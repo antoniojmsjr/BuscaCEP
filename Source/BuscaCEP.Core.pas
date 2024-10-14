@@ -294,24 +294,21 @@ begin
   FFiltroPorLogradouro := True;
 end;
 
-function TBuscaCEPFiltro.SetIdentificador(
-  const pIdentificador: string): IBuscaCEPFiltro;
+function TBuscaCEPFiltro.SetIdentificador(const pIdentificador: string): IBuscaCEPFiltro;
 begin
   Result := Self;
   FIdentificador := Trim(pIdentificador);
   FFiltroPorLogradouro := True;
 end;
 
-function TBuscaCEPFiltro.SetLogradouro(
-  const pLogradouro: string): IBuscaCEPFiltro;
+function TBuscaCEPFiltro.SetLogradouro(const pLogradouro: string): IBuscaCEPFiltro;
 begin
   Result := Self;
   FLogradouro := Trim(pLogradouro);
   FFiltroPorLogradouro := True;
 end;
 
-function TBuscaCEPFiltro.SetTipo(
-  const pTipo: TBuscaCEPTipoLogradouroKind): IBuscaCEPFiltro;
+function TBuscaCEPFiltro.SetTipo(const pTipo: TBuscaCEPTipoLogradouroKind): IBuscaCEPFiltro;
 begin
   Result := Self;
   FTipo := pTipo;
@@ -327,7 +324,7 @@ begin
   FBuscaCEPProvider := pParent;
   FBuscaCEPFiltro := FBuscaCEPProvider.Filtro;
   FProvider := FBuscaCEPProvider.ID;
-  FTimeout := 10000; //10 sg
+  FTimeout := 15000; //15 sg
   FRequestTime := 0;
 end;
 
@@ -356,36 +353,31 @@ begin
   Result := FTimeout;
 end;
 
-function TBuscaCEPRequestCustom.SetProxyHost(
-  const pProxyHost: string): IBuscaCEPRequest;
+function TBuscaCEPRequestCustom.SetProxyHost(const pProxyHost: string): IBuscaCEPRequest;
 begin
   Result := Self;
   FProxyHost := pProxyHost;
 end;
 
-function TBuscaCEPRequestCustom.SetProxyPassword(
-  const pProxyPassword: string): IBuscaCEPRequest;
+function TBuscaCEPRequestCustom.SetProxyPassword(const pProxyPassword: string): IBuscaCEPRequest;
 begin
   Result := Self;
   FProxyPassword := pProxyPassword;
 end;
 
-function TBuscaCEPRequestCustom.SetProxyPort(
-  const pProxyPort: Integer): IBuscaCEPRequest;
+function TBuscaCEPRequestCustom.SetProxyPort(const pProxyPort: Integer): IBuscaCEPRequest;
 begin
   Result := Self;
   FProxyPort := pProxyPort;
 end;
 
-function TBuscaCEPRequestCustom.SetProxyUserName(
-  const pProxyUserName: string): IBuscaCEPRequest;
+function TBuscaCEPRequestCustom.SetProxyUserName(const pProxyUserName: string): IBuscaCEPRequest;
 begin
   Result := Self;
   FProxyUserName := pProxyUserName;
 end;
 
-function TBuscaCEPRequestCustom.SetTimeout(
-  const pMilliseconds: Integer): IBuscaCEPRequest;
+function TBuscaCEPRequestCustom.SetTimeout(const pMilliseconds: Integer): IBuscaCEPRequest;
 begin
   Result := Self;
   FTimeout := pMilliseconds;
@@ -404,7 +396,7 @@ begin
     raise EBuscaCEP.Create(TBuscaCEPExceptionKind.EXCEPTION_FILTRO_INVALID,
                            FProvider,
                            Now(),
-                           'Logradouro não localizado, verificar os parâmetros de filtro.');
+                           'Logradouro não encontrado. Verifique os parâmetros de filtro.');
 end;
 
 procedure TBuscaCEPRequest.CheckRequest;
@@ -431,7 +423,7 @@ begin
       raise EBuscaCEP.Create(TBuscaCEPExceptionKind.EXCEPTION_FILTRO_INVALID,
                              FProvider,
                              Now(),
-                             'CEP informado é inválido.');
+                             'O CEP informado é inválido.');
     end;
   end;
 
@@ -445,14 +437,13 @@ begin
       raise EBuscaCEP.Create(TBuscaCEPExceptionKind.EXCEPTION_FILTRO_INVALID,
                              FProvider,
                              Now(),
-                             'Filtro por logradouro incompleto, informar os campos:' + sLineBreak +
+                             'O filtro por logradouro está incompleto. Informe os seguintes campos:' + sLineBreak +
                              'Logradouro/Localidade/UF');
     end;
   end;
 end;
 
-constructor TBuscaCEPRequest.Create(pParent: IBuscaCEPProviders;
-  pBuscaCEP: IBuscaCEP);
+constructor TBuscaCEPRequest.Create(pParent: IBuscaCEPProviders; pBuscaCEP: IBuscaCEP);
 begin
   inherited Create(pParent, pBuscaCEP);
 
@@ -536,8 +527,7 @@ begin
   end;
 end;
 
-procedure TBuscaCEPRequest.GetStatusResponse(pHTTPResponse: IHTTPResponse;
-  out poStatusCode: Integer; out poStatusText: string);
+procedure TBuscaCEPRequest.GetStatusResponse(pHTTPResponse: IHTTPResponse; out poStatusCode: Integer; out poStatusText: string);
 begin
   poStatusCode := 0;
   poStatusText := EmptyStr;
@@ -586,8 +576,7 @@ end;
 {$ENDREGION}
 
 {$REGION 'TBuscaCEPResponseCustom'}
-constructor TBuscaCEPResponseCustom.Create(const pContent: string;
-  const pProvider: string; const pRequestTime: Integer);
+constructor TBuscaCEPResponseCustom.Create(const pContent: string; const pProvider: string; const pRequestTime: Integer);
 begin
   FContent := pContent;
   FProvider := pProvider;
