@@ -37,8 +37,7 @@ type
     { protected declarations }
   public
     { public declarations }
-    class function New(const pProviderKind: TBuscaCEPProvidersKind;
-                       pBuscaCEP: IBuscaCEP): IBuscaCEPProviders;
+    class function New(const pProviderKind: TBuscaCEPProvidersKind; pBuscaCEP: IBuscaCEP): IBuscaCEPProviders;
   end;
 
 implementation
@@ -49,10 +48,10 @@ uses
   BuscaCEP.Providers.RepublicaVirtual, BuscaCEP.Providers.CEPCerto,
   BuscaCEP.Providers.BrasilAPI, BuscaCEP.Providers.KingHost,
   BuscaCEP.Providers.Postmon, BuscaCEP.Providers.OpenCEP,
-  BuscaCEP.Providers.ApiCEP, BuscaCEP.Providers.BrasilAberto;
+  BuscaCEP.Providers.ApiCEP, BuscaCEP.Providers.BrasilAberto,
+  BuscaCEP.Providers.Awesomeapi;
 
-class function TBuscaCEPProviderFactory.New(const pProviderKind: TBuscaCEPProvidersKind;
-  pBuscaCEP: IBuscaCEP): IBuscaCEPProviders;
+class function TBuscaCEPProviderFactory.New(const pProviderKind: TBuscaCEPProvidersKind;  pBuscaCEP: IBuscaCEP): IBuscaCEPProviders;
 begin
   case pProviderKind of
     TBuscaCEPProvidersKind.UNKNOWN: raise Exception.Create('Provider not implemented...');
@@ -68,6 +67,7 @@ begin
     TBuscaCEPProvidersKind.OpenCEP: Result := TBuscaCEPProviderOpenCEP.Create(pBuscaCEP);
     TBuscaCEPProvidersKind.ApiCEP: Result := TBuscaCEPProviderApiCEP.Create(pBuscaCEP);
     TBuscaCEPProvidersKind.BrasilAberto: Result := TBuscaCEPProviderBrasilAberto.Create(pBuscaCEP);
+    TBuscaCEPProvidersKind.AwesomeAPI: Result := TBuscaCEPProviderAwesomeapi.Create(pBuscaCEP);
   else
     raise Exception.Create('Provider not implemented...');
   end;

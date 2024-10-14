@@ -46,7 +46,8 @@ type
                             Postmon,
                             OpenCEP,
                             ApiCEP,
-                            BrasilAberto);
+                            BrasilAberto,
+                            AwesomeAPI);
   {$SCOPEDENUMS OFF}
 
   {$ENDREGION}
@@ -338,6 +339,7 @@ begin
     TBuscaCEPProvidersKind.OpenCEP:      Result := 'OpenCEP';
     TBuscaCEPProvidersKind.ApiCEP:       Result := 'ApiCEP';
     TBuscaCEPProvidersKind.BrasilAberto: Result := 'BrasilAberto';
+    TBuscaCEPProvidersKind.AwesomeAPI:   Result := 'AwesomeAPI';
   end;
 end;
 
@@ -357,8 +359,10 @@ begin
     TBuscaCEPProvidersKind.OpenCEP:      Result := '#OPEN_CEP';
     TBuscaCEPProvidersKind.ApiCEP:       Result := '#API_CEP';
     TBuscaCEPProvidersKind.BrasilAberto: Result := '#BRASIL_ABERTO';
+    TBuscaCEPProvidersKind.AwesomeAPI:   Result := '#AWESOME_API';
   end;
 end;
+
 function TBuscaCEPProvidersKindHelper.BaseURL: string;
 begin
   case Self of
@@ -375,6 +379,7 @@ begin
     TBuscaCEPProvidersKind.OpenCEP:      Result := 'https://opencep.com';
     TBuscaCEPProvidersKind.ApiCEP:       Result := 'https://cdn.apicep.com';
     TBuscaCEPProvidersKind.BrasilAberto: Result := 'https://api.brasilaberto.com';
+    TBuscaCEPProvidersKind.AwesomeAPI:   Result := 'https://cep.awesomeapi.com.br';
   end;
 end;
 
