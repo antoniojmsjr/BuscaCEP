@@ -55,7 +55,7 @@ Se você optar por instalar manualmente, basta adicionar as seguintes pastas ao 
 |---|---|---|---|
 | [Correios](https://buscacepinter.correios.com.br/app/cep/index.php) | NÃO | SIM | SIM |
 | [Via CEP](https://viacep.com.br) | NÃO | SIM | SIM |
-| [Brasil API](https://brasilapi.com.br) | NÃO | SIM | NÃO | SIM|
+| [Brasil API](https://brasilapi.com.br) | NÃO | SIM | NÃO |
 | [CEP Aberto](https://www.cepaberto.com) | SIM | SIM | SIM |
 | [Republica Virtual](https://www.republicavirtual.com.br/cep) | NÃO | SIM | NÃO |
 | [CEP Certo](https://www.cepcerto.com) | NÃO | SIM | SIM |
@@ -65,15 +65,16 @@ Se você optar por instalar manualmente, basta adicionar as seguintes pastas ao 
 | [Open CEP](https://opencep.com) | SIM | SIM | SIM |
 | [API CEP](https://apicep.com) | SIM | SIM | SIM |
 | [Brasil Aberto](https://brasilaberto.com) | SIM | SIM | SIM |
+| [AwesomeAPI](https://docs.awesomeapi.com.br) | NÃO | SIM | NÃO |
 
-\* Para consultar usando o logradouro são necessários três parâmetros obrigatórios (UF, Cidade e Logradouro).</br>
+\* Para consultar usando o logradouro, são necessários três parâmetros obrigatórios: **UF, Cidade e Logradouro**.</br>
 
 ## :globe_with_meridians: Arquivo de Cache(BuscaCEP.dat)
 
-Para disponibilizar o código IBGE e o código DDD da localidade no retorno da consulta, foi criado o arquivo **BuscaCEP.dat** com base na [API de localidades](https://servicodados.ibge.gov.br/api/docs/localidades) do IBGE e no site da [Anatel](https://www.anatel.gov.br/dadosabertos/PDA/Codigo_Nacional/PGCN.csv).
+Para disponibilizar o código IBGE e o código DDD da localidade no retorno da consulta, foi criado o arquivo **BuscaCEP.dat**, com base na [API de localidades](https://servicodados.ibge.gov.br/api/docs/localidades) do IBGE e no site da [Anatel](https://www.anatel.gov.br/dadosabertos/PDA/Codigo_Nacional/PGCN.csv).
 
-* O arquivo dever ser usado junto ao aplicativo ou ser definido na biblioteca.
-* Esse arquivo pode ser atualizado usando o projeto [BuscaCEPCache](https://github.com/antoniojmsjr/BuscaCEP/tree/main/Cache).
+* O arquivo deve ser usado juntamente com o aplicativo ou definido na biblioteca.
+* Este arquivo pode ser atualizado utilizando o projeto [BuscaCEPCache](https://github.com/antoniojmsjr/BuscaCEP/tree/main/Cache).
 
 ## ⚡️ Uso da biblioteca
 
