@@ -71,7 +71,7 @@ Se você optar por instalar manualmente, basta adicionar as seguintes pastas ao 
 
 ## :globe_with_meridians: Arquivo de Cache(BuscaCEP.dat)
 
-Para disponibilizar o código IBGE e o código DDD da localidade no retorno da consulta, foi criado o arquivo **BuscaCEP.dat**, com base na [API de localidades](https://servicodados.ibge.gov.br/api/docs/localidades) do IBGE e no site da [Anatel](https://www.anatel.gov.br/dadosabertos/PDA/Codigo_Nacional/PGCN.csv).
+Para fornecer o código IBGE e o código DDD da localidade no retorno da consulta, foi criado o arquivo **BuscaCEP.dat**, com base na [API de localidades do IBGE](https://servicodados.ibge.gov.br/api/docs/localidades) e nos dados disponibilizados pela [Anatel](https://www.anatel.gov.br/dadosabertos/PDA/Codigo_Nacional/PGCN.csv).
 
 * O arquivo deve ser usado juntamente com o aplicativo ou definido na biblioteca.
 * Este arquivo pode ser atualizado utilizando o projeto [BuscaCEPCache](https://github.com/antoniojmsjr/BuscaCEP/tree/main/Cache).
