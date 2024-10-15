@@ -2,7 +2,7 @@
 
 **BuscaCEPCache.exe** é um aplicativo desenvolvido para *geração* do arquivo **BuscaCEP.dat** (335kb) que contém uma lista de localidades juntamente com os códigos *IBGE* e o *DDD(Discagem Direta à Distância)*.
 
-Com base nos dados importado da [API de localidades](https://servicodados.ibge.gov.br/api/docs/localidades) do IBGE, e com base nos dados importado do site da [Anatel](https://www.anatel.gov.br/dadosabertos/PDA/Codigo_Nacional/PGCN.csv) é gerado o arquivo BuscaCEP.dat contendo uma lista organizada de localidades e seus respectivos códigos IBGE e o DDD.
+Com base nos dados importados da [API de localidades](https://servicodados.ibge.gov.br/api/docs/localidades) e nos dados obtidos do site da [Anatel](https://www.anatel.gov.br/dadosabertos/PDA/Codigo_Nacional/PGCN.csv), é gerado o arquivo **BuscaCEP.dat**, que contém uma lista organizada de localidades, seus respectivos códigos IBGE e os códigos DDD correspondentes.
 
 > [!NOTE]
 > O arquivo BuscaCEP.dat foi criado para ser utilizado pela biblioteca [BuscaCEP](https://github.com/antoniojmsjr/BuscaCEP) para retornar os códigos IBGE e o DDD da localidade do logradouro.
