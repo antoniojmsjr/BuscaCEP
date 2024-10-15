@@ -28,7 +28,7 @@ Com base nos dados importados da [API de localidades](https://servicodados.ibge.
 |SP|11|3550308|São Paulo|35b3cb29a9f04e415cd69c4dd2e45083|
 |RJ|21|3304557|Rio de Janeiro|a245015dea599745f99cf43da0e882f9|
 
-* O Hash é utilizado para otimizar na busca dos dados, e é calculado usando **UF** e a **Localidade**.
+\* O Hash é utilizado para otimizar na busca dos dados, e é calculado usando **UF** e a **Localidade**.
 
 ```delphi
 uses
