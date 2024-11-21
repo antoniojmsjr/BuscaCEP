@@ -447,15 +447,15 @@ constructor TBuscaCEPRequest.Create(pParent: IBuscaCEPProviders; pBuscaCEP: IBus
 begin
   inherited Create(pParent, pBuscaCEP);
 
-  FHttpClient := TNetHTTPClient.Create(nil);
+  FHttpRequest := TNetHTTPRequest.Create(nil);
+  FHttpClient := TNetHTTPClient.Create(FHttpRequest);
+  FHttpRequest.Client := FHttpClient;
+
+  FHttpClient.HandleRedirects := False;
   FHttpClient.SecureProtocols := [];
   FHttpClient.SecureProtocols := [THTTPSecureProtocol.TLS1,
                                   THTTPSecureProtocol.TLS11,
                                   THTTPSecureProtocol.TLS12];
-
-  FHttpClient.HandleRedirects := False;
-  FHttpRequest := TNetHTTPRequest.Create(nil);
-  FHttpRequest.Client := FHttpClient;
 
   // PROCESSAR ARQUIVO BuscaCEP.dat
   TBuscaCEPCache.Default.Processar(FBuscaCEP.ArquivoCache);
@@ -464,8 +464,6 @@ end;
 destructor TBuscaCEPRequest.Destroy;
 begin
   FHttpRequest.Free;
-  FHttpClient.Free;
-  FHttpRequest.Client := nil;
   inherited Destroy;
 end;
 
