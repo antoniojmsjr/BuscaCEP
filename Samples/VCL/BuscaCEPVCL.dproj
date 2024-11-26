@@ -6,7 +6,7 @@
         <MainSource>BuscaCEPVCL.dpr</MainSource>
         <Base>True</Base>
         <Config Condition="'$(Config)'==''">Release</Config>
-        <Platform Condition="'$(Platform)'==''">Win64</Platform>
+        <Platform Condition="'$(Platform)'==''">Win32</Platform>
         <TargetedPlatforms>3</TargetedPlatforms>
         <AppType>Application</AppType>
     </PropertyGroup>
@@ -130,26 +130,6 @@
             <Form>frmMain</Form>
             <FormType>dfm</FormType>
         </DCCReference>
-        <DCCReference Include="..\..\Source\BuscaCEP.Core.pas"/>
-        <DCCReference Include="..\..\Source\BuscaCEP.Factory.pas"/>
-        <DCCReference Include="..\..\Source\BuscaCEP.Interfaces.pas"/>
-        <DCCReference Include="..\..\Source\BuscaCEP.pas"/>
-        <DCCReference Include="..\..\Source\BuscaCEP.Providers.ApiCEP.pas"/>
-        <DCCReference Include="..\..\Source\BuscaCEP.Providers.Awesomeapi.pas"/>
-        <DCCReference Include="..\..\Source\BuscaCEP.Providers.BrasilAberto.pas"/>
-        <DCCReference Include="..\..\Source\BuscaCEP.Providers.BrasilAPI.pas"/>
-        <DCCReference Include="..\..\Source\BuscaCEP.Providers.CEPAberto.pas"/>
-        <DCCReference Include="..\..\Source\BuscaCEP.Providers.CEPCerto.pas"/>
-        <DCCReference Include="..\..\Source\BuscaCEP.Providers.CEPLivre.pas"/>
-        <DCCReference Include="..\..\Source\BuscaCEP.Providers.Correios.pas"/>
-        <DCCReference Include="..\..\Source\BuscaCEP.Providers.Correios.Utils.pas"/>
-        <DCCReference Include="..\..\Source\BuscaCEP.Providers.KingHost.pas"/>
-        <DCCReference Include="..\..\Source\BuscaCEP.Providers.OpenCEP.pas"/>
-        <DCCReference Include="..\..\Source\BuscaCEP.Providers.Postmon.pas"/>
-        <DCCReference Include="..\..\Source\BuscaCEP.Providers.RepublicaVirtual.pas"/>
-        <DCCReference Include="..\..\Source\BuscaCEP.Providers.ViaCEP.pas"/>
-        <DCCReference Include="..\..\Source\BuscaCEP.Types.pas"/>
-        <DCCReference Include="..\..\Source\BuscaCEP.Utils.pas"/>
         <BuildConfiguration Include="Release">
             <Key>Cfg_2</Key>
             <CfgParent>Base</CfgParent>
@@ -179,6 +159,12 @@
             <Deployment Version="3">
                 <DeployFile LocalName="Bin\BuscaCEPVCL.exe" Configuration="Debug" Class="ProjectOutput">
                     <Platform Name="Win32">
+                        <RemoteName>BuscaCEPVCL.exe</RemoteName>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
+                <DeployFile LocalName="Bin\BuscaCEPVCL.exe" Configuration="Release" Class="ProjectOutput">
+                    <Platform Name="Win64">
                         <RemoteName>BuscaCEPVCL.exe</RemoteName>
                         <Overwrite>true</Overwrite>
                     </Platform>
