@@ -112,7 +112,11 @@ var
 begin
   lJSONObject := TJSONObject.ParseJSONValue(pJSON) as TJSONObject;
   try
+    {$IF COMPILERVERSION >= 33.0}
     Result := lJSONObject.Format(2);
+    {$ELSE}
+    Result := lJSONObject.ToString;
+    {$ENDIF}
   finally
     lJSONObject.Free;
   end;

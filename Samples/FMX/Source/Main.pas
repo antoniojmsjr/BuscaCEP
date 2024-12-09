@@ -63,7 +63,7 @@ var
 implementation
 
 uses
-  System.JSON, Winapi.ShellApi, BuscaCEP, BuscaCEP.Types, BuscaCEP.Interfaces;
+  System.JSON, {$IF Defined(MSWINDOWS)}Winapi.ShellApi,{$ENDIF} BuscaCEP, BuscaCEP.Types, BuscaCEP.Interfaces;
 
 {$R *.fmx}
 
@@ -168,7 +168,11 @@ var
 begin
   lJSONObject := TJSONObject.ParseJSONValue(pJSON) as TJSONObject;
   try
+    {$IF COMPILERVERSION >= 33.0}
     Result := lJSONObject.Format(2);
+    {$ELSE}
+    Result := lJSONObject.ToString;
+    {$ENDIF}
   finally
     lJSONObject.Free;
   end;
@@ -176,7 +180,9 @@ end;
 
 procedure TfrmMain.lblAppSiteClick(Sender: TObject);
 begin
+  {$IF Defined(MSWINDOWS)}
   ShellExecute(0, nil, PChar('https://github.com/antoniojmsjr/BuscaCEP'), nil, nil, 1);
+  {$ENDIF}
 end;
 
 end.

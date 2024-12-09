@@ -157,18 +157,8 @@
                 </Excluded_Packages>
             </Delphi.Personality>
             <Deployment Version="3">
-                <DeployFile LocalName="Bin\BuscaCEPVCL.exe" Configuration="Debug" Class="ProjectOutput">
-                    <Platform Name="Win32">
-                        <RemoteName>BuscaCEPVCL.exe</RemoteName>
-                        <Overwrite>true</Overwrite>
-                    </Platform>
-                </DeployFile>
-                <DeployFile LocalName="Bin\BuscaCEPVCL.exe" Configuration="Release" Class="ProjectOutput">
-                    <Platform Name="Win64">
-                        <RemoteName>BuscaCEPVCL.exe</RemoteName>
-                        <Overwrite>true</Overwrite>
-                    </Platform>
-                </DeployFile>
+                <DeployFile LocalName="Bin\BuscaCEPVCL.exe" Configuration="Release" Class="ProjectOutput"/>
+                <DeployFile LocalName="Bin\BuscaCEPVCL.exe" Configuration="Debug" Class="ProjectOutput"/>
                 <DeployFile LocalName="Bin\BuscaCEPVCL.exe" Configuration="Release" Class="ProjectOutput">
                     <Platform Name="Win32">
                         <RemoteName>BuscaCEPVCL.exe</RemoteName>

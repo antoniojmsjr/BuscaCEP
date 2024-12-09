@@ -197,6 +197,7 @@ end;
 {$REGION 'TBuscaCEPRequestViaCEP'}
 procedure TBuscaCEPRequestViaCEP.CheckContentResponse(pIHTTPResponse: IHTTPResponse);
 var
+  lText: string;
   lMessage: string;
   lContent: string;
   lJSONResponse: TJSONValue;
@@ -230,7 +231,7 @@ begin
 
           if (lJSONResponse is TJSONObject) then
           begin
-            if Assigned(lJSONResponse.FindValue('erro')) then
+            if lJSONResponse.TryGetValue<string>('erro', lText) then
             begin
               lMessage := 'Logradouro não encontrado. Verifique os parâmetros de filtro.';
               lBuscaCEPExceptionKind := TBuscaCEPExceptionKind.EXCEPTION_FILTRO_NOT_FOUND;

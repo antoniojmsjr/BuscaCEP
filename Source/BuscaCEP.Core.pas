@@ -187,6 +187,9 @@ uses
 constructor TBuscaCEPProvidersCustom.Create(pParent: IBuscaCEP);
 begin
   FBuscaCEP := pParent;
+  {$IF COMPILERVERSION <= 30.0} //Delphi 10 Seattle / C++Builder 10 Seattle
+  FBuscaCEP._Release;
+  {$ENDIF}
   FBuscaCEPFiltro := TBuscaCEPFiltro.Create(Self);
   FID := EmptyStr;
   FURL := EmptyStr;
@@ -224,6 +227,9 @@ end;
 constructor TBuscaCEPFiltro.Create(pParent: IBuscaCEPProviders);
 begin
   FBuscaCEPProviders := pParent;
+  {$IF COMPILERVERSION <= 30.0} //Delphi 10 Seattle / C++Builder 10 Seattle
+  FBuscaCEPProviders._Release;
+  {$ENDIF}
   FFiltroPorCEP := False;
   FFiltroPorLogradouro := False;
 end;
@@ -317,10 +323,12 @@ end;
 {$ENDREGION}
 
 {$REGION 'TBuscaCEPRequestCustom'}
-constructor TBuscaCEPRequestCustom.Create(pParent: IBuscaCEPProviders;
-  pBuscaCEP: IBuscaCEP);
+constructor TBuscaCEPRequestCustom.Create(pParent: IBuscaCEPProviders; pBuscaCEP: IBuscaCEP);
 begin
   FBuscaCEP := pBuscaCEP;
+  {$IF COMPILERVERSION <= 30.0} //Delphi 10 Seattle / C++Builder 10 Seattle
+  FBuscaCEP._Release;
+  {$ENDIF}
   FBuscaCEPProvider := pParent;
   FBuscaCEPFiltro := FBuscaCEPProvider.Filtro;
   FProvider := FBuscaCEPProvider.ID;
@@ -452,10 +460,12 @@ begin
   FHttpRequest.Client := FHttpClient;
 
   FHttpClient.HandleRedirects := False;
+  {$IF COMPILERVERSION >= 32.0}
   FHttpClient.SecureProtocols := [];
   FHttpClient.SecureProtocols := [THTTPSecureProtocol.TLS1,
                                   THTTPSecureProtocol.TLS11,
                                   THTTPSecureProtocol.TLS12];
+  {$ENDIF}
 
   // PROCESSAR ARQUIVO BuscaCEP.dat
   TBuscaCEPCache.Default.Processar(FBuscaCEP.ArquivoCache);
@@ -477,8 +487,10 @@ begin
   lStatusText := EmptyStr;
 
   // PARAMS
+  {$IF COMPILERVERSION >= 31.0}
   FHttpRequest.ConnectionTimeout := FTimeout;
   FHttpRequest.ResponseTimeout := FTimeout;
+  {$ENDIF}
   FHttpRequest.Client.ProxySettings :=
     TProxySettings.Create(FProxyHost,
                           FProxyPort,

@@ -76,7 +76,7 @@ implementation
 
 uses
   System.JSON, System.SysUtils, System.StrUtils, System.Net.URLClient, 
-  System.Classes, BuscaCEP.Types, BuscaCEP.Utils;
+  System.Classes, BuscaCEP.Types, BuscaCEP.Utils, System.Types;
 
 {$REGION 'TBuscaCEPProviderCEPLivre'}
 constructor TBuscaCEPProviderCEPLivre.Create(pParent: IBuscaCEP);
@@ -98,7 +98,7 @@ var
   lContent: string;
   lContentCEPs: TStrings;
   lLinha: string;
-  lLogradouros: TArray<string>;
+  lLogradouros: TStringDynArray;
   I: Integer;
   lLocalidadeDDD: Integer;
   lLocalidadeIBGE: Integer;

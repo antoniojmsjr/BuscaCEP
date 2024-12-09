@@ -118,7 +118,7 @@ function FormatCEP(const pCEP: string): string;
 implementation
 
 uses
-  System.StrUtils, System.SysUtils, System.Classes, System.Hash;
+  System.StrUtils, System.SysUtils, System.Classes, System.Hash, System.Character;
 
 function GetHashLocalidadeIBGE(const pUF: string; const pLocalidade: string): string; forward;
 
@@ -409,19 +409,18 @@ begin
 end;
 {$ENDREGION}
 
-function CharIsNumber(const pChar: Char): Boolean;
-begin
-  Result := CharInSet(pChar, ['0'..'9']);
-end;
-
 function OnlyNumber(const pString: string): string;
 var
   I: Integer;
+  lChar: Char;
 begin
   Result := EmptyStr;
   for I := Low(pString) to High(pString) do
-    if CharIsNumber(pString[I]) then
-      Result := (Result + pString[I]);
+  begin
+    lChar := pString[I];
+    if lChar.IsDigit then
+      Result := (Result + lChar);
+  end;
   Result := Trim(Result);
 end;
 

@@ -5,7 +5,7 @@
 ![Forks](https://img.shields.io/github/forks/antoniojmsjr/BuscaCEP.svg?style=flat-square)
 ![Issues](https://img.shields.io/github/issues/antoniojmsjr/BuscaCEP.svg?style=flat-square&color=blue)</br>
 ![Compatibility](https://img.shields.io/badge/Compatibility-VCL,%20Firemonkey-3db36a?style=flat-square)
-![Delphi Supported Versions](https://img.shields.io/badge/Delphi%20Supported%20Versions-XE7%20and%20newer-3db36a?style=flat-square)
+![Delphi Supported Versions](https://img.shields.io/badge/Delphi%20Supported%20Versions-Seattle%20and%20higher-3db36a?style=flat-square)
 
 </br>
 <p align="center">
