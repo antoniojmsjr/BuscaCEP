@@ -51,21 +51,21 @@ Se você optar por instalar manualmente, basta adicionar as seguintes pastas ao 
 
 ## :beginner: Provedores Homologados
 
-| Provedor | Usa APIKey? | Busca por CEP? | * Busca por Logradouro? |
-|---|---|---|---|
-| [Correios](https://buscacepinter.correios.com.br/app/cep/index.php) | NÃO | SIM | SIM |
-| [Via CEP](https://viacep.com.br) | NÃO | SIM | SIM |
-| [Brasil API](https://brasilapi.com.br) | NÃO | SIM | NÃO |
-| [CEP Aberto](https://www.cepaberto.com) | SIM | SIM | SIM |
-| [Republica Virtual](https://www.republicavirtual.com.br/cep) | NÃO | SIM | NÃO |
-| [CEP Certo](https://www.cepcerto.com) | NÃO | SIM | SIM |
-| [KingHost](https://king.host) | SIM | SIM | NÃO |
-| [Postmon](https://postmon.com.br) | NÃO | SIM | NÃO |
-| [CEP Livre](https://ceplivre.com.br) | SIM | SIM | SIM |
-| [Open CEP](https://opencep.com) | SIM | SIM | SIM |
-| [API CEP](https://apicep.com) | SIM | SIM | SIM |
-| [Brasil Aberto](https://brasilaberto.com) | SIM | SIM | SIM |
-| [AwesomeAPI](https://docs.awesomeapi.com.br) | NÃO | SIM | NÃO |
+| Provedor | Usa APIKey? | Busca por CEP? | * Busca por Logradouro? | TBuscaCEPProvidersKind |
+|---|---|---|---|---|
+| [Correios](https://buscacepinter.correios.com.br/app/cep/index.php) | NÃO | SIM | SIM | Correios |
+| [Via CEP](https://viacep.com.br) | NÃO | SIM | SIM | ViaCEP |
+| [Brasil API](https://brasilapi.com.br) | NÃO | SIM | NÃO | BrasilAPI |
+| [CEP Aberto](https://www.cepaberto.com) | SIM | SIM | SIM | CEPAberto |
+| [Republica Virtual](https://www.republicavirtual.com.br/cep) | NÃO | SIM | NÃO | RepublicaVirtual |
+| [CEP Certo](https://www.cepcerto.com) | NÃO | SIM | SIM | CEPCerto |
+| [KingHost](https://king.host) | SIM | SIM | NÃO | KingHost | KingHost |
+| [Postmon](https://postmon.com.br) | NÃO | SIM | NÃO | Postmon |
+| [CEP Livre](https://ceplivre.com.br) | SIM | SIM | SIM | CEPLivre |
+| [Open CEP](https://opencep.com) | SIM | SIM | SIM | OpenCEP |
+| [API CEP](https://apicep.com) | SIM | SIM | SIM | ApiCEP |
+| [Brasil Aberto](https://brasilaberto.com) | SIM | SIM | SIM | BrasilAberto |
+| [AwesomeAPI](https://docs.awesomeapi.com.br) | NÃO | SIM | NÃO | AwesomeAPI |
 
 \* Para consultar usando o logradouro, são necessários três parâmetros obrigatórios: **UF, Cidade e Logradouro**.</br>
 
